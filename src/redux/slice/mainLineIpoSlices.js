@@ -59,7 +59,10 @@ export const createMainLineIpo = createAsyncThunk(
         `${BASE_URL_FOR_ADMIN + ADMIN_CREATE_MAIN_IPO}`,
         payload,
         {
-          HedersForApiRequest,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       console.log(response?.data);

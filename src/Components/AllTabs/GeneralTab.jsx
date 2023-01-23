@@ -14,52 +14,66 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../MultiSelect";
 import { useEffect } from "react";
-const GeneralTab = ({ IPODATA, EditIpo }) => {
+const GeneralTab = ({ IPODATA, EditIpo, handleSomthing }) => {
   const { getMainLineIpoByIdData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-  const [companyDescription, setCompanyDescription] = useState(
-    IPODATA?.companyDescription
-  );
-  const [objectsOfIssue, setObjectsOfIssue] = useState(IPODATA?.ObjectOfIssue);
+  const [companyDescriptionData, setCompanyDescriptionData] = useState("");
+  const [objectsOfIssueData, setObjectsOfIssueData] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = (values) => {
-    const payload = {
-      companyName: values?.company_name,
-      companyDescription: companyDescription,
-      ObjectOfIssue: objectsOfIssue,
-      faceValue: values?.faceValue,
-      fromPrice: values?.FromPrice,
-      toPrice: values?.toPrice,
-      lotSize: values?.lotSize,
-      issueSize: values?.issueSize,
-      freshIssue: values?.freshIssue,
-      offerForSale: values?.OfferForSale,
-      reatailQuota: values?.retailQuota,
-      qibQuota: values?.qibQuota,
-      nilQuota: values?.niiQuota,
-      issueType: values?.issueType,
-      listingAt: values?.listingAt,
-      DRHPDraft: values?.drhp,
-      RHPDraft: values?.rhp,
-      promotersName: values?.pramotersName,
-      preIssueShareHolding: values?.sharehold,
-      postIssueShareHolding: values?.posthold,
-    };
-    if (EditIpo) {
-      payload.id = IPODATA?.id;
-      dispatch(editMainLineIpo({ payload }));
-    } else {
-      dispatch(createMainLineIpo({ payload }));
-    }
-  };
+  const formData = new FormData();
+  const payloadGenaral = {};
+  // const handleSubmit = (values) => {
+  //   formData.append("companyName", values?.company_name);
+  //   formData.append("promotersName", JSON.stringify(values?.pramotersName));
+  //   formData.append("companyDescription", companyDescriptionData);
+  //   formData.append("ObjectOfIssue", objectsOfIssueData);
+  //   formData.append("faceValue", values?.faceValue);
+  //   formData.append("fromPrice", values?.FromPrice);
+  //   formData.append("toPrice", values?.toPrice);
+  //   formData.append("lotSize", values?.lotSize);
+  //   formData.append("issueSize", values?.issueSize);
+  //   formData.append("freshIssue", values?.freshIssue);
+  //   formData.append("offerForSale", values?.OfferForSale);
+  //   formData.append("reatailQuota", values?.retailQuota);
+  //   formData.append("qibQuota", values?.qibQuota);
+  //   formData.append("nilQuota", values?.niiQuota);
+  //   formData.append("issueType", values?.issueType);
+  //   formData.append("listingAt", values?.listingAt);
+  //   formData.append("DRHPDraft", values?.drhp);
+  //   formData.append("RHPDraft", values?.rhp);
+  //   formData.append("preIssueShareHolding", values?.sharehold);
+  //   formData.append("postIssueShareHolding", values?.posthold);
+  //   if (EditIpo) {
+  //     formData.append("id", IPODATA?.id);
+  //     payloadGenaral = formData;
+  //     // dispatch(editMainLineIpo({ payload }));
+  //   } else {
+  //     payloadGenaral = formData;
+  //     // dispatch(createMainLineIpo({ payload }));
+  //   }
+  // };
 
-  console.log(getMainLineIpoByIdData?.General);
   useEffect(() => {
-    let payload = { id: "SxX4nqaQr2sfYCS68hIy" };
+    let payload = {
+      id: "02gy9c2H4HHkg0ExGId6",
+    };
     dispatch(getMainLineIpoById({ payload }));
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (getMainLineIpoByIdData && getMainLineIpoByIdData?.General) {
+      setCompanyDescriptionData(
+        getMainLineIpoByIdData?.General &&
+          getMainLineIpoByIdData?.General?.companyDescription
+      );
+      setObjectsOfIssueData(
+        getMainLineIpoByIdData?.General &&
+          getMainLineIpoByIdData?.General?.ObjectOfIssue
+      );
+    }
+  }, [getMainLineIpoByIdData]);
 
   return (
     <>
@@ -110,7 +124,13 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                   posthold: "",
                 }
           }
-          onSubmit={(values) => handleSubmit(values)}
+          onSubmit={async (values) => {
+            await new Promise((r) => setTimeout(r, 500));
+            alert(JSON.stringify(values, null, 2));
+            handleSomthing(values);
+          }}
+          enableReinitialize
+          // onSubmit={(values) => handleSubmit(values)}
         >
           {({ values }) => (
             <Form>
@@ -120,7 +140,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <h2>IPO Info</h2>
                   </div>
                 </div>
-                {console.log(getMainLineIpoByIdData?.General)}
                 <div className="card-body pt-0">
                   <div className="mb-10 fv-row">
                     <label className="required form-label">Company Name</label>
@@ -139,8 +158,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <ReactQuill
                       className="min-h-200px h-200px "
                       modules={modules}
-                      onChange={setCompanyDescription}
-                      value={companyDescription}
+                      onChange={setCompanyDescriptionData}
+                      value={companyDescriptionData}
                     />
                   </div>
                   <br />
@@ -150,8 +169,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <ReactQuill
                       className="min-h-150px h-150px mb-2 "
                       modules={modules}
-                      onChange={setObjectsOfIssue}
-                      value={objectsOfIssue}
+                      onChange={setObjectsOfIssueData}
+                      value={objectsOfIssueData}
                     />
                   </div>
                 </div>

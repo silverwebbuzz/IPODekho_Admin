@@ -17,7 +17,11 @@ const Tabs = ({ addIpo, data, EditIpo }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
   const IPOdata = data;
-
+  const handleSomthing = (generalValues, finacialValue) => {
+    console.log(generalValues);
+    const payload = Object.assign(generalValues, finacialValue);
+    console.log(payload);
+  };
   return (
     <>
       <ul className="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
@@ -104,16 +108,24 @@ const Tabs = ({ addIpo, data, EditIpo }) => {
         {activeTab === "ipo_general" ? (
           <TabPaneLayout>
             {addIpo ? (
-              <GeneralTab />
+              <GeneralTab handleSomthing={handleSomthing} />
             ) : EditIpo ? (
-              <GeneralTab IPODATA={IPOdata} EditIpo={EditIpo} />
+              <GeneralTab
+                IPODATA={IPOdata}
+                EditIpo={EditIpo}
+                handleSomthing={handleSomthing}
+              />
             ) : (
               <DisabledGeneralTab IPODATA={IPOdata} />
             )}
           </TabPaneLayout>
         ) : activeTab === "ipo_financials" ? (
           <TabPaneLayout>
-            {addIpo ? <FinancialsTab /> : <DisabledFinancialsTab />}
+            {addIpo ? (
+              <FinancialsTab handleSomthing={handleSomthing} />
+            ) : (
+              <DisabledFinancialsTab />
+            )}
           </TabPaneLayout>
         ) : activeTab === "ipo_companyinfo" ? (
           <TabPaneLayout>
