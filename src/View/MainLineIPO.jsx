@@ -11,6 +11,7 @@ import AppContentLayout from "../Components/AppContentLayout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import "../assets/plugins/custom/datatables/datatables.bundle.css";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();

@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import React from "react";
 
-const initialState = {
-  activeClass: null,
+export const initialState = {
+  activeClass: false,
 };
 const sidebarToggleSlice = createSlice({
   name: "sidebarToggleSlice",
   initialState,
   reducers: {
-    toggle: (state, action) => {
+    toggleSidebar: (state, action) => {
       state.active = action.payload;
     },
   },
 });
 
-export const { toggle } = sidebarToggleSlice.actions;
+export const { toggleSidebar } = sidebarToggleSlice.actions;
 export default sidebarToggleSlice.reducer;

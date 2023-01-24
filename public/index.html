@@ -16,52 +16,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
     />
-    
     <!--end::Fonts-->
-    <!--begin::Vendor Stylesheets(used for this page only)-->
-    <link
-      href="assets/plugins/custom/datatables/datatables.bundle.css"
-      />
-      <!-- rel="stylesheet"
-      type="text/css" -->
-    <!--end::Vendor Stylesheets-->
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link
-      href="assets/plugins/global/plugins.bundle.css"
-      />
-      <!-- rel="stylesheet" -->
-      <!-- type="text/css" -->
-    <link href="assets/css/style.bundle.css"  />
-    <!-- rel="stylesheet" type="text/css" -->
-
-    <!--end::Scrolltop-->
-    <!--end::Modals-->
-    <!--begin::Javascript-->
-    <script>
-      var hostUrl = "assets/";
-    </script>
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script type="text/jsx" src="assets/plugins/global/plugins.bundle.js"></script>
-    <script type="text/jsx" src="assets/js/scripts.bundle.js"></script>
-    <!--end::Global Javascript Bundle-->
-    <!--begin::Vendors Javascript(used for this page only)-->
-    <script type="text/jsx" src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script type="text/jsx" src="assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-    <!--end::Vendors Javascript-->
-    <!--begin::Custom Javascript(used for this page only)-->
-    <!-- <script src="assets/js/custom/apps/ecommerce/catalog/save-product.js"></script> -->
-    <script type="text/jsx" src="assets/js/custom/edit-ipo.js"></script>
-    <script type="text/jsx" src="assets/js/widgets.bundle.js"></script>
-    <script type="text/jsx" src="assets/js/custom/widgets.js"></script>
-    <script type="text/jsx" src="assets/js/custom/apps/chat/chat.js"></script>
-
-    <!--begin::Custom Javascript(used for this page only)-->
-
-    <script type="text/jsx" src="assets/js/custom/apps/user-management/users/list/table.js"></script>
-    <script type="text/jsx" src="assets/js/custom/apps/user-management/users/list/export-users.js"></script>
-    <script type="text/jsx" src="assets/js/custom/apps/user-management/users/list/add.js"></script>
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
+    
     <title>React App</title>
   </head>
   <body
@@ -76,10 +32,15 @@
     data-kt-app-sidebar-push-footer="true"
     data-kt-app-toolbar-enabled="true"
     class="app-default"
+    
     >
-    <!-- data-kt-app-sidebar-minimize="on" -->
-    <div id="root"></div>
+    <div id="root" ></div>
+    <script>
+      var hostUrl = "assets/";
+    </script>
     <script src="../src/assets/plugins/global/plugins.bundle.js"></script>
     <script src="../src/assets/js/scripts.bundle.js"></script>
+    <script src="../src/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="../src/assets/js/custom/mainlineipo_table.js"></script>
   </body>
 </html>

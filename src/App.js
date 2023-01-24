@@ -1,5 +1,3 @@
-import "./assets/css/style.bundle.css";
-import "./assets/plugins/global/plugins.bundle.css";
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./Components/Layout";
