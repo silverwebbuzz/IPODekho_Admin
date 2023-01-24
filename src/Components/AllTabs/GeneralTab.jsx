@@ -21,9 +21,8 @@ const GeneralTab = ({ IPODATA, EditIpo, handleSomthing }) => {
   const [companyDescriptionData, setCompanyDescriptionData] = useState("");
   const [objectsOfIssueData, setObjectsOfIssueData] = useState("");
   const dispatch = useDispatch();
-
   const formData = new FormData();
-  const payloadGenaral = {};
+
   // const handleSubmit = (values) => {
   //   formData.append("companyName", values?.company_name);
   //   formData.append("promotersName", JSON.stringify(values?.pramotersName));
@@ -126,7 +125,6 @@ const GeneralTab = ({ IPODATA, EditIpo, handleSomthing }) => {
           }
           onSubmit={async (values) => {
             await new Promise((r) => setTimeout(r, 500));
-            alert(JSON.stringify(values, null, 2));
             handleSomthing(values);
           }}
           enableReinitialize

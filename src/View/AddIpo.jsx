@@ -194,23 +194,7 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <Tabs addIpo="addIpo" />
-            <div className="d-flex justify-content-end">
-              {/* <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link> */}
-              {/* 
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button> */}
-            </div>
+            <div className="d-flex justify-content-end"></div>
           </div>
         </div>
       </AppContentLayout>
