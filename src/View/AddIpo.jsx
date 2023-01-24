@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import Tabs from "../Components/TabComponent/Tabs";
+import FilePreviewer from "../Components/FilePreview/FilePreviewer";
+import "../Components/FilePreview/FilePreviewer.css";
 
 const AddIpo = () => {
   return (
@@ -24,54 +26,13 @@ const AddIpo = () => {
 
               <div className="card-body text-center pt-0">
                 <div
-                  className="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                  class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                   data-kt-image-input="true"
                 >
-                  <div
-                    className="image-input-wrapper w-150px h-150px"
-                    style={{
-                      backgroundImage:
-                        "url(assets/media/ipo/Elin-Electronics-logo.jpeg)",
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                    }}
-                  ></div>
-
-                  <label
-                    className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="change"
-                    data-bs-toggle="tooltip"
-                    title="Change logo"
-                  >
-                    <i className="bi bi-pencil-fill fs-7"></i>
-
-                    <input
-                      type="file"
-                      name="avatar"
-                      accept=".png, .jpg, .jpeg"
-                    />
-                    <input type="hidden" name="avatar_remove" />
-                  </label>
-
-                  <span
-                    className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="cancel"
-                    data-bs-toggle="tooltip"
-                    title="Cancel avatar"
-                  >
-                    <i className="bi bi-x fs-2"></i>
-                  </span>
-
-                  <span
-                    className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="remove"
-                    data-bs-toggle="tooltip"
-                    title="Remove avatar"
-                  >
-                    <i className="bi bi-x fs-2"></i>
-                  </span>
+                  <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
+                    <FilePreviewer ipoImage="ipoImage" />
+                  </div>
                 </div>
-
                 <div className="text-muted fs-7">
                   Set the product thumbnail image. Only .png, .jpg and *.jpeg
                   image files are accepted

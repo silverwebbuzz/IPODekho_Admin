@@ -10,6 +10,21 @@ import ThemeDarkShowIcon from "./ThemeDarkShowIcon";
 import ThemeLightShowIcon from "./ThemeLightShowIcon";
 // src\assets\media\user\300-1.jpg
 const NavBar = () => {
+  const minimizeSidebar = useRef({ body: document.body });
+  const [active, setActive] = useState(false);
+
+  if (active) {
+    minimizeSidebar.current.body.setAttribute(
+      "data-kt-drawer-app-sidebar",
+      "on"
+    );
+    minimizeSidebar.current.body.setAttribute("data-kt-drawer", "on");
+  } else {
+    minimizeSidebar.current.body.removeAttribute("data-kt-drawer-app-sidebar");
+    minimizeSidebar.current.body.removeAttribute("data-kt-drawer");
+  }
+  console.log(active);
+
   return (
     <>
       <div id="kt_app_header" className="app-header">
@@ -22,8 +37,11 @@ const NavBar = () => {
             title="Show sidebar menu"
           >
             <div
-              className="btn btn-icon btn-active-color-primary w-35px h-35px"
+              className={`btn btn-icon btn-active-color-primary w-35px h-35px ${
+                active ? "active" : ""
+              }`}
               id="kt_app_sidebar_mobile_toggle"
+              onClick={() => setActive(!active)}
             >
               <span className="svg-icon svg-icon-2 svg-icon-md-1">
                 <SidebarMobileToggleIcon />

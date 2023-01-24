@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
 import CommonAddIcon from "../Components/CommonAddIcon";
 import CommonSearchIcon from "../Components/CommonSearchIcon";
@@ -30,12 +31,12 @@ const News = () => {
               className="d-flex justify-content-end"
               data-kt-user-table-toolbar="base"
             >
-              <a href="news-add.html" type="button" className="btn btn-primary">
+              <Link to="/add_news" type="button" className="btn btn-primary">
                 <span className="svg-icon svg-icon-2">
                   <CommonAddIcon />
                 </span>
                 Add News
-              </a>
+              </Link>
             </div>
 
             <div

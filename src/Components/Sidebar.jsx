@@ -1,9 +1,11 @@
 import React from "react";
 import { useRef } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import DefaultDarkLogo from "../assets/media/logos/default-dark.svg";
 import DefaultSmallLogo from "../assets/media/logos/default-small.svg";
+import { toggleSidebar } from "../redux/slice/sidebarToggleSlice";
 import ContactUsIcon from "./ContactUsIcon";
 import FaqsIcon from "./FaqsIcon";
 import IpoAllotmentIcon from "./IpoAllotmentIcon";
@@ -18,19 +20,20 @@ import TermsAndConditionsIcon from "./TermsAndConditionsIcon";
 import UserIcon from "./UserIcon";
 
 const Sidebar = () => {
-  const minimizeSidebar = useRef({ body: document.body, animate: "" });
-  const [active, setActive] = useState(false);
   const [anim, setAnim] = useState();
+  const minimizeSidebar = useRef({ body: document.body, animate: "" });
+  const { activeSidebar } = useSelector((state) => state.toggleReducer);
+  const dispatch = useDispatch();
 
   const handleToggle = () => {
-    setActive(!active);
+    dispatch(toggleSidebar(!activeSidebar));
     setAnim("animating");
     setTimeout(() => {
       setAnim("");
     }, 100);
   };
 
-  if (active) {
+  if (activeSidebar) {
     minimizeSidebar.current.body.setAttribute(
       "data-kt-app-sidebar-minimize",
       "on"
@@ -47,7 +50,7 @@ const Sidebar = () => {
       <div
         id="kt_app_sidebar"
         ref={minimizeSidebar.animate}
-        className={`app-sidebar flex-column ${anim}`}
+        className={`app-sidebar flex-column ${anim} `}
         data-kt-drawer="true"
         data-kt-drawer-name="app-sidebar"
         data-kt-drawer-activate="{default: true, lg: false}"
@@ -73,7 +76,7 @@ const Sidebar = () => {
           <div
             id="kt_app_sidebar_toggle"
             className={`app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate ${
-              active ? "active" : ""
+              activeSidebar ? "active" : ""
             }`}
             onClick={handleToggle}
             data-kt-toggle="true"
