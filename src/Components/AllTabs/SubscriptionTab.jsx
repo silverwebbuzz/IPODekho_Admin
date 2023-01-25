@@ -1,253 +1,338 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker"; // import date from "date-and-time";
+import "react-datepicker/dist/react-datepicker.css";
 
-const SubscriptionTab = () => {
+const SubscriptionTab = ({ nextStep, prevStep, handleChange, values }) => {
+  const [dateValue, setDateValue] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+
+  // const handleDateChange = (e) => {
+  //   const pattern = date.compile("MMM D YYYY h:m:s A");
+  //   // date.parse(e.target.value, pattern);
+  //   setDateValue(date.format(new Date(e.target.value), pattern));
+  // };
+  const submitFormData = (e) => {
+    e.preventDefault();
+    nextStep();
+  };
   return (
     <>
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Subscription Details</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div id="kt_subscription_repeater">
-            <div className="form-group">
-              <div className="form-group row">
-                <div className="col-md-2">
-                  <label className="form-label">Date</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">QIB</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">NII</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Retail</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Total</label>
-                </div>
-              </div>
-              <div data-repeater-list="kt_subscription_repeater">
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control kt_subscription_date"
-                        value="Dec 20, 2022"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.01x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.43x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.55x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.37x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control kt_subscription_date"
-                        value="Dec 21, 2022"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.01x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="1.29x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="1.33x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="0.95x"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control kt_subscription_date"
-                        value="Dec 22, 2022"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="-" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="-" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="-" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="-" />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
+      <div>
+        <form onSubmit={submitFormData}>
+          <div className="card card-flush py-4">
+            <div className="card-header">
+              <div className="card-title">
+                <h2>Subscription Details</h2>
               </div>
             </div>
 
-            <div className="form-group mt-5">
-              <a
-                href="javascript:;"
-                data-repeater-create
-                className="btn btn-light-primary"
+            <div className="card-body pt-0">
+              <div id="kt_subscription_repeater">
+                <div className="form-group">
+                  <div className="form-group row">
+                    <div className="col-md-2">
+                      <label className="form-label">Date</label>
+                    </div>
+                    <div className="col-md-2">
+                      <label className="form-label">QIB</label>
+                    </div>
+                    <div className="col-md-2">
+                      <label className="form-label">NII</label>
+                    </div>
+                    <div className="col-md-2">
+                      <label className="form-label">Retail</label>
+                    </div>
+                    <div className="col-md-2">
+                      <label className="form-label">Total</label>
+                    </div>
+                  </div>
+                  <div data-repeater-list="kt_subscription_repeater">
+                    <div data-repeater-item>
+                      <div className="form-group row mb-5">
+                        <div className="col-md-2">
+                          {console.log(dateValue)}
+                          <div className="d-flex position-relative">
+                            {/* <input
+                              type="text"
+                              className="form-control kt_subscription_date input_date_formate"
+                              // value="Dec 20, 2022"
+                              Value={dateValue}
+                            /> */}
+                            {/* <input
+                              type="date"
+                              className="input_date_formate_icon"
+                              value="Dec 20, 2022"
+                              onChange={(e) => handleDateChange(e)}
+                              Value={dateValue}
+                            /> */}
+
+                            <DatePicker
+                              className="form-control"
+                              selected={startDate}
+                              onChange={(date) => setStartDate(date)}
+                              dateFormat="MMMM d, yyyy"
+                            />
+                            {console.log(startDate)}
+                          </div>
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.01x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.43x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.55x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.37x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <a
+                            href="javascript:;"
+                            data-repeater-delete
+                            className="btn btn-sm btn-light-danger"
+                          >
+                            <i className="la la-trash-o"></i>Delete
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div data-repeater-item>
+                      <div className="form-group row mb-5">
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control kt_subscription_date"
+                            value="Dec 21, 2022"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.01x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="1.29x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="1.33x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="0.95x"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <a
+                            href="javascript:;"
+                            data-repeater-delete
+                            className="btn btn-sm btn-light-danger"
+                          >
+                            <i className="la la-trash-o"></i>Delete
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div data-repeater-item>
+                      <div className="form-group row mb-5">
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control kt_subscription_date"
+                            value="Dec 22, 2022"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="-"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="-"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="-"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value="-"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <a
+                            href="javascript:;"
+                            data-repeater-delete
+                            className="btn btn-sm btn-light-danger"
+                          >
+                            <i className="la la-trash-o"></i>Delete
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group mt-5">
+                  <a
+                    href="javascript:;"
+                    data-repeater-create
+                    className="btn btn-light-primary"
+                  >
+                    <i className="la la-plus"></i>Add
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card card-flush py-4">
+            <div className="card-header">
+              <div className="card-title">
+                <h2>Live Subscription</h2>
+              </div>
+            </div>
+
+            <div className="card-body pt-0">
+              <div className="table-responsive">
+                <table className="table table-row-dashed table-row-gray-300 gy-7">
+                  <thead>
+                    <tr className="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                      <th>Investor Category</th>
+                      <th>Subscription (times)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Qualified Institutions</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="4.51"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Non-Institutional Buyers</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="3.29"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>bNII (bids above ₹10L)</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="2.99"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>sNII (bids below ₹10L)</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="3.89"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Retail Investors</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="2.20"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Employees</td>
+                      <td>
+                        <input type="text" className="form-control" value="-" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Others</td>
+                      <td>
+                        <input type="text" className="form-control" value="-" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="fw-bold">Total</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control fw-bold"
+                          value="3.09"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-primary" onClick={() => prevStep()}>
+                {"<< previous"}
+              </button>
+              <button
+                className="btn btn-primary ml-2"
+                onClick={() => nextStep()}
+                style={{ marginLeft: "5px" }}
               >
-                <i className="la la-plus"></i>Add
-              </a>
+                {"Next >>"}
+              </button>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Live Subscription</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div className="table-responsive">
-            <table className="table table-row-dashed table-row-gray-300 gy-7">
-              <thead>
-                <tr className="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-                  <th>Investor Category</th>
-                  <th>Subscription (times)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Qualified Institutions</td>
-                  <td>
-                    <input type="text" className="form-control" value="4.51" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Non-Institutional Buyers</td>
-                  <td>
-                    <input type="text" className="form-control" value="3.29" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>bNII (bids above ₹10L)</td>
-                  <td>
-                    <input type="text" className="form-control" value="2.99" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>sNII (bids below ₹10L)</td>
-                  <td>
-                    <input type="text" className="form-control" value="3.89" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Retail Investors</td>
-                  <td>
-                    <input type="text" className="form-control" value="2.20" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Employees</td>
-                  <td>
-                    <input type="text" className="form-control" value="-" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Others</td>
-                  <td>
-                    <input type="text" className="form-control" value="-" />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="fw-bold">Total</td>
-                  <td>
-                    <input
-                      type="text"
-                      className="form-control fw-bold"
-                      value="3.09"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        </form>
       </div>
     </>
   );

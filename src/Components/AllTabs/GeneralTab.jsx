@@ -9,102 +9,49 @@ import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
 import { useDispatch } from "react-redux";
 import MultiSelect from "../MultiSelect";
-import { tabIsactivateForFinacial } from "../../redux/slice/stapperSlice";
-const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
-  console.log("valuesvaluesvaluesvaluesvaluesvalues", values);
+// import { tabIsactivateForFinacial } from "../../redux/slice/stapperSlice";
+const GeneralTab = ({ EditIpo, IPODATA, handleChange, nextStep, values }) => {
   const customStyle = {
     verticalAlign: "middle",
   };
-  const [companyDescription, setCompanyDescription] = useState(
-    "<h1>type somthing</h1>"
-  );
-  const [objectsOfIssue, setObjectsOfIssue] = useState(
-    "<h1>type somthing</h1>"
-  );
+  const [inputFields, setInputFields] = useState([
+    {
+      name: "",
+    },
+  ]);
   const pramotersName = [];
   const dispatch = useDispatch();
-
-  // const handleSubmit = (values) => {
-  //   console.log(values);
-  //   const payload = {
-  //     companyName: values?.company_name,
-  //     companyDescription: companyDescription,
-  //     ObjectOfIssue: objectsOfIssue,
-  //     faceValue: values?.faceValue,
-  //     fromPrice: values?.FromPrice,
-  //     toPrice: values?.toPrice,
-  //     lotSize: values?.lotSize,
-  //     issueSize: values?.issueSize,
-  //     freshIssue: values?.freshIssue,
-  //     offerForSale: values?.OfferForSale,
-  //     reatailQuota: values?.retailQuota,
-  //     qibQuota: values?.qibQuota,
-  //     nilQuota: values?.niiQuota,
-  //     issueType: values?.issueType,
-  //     listingAt: values?.listingAt,
-  //     DRHPDraft: values?.drhp,
-  //     RHPDraft: values?.rhp,
-  //     promotersName: values?.pramotersName,
-  //     preIssueShareHolding: values?.sharehold,
-  //     postIssueShareHolding: values?.posthold,
-  //   };
-  //   dispatch(createMainLineIpo({ payload }));
-  // };
-
+  const submitFormData = (e) => {
+    e.preventDefault();
+    nextStep();
+  };
+  const handleChangeCF = (index, evnt) => {
+    let { name, value } = evnt.target;
+    let list = [...inputFields];
+    list[index][name] = value;
+    setInputFields(list);
+  };
+  const addInputField = (e) => {
+    e.preventDefault();
+    setInputFields([
+      ...inputFields,
+      {
+        period: "",
+        assets: "",
+        revenue: "",
+        profit: "",
+      },
+    ]);
+  };
+  const removeInputFields = (index) => {
+    const rows = [...inputFields];
+    rows.splice(index, 1);
+    setInputFields(rows);
+  };
   return (
     <>
       <div>
-        {/* <Formik
-          initialValues={
-            EditIpo
-              ? {
-                  company_name: IPODATA?.companyName,
-                  faceValue: IPODATA?.faceValue,
-                  FromPrice: IPODATA?.fromPrice,
-                  toPrice: IPODATA?.toPrice,
-                  lotSize: IPODATA?.lotSize,
-                  issueSize: IPODATA?.issueSize,
-                  freshIssue: IPODATA?.freshIssue,
-                  OfferForSale: IPODATA?.offerForSale,
-                  retailQuota: IPODATA?.General?.reatailQuota,
-                  qibQuota: IPODATA?.qibQuota,
-                  niiQuota: IPODATA?.nilQuota,
-                  issueType: IPODATA?.issueType,
-                  listingAt: IPODATA?.listingAt,
-                  drhp: IPODATA?.DRHPDraft,
-                  rhp: IPODATA?.RHPDraft,
-                  pramotersName: IPODATA?.promotersName,
-                  sharehold: IPODATA?.preIssueShareHolding,
-                  posthold: IPODATA?.postIssueShareHolding,
-                }
-              : {
-                  company_name: "",
-                  faceValue: "",
-                  FromPrice: "",
-                  toPrice: "",
-                  lotSize: "",
-                  issueSize: "",
-                  freshIssue: "",
-                  OfferForSale: "",
-                  retailQuota: "",
-                  qibQuota: "",
-                  niiQuota: "",
-                  issueType: "",
-                  listingAt: "",
-                  drhp: "",
-                  rhp: "",
-                  pramotersName: [],
-                  sharehold: "",
-                  posthold: "",
-                }
-          }
-          onSubmit={(values) => {
-            handleChange(values);
-          }}
-        >
-          {({ values }) => (
-            <Form> */}
-        <form>
+        <form onSubmit={submitFormData}>
           <div className="card card-flush py-4">
             <div className="card-header">
               <div className="card-title">
@@ -131,8 +78,8 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                 <ReactQuill
                   className="min-h-200px h-200px "
                   modules={modules}
-                  onChange={setCompanyDescription}
-                  Value={companyDescription}
+                  onChange={(e) => handleChange("companyDescription", e)}
+                  value={values?.companyDescription?.toString()}
                 />
               </div>
               <br />
@@ -142,8 +89,8 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                 <ReactQuill
                   className="min-h-150px h-150px mb-2 "
                   modules={modules}
-                  onChange={setObjectsOfIssue}
-                  Value={objectsOfIssue}
+                  onChange={(e) => handleChange("objectsOfIssue", e)}
+                  value={values?.objectsOfIssue?.toString()}
                 />
               </div>
             </div>
@@ -171,8 +118,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                         handleChange("faceValue", e.target.value)
                       }
                       Value={values?.faceValue}
-
-                      // value="₹5"
                     />
                     <span className="input-group-text">Per Share</span>
                   </div>
@@ -187,7 +132,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       name="fromPrice"
                       className="form-control"
                       Value={values?.fromPrice}
-                      // value="₹234 to ₹247"
                       onChange={(e) =>
                         handleChange("fromPrice", e.target.value)
                       }
@@ -198,7 +142,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       name="toPrice"
                       className="form-control"
                       Value={values?.toPrice}
-                      // value="₹234 to ₹247"
                       onChange={(e) => handleChange("toPrice", e.target.value)}
                     />
                     <span className="input-group-text">Per Share</span>
@@ -215,8 +158,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       className="form-control"
                       onChange={(e) => handleChange("lotSize", e.target.value)}
                       Value={values?.lotSize}
-
-                      // value="60"
                     />
                     <span className="input-group-text">Share</span>
                   </div>
@@ -235,8 +176,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                         handleChange("issueSize", e.target.value)
                       }
                       Value={values?.issueSize}
-
-                      // value="₹475 Crores"
                     />
                     <span className="input-group-text">Crores</span>
                   </div>
@@ -256,8 +195,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                         handleChange("freshIssue", e.target.value)
                       }
                       Value={values?.freshIssue}
-
-                      // value="₹175 Crores"
                     />
                     <span className="input-group-text">Crores</span>
                   </div>
@@ -276,8 +213,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                         handleChange("OfferForSale", e.target.value)
                       }
                       Value={values?.OfferForSale}
-
-                      // value="₹300 Crores"
                     />
                     <span className="input-group-text">Crores</span>
                   </div>
@@ -295,8 +230,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                         handleChange("retailQuota", e.target.value)
                       }
                       Value={values?.retailQuota}
-
-                      // value="35%"
                     />
                     <span className="input-group-text">%</span>
                   </div>
@@ -311,8 +244,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       className="form-control"
                       onChange={(e) => handleChange("qibQuota", e.target.value)}
                       Value={values?.qibQuota}
-
-                      // value="50%"
                     />
                     <span className="input-group-text">%</span>
                   </div>
@@ -327,8 +258,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       className="form-control"
                       onChange={(e) => handleChange("niiQuota", e.target.value)}
                       Value={values?.niiQuota}
-
-                      // value="15%"
                     />
                     <span className="input-group-text">%</span>
                   </div>
@@ -349,7 +278,7 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
 
                 <div className="w-100 fv-row flex-md-root">
                   <label className="form-label">Listing At</label>
-                  {/* <input
+                  <input
                     name="listingAt"
                     // id="multiSelectCustom"
                     placeholder="Multi Select"
@@ -359,8 +288,8 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                       { value: "BSE", label: "BSE" },
                       { value: "NSE", label: "NSE" },
                     ]}
-                    onChange={(e) =>handleChange("issueType")}
-                  /> */}
+                    //onChange={(e) =>handleChange("issueType")}
+                  />
                 </div>
               </div>
               <div className="d-flex flex-wrap gap-5">
@@ -372,8 +301,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                     className="form-control"
                     onChange={(e) => handleChange("drhp", e.target.value)}
                     Value={values?.drhp}
-
-                    // value=""
                   />
                 </div>
 
@@ -385,8 +312,6 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                     className="form-control"
                     onChange={(e) => handleChange("rhp", e.target.value)}
                     Value={values?.rhp}
-
-                    // value=""
                   />
                 </div>
               </div>
@@ -437,6 +362,49 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                 <div className="form-group">
                   <label className="form-label">Promoters Name</label>
                   <div data-repeater-list="kt_promoters_list">
+                    {inputFields.map((data, index) => {
+                      const { name } = data;
+                      return (
+                        <div className="row my-3" key={index}>
+                          <div className="col">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                onChange={(evnt) => handleChangeCF(index, evnt)}
+                                value={name}
+                                name="name"
+                                className="form-control kt_financial_info_period"
+                                placeholder="Pramoters Name"
+                              />
+                            </div>
+                          </div>
+
+                          {inputFields?.length !== 1 ? (
+                            <div className="col-md-2">
+                              <button
+                                className="btn btn-sm btn-light-danger"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  removeInputFields();
+                                }}
+                              >
+                                <i className="la la-trash-o"></i>Delete
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      );
+                    })}
+                    <div className="form-group mt-5">
+                      <button
+                        onClick={(e) => addInputField(e)}
+                        className="btn btn-light-primary"
+                      >
+                        <i className="la la-plus"></i>Add
+                      </button>
+                    </div>
                     {/* {/ map array /} */}
                     {/* {pramotersName?.map((i,Itm) => {
                         <div data-repeater-item>
@@ -503,26 +471,16 @@ const GeneralTab = ({ EditIpo, IPODATA, handleChange, next, values }) => {
                     /> */}
                   </div>
                 </div>
-
-                <div className="form-group mt-5">
-                  {/* <button
-                        // href="javascript:;"
-                        data-repeater-create
-                        className="btn btn-light-primary"
-                      >
-                        <i className="la la-plus"></i>Add
-                      </button> */}
-                </div>
               </div>
+            </div>
+            <div className="d-flex justify-content-end">
+              <button type="submit" className="btn btn-primary">
+                {/* onClick={() => handleNext()} */}
+                {"Next >>"}
+              </button>
             </div>
           </div>
         </form>
-        {/* </Form>
-          )}
-        </Formik> */}
-        <div>
-          <button onClick={(e) => next(e)}>next</button>
-        </div>
       </div>
     </>
   );

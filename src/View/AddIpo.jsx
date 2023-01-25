@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
+import FormContent from "../Components/formWizard/formContent";
+import Stepper from "../Components/formWizard/stepper";
 import PageHeading from "../Components/PageHeading";
 import Tabs from "../Components/TabComponent/Tabs";
 
@@ -8,7 +10,15 @@ const AddIpo = () => {
   return (
     <>
       <PageHeading title={"IPO Add"} />
-      <AppContentLayout>
+      <div
+        // id="edit_ipo_form"
+        className="form d-flex flex-column flex-lg-row"
+        data-kt-redirect="../../demo1/dist/apps/ecommerce/catalog/products.html"
+      >
+        <FormContent />
+        <Stepper />
+      </div>
+      {/* <AppContentLayout>
         <div
           // id="edit_ipo_form"
           className="form d-flex flex-column flex-lg-row"
@@ -197,7 +207,7 @@ const AddIpo = () => {
             <div className="d-flex justify-content-end"></div>
           </div>
         </div>
-      </AppContentLayout>
+      </AppContentLayout> */}
     </>
   );
 };
