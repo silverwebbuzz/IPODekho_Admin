@@ -8,7 +8,6 @@ import {
 
 const initialState = {
   loading: false,
-
   getAllMainLineIpoData: [],
 };
 
@@ -54,6 +53,7 @@ export const createMainLineIpo = createAsyncThunk(
     }
   }
 );
+
 const mainLineIpoSlice = createSlice({
   name: "mainLineIpoSlice",
   initialState,

@@ -25,7 +25,7 @@ const App = () => {
         <Suspense fallback={<h1>Loading...</h1>}>
           <Routes>
             <Route path="/" element={<MainLineIPO />} />
-            <Route path="/add_ipo" element={<AddIpo />} />
+            <Route path="add_ipo" element={<AddIpo />} />
             <Route path="sme_ipo" element={<SmeIpo />} />
             <Route path="news" element={<News />} />
             <Route path="add_news" element={<AddNews />} />

@@ -2,11 +2,11 @@ import { useState, useRef } from "react";
 import "./FilePreviewer.css";
 import blankImage from "../../assets/media/offer/blank-image.svg";
 
-export default function FilePreviewer({ ipoImage, newsImage }) {
-  const [imagePreview, setImagePreview] = useState(blankImage);
+const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
+  const [imagePreview, setImagePreview] = useState();
   const filePicekerRef = useRef(null);
 
-  function previewFile(e) {
+  const previewFile = (e) => {
     const reader = new FileReader();
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -17,7 +17,7 @@ export default function FilePreviewer({ ipoImage, newsImage }) {
         setImagePreview(readerEvent.target.result);
       }
     };
-  }
+  };
 
   function clearFiles() {
     setImagePreview(blankImage);
@@ -54,6 +54,12 @@ export default function FilePreviewer({ ipoImage, newsImage }) {
         </div>
       ) : newsImage ? (
         <div className="preview w-400px h-400px">
+          {imagePreview != null && (
+            <img className="image_position" src={imagePreview} alt="" />
+          )}
+        </div>
+      ) : offerModal ? (
+        <div className="preview w-125px h-125px">
           {imagePreview != null && (
             <img className="image_position" src={imagePreview} alt="" />
           )}
@@ -101,4 +107,6 @@ export default function FilePreviewer({ ipoImage, newsImage }) {
     //       </div>
     //     </div>
   );
-}
+};
+
+export default FilePreviewer;

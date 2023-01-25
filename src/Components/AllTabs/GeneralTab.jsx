@@ -7,20 +7,33 @@ import "../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../MultiSelect";
+import {
+  setDescription,
+  setObjectsOfIssue,
+} from "../../redux/slice/textEditorSlice";
 const GeneralTab = ({ IPODATA, EditIpo }) => {
   const customStyle = {
     verticalAlign: "middle",
   };
-  const [companyDescription, setCompanyDescription] = useState(
-    "<h1>type somthing</h1>"
+  const { companyDescription, objectsOfIssue } = useSelector(
+    (state) => state.textEditorReducer
   );
-  const [objectsOfIssue, setObjectsOfIssue] = useState(
-    "<h1>type somthing</h1>"
-  );
-  const pramotersName = [];
   const dispatch = useDispatch();
+
+  // const [companyDescription, setCompanyDescription] = useState(
+  //   "<h1>type somthing</h1>"
+  // );
+  // const [objectsOfIssue, setObjectsOfIssue] = useState(
+  //   "<h1>type somthing</h1>"
+  // );
+  // const pramotersName = [];
+
+  const handleEditorChange = () => {
+    dispatch(setDescription());
+    dispatch(setObjectsOfIssue());
+  };
 
   const handleSubmit = (values) => {
     console.log(values);
@@ -114,7 +127,7 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       type="text"
                       name="company_name"
                       className="form-control mb-2"
-                      placeholder="Comapny Name"
+                      placeholder="Comapany Name"
                       // value="Elin Electronics Ltd."
                       required
                     />
@@ -125,7 +138,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <ReactQuill
                       className="min-h-200px h-200px "
                       modules={modules}
-                      onChange={setCompanyDescription}
+                      // onChange={setCompanyDescription}
+                      onChange={handleEditorChange}
                       value={companyDescription}
                     />
                   </div>
@@ -136,7 +150,7 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <ReactQuill
                       className="min-h-150px h-150px mb-2 "
                       modules={modules}
-                      onChange={setObjectsOfIssue}
+                      onChange={handleEditorChange}
                       value={objectsOfIssue}
                     />
                   </div>

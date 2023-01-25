@@ -1,5 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import ReactQuill from "react-quill";
 import FilePreviewer from "../Components/FilePreview/FilePreviewer";
 
 const AddNews = () => {
@@ -68,11 +69,21 @@ const AddNews = () => {
 
                     <div className="mt-10">
                       <label className="form-label">Content</label>
-                      <div
+                      {/* <div
                         id="kt_add_news_content"
                         name="kt_add_news_content"
                         className="min-h-500px h-500px mb-2"
-                      ></div>
+                      >
+                        
+                      </div> */}
+                      {/* <Field name="">
+                        {{ field }}=>
+                        <ReactQuill
+                          value={field.value}
+                          onChange={field.onChange(field.name)}
+                          className="min-h-500px h-500px mb-2"
+                        />
+                      </Field> */}
                     </div>
 
                     <div className="d-flex justify-content-end mt-15">
