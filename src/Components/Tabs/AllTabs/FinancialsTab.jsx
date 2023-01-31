@@ -1,6 +1,6 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../../../App";
 
 const FinancialsTab = () => {
   const IpoType = "EDit";

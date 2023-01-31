@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import TabPaneLayout from "./TabPaneLayout";
+import TabPaneLayout from "../TabPaneLayout";
 import DisabledGeneralTab from "./AllDisabledTabs/DisabledGeneralTab";
 import DisabledFinancialsTab from "./AllDisabledTabs/DisabledFinancialsTab";
 import DisabledRegistrarInfoTab from "./AllDisabledTabs/DisabledCompanyRegistrarInfoTab";

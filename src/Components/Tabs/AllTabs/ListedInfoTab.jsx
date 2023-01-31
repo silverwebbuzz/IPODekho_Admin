@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import {
   createMainLineIpo,
   updateIPO,
-} from "../../redux/slice/mainLineIpoSlices";
+} from "../../../redux/slice/mainLineIpoSlices";
 import moment from "moment/moment";
 const ListedInfoTab = () => {
   const navigate = useNavigate();

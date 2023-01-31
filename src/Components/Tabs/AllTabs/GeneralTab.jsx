@@ -4,11 +4,11 @@ import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import "../../assets/css/style.bundle.css";
 import "../../assets/plugins/global/plugins.bundle.css";
-import { modules } from "../../Constants/commonConstants";
+import { modules } from "../../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch } from "react-redux";
-import MultiSelect from "../MultiSelect";
+import MultiSelect from "../../MultiSelect";
 
 const GeneralTab = () => {
   const customStyle = {

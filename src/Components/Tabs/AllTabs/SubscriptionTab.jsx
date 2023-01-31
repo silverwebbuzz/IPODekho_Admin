@@ -1,7 +1,7 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const SubscriptionTab = () => {

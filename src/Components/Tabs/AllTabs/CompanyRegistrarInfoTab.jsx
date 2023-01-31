@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../../../App";
 
 const RegistrarInfoTab = () => {
   const IpoType = "Edit";
