@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { FormContext } from "../../App";
 import { useContext } from "react";
 
-const GeneralTab = () => {
+const DisabledGeneralTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   const { prefillData } = useContext(FormContext);
 
@@ -347,4 +347,4 @@ const GeneralTab = () => {
   );
 };
 
-export default GeneralTab;
+export default DisabledGeneralTab;
