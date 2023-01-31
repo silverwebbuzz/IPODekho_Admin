@@ -7,109 +7,124 @@ import "../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import MultiSelect from "../MultiSelect";
-import {
-  setDescription,
-  setObjectsOfIssue,
-} from "../../redux/slice/textEditorSlice";
-const GeneralTab = ({ IPODATA, EditIpo }) => {
+import { useContext } from "react";
+import { FormContext } from "../../App";
+import { useEffect } from "react";
+const GeneralTab = () => {
+  const {
+    activeStepIndex,
+    setActiveStepIndex,
+    formData,
+    setFormData,
+    prefillData,
+    setPrefillData,
+    IpoType,
+  } = useContext(FormContext);
   const customStyle = {
     verticalAlign: "middle",
   };
-  const { companyDescription, objectsOfIssue } = useSelector(
-    (state) => state.textEditorReducer
-  );
-  const dispatch = useDispatch();
-
-  // const [companyDescription, setCompanyDescription] = useState(
-  //   "<h1>type somthing</h1>"
+  // let fvalue = formData?.pramotersName;
+  // const jsonArray = JSON.parse(
+  //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
   // );
-  // const [objectsOfIssue, setObjectsOfIssue] = useState(
-  //   "<h1>type somthing</h1>"
-  // );
-  // const pramotersName = [];
+  // useEffect(() => {
+  //   const asArray = Object.entries(formData);
+  //   asArray?.filter(([key, value]) => {
+  //     if (key === "promotersName") {
+  //       let fvalue = value;
+  //       // let jsonArray = JSON.parse(
+  //       //   JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //       // );
+  //       setFormData({
+  //         ...formData,
+  //         promotersName: JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
+  //         ),
+  //       });
+  //     }
+  //   });
+  // }, []);
+  // console.log("formData?.promotersName", formData?.promotersName);
+  // console.log("prefillData?.promotersName", prefillData?.promotersName);
+  // console.log("@##@@#@#", JSON.stringify(formData?.promotersName));
 
-  const handleEditorChange = () => {
-    dispatch(setDescription());
-    dispatch(setObjectsOfIssue());
-  };
-
-  const handleSubmit = (values) => {
-    console.log(values);
-    const payload = {
-      companyName: values?.company_name,
-      companyDescription: companyDescription,
-      ObjectOfIssue: objectsOfIssue,
-      faceValue: values?.faceValue,
-      fromPrice: values?.FromPrice,
-      toPrice: values?.toPrice,
-      lotSize: values?.lotSize,
-      issueSize: values?.issueSize,
-      freshIssue: values?.freshIssue,
-      offerForSale: values?.OfferForSale,
-      reatailQuota: values?.retailQuota,
-      qibQuota: values?.qibQuota,
-      nilQuota: values?.niiQuota,
-      issueType: values?.issueType,
-      listingAt: values?.listingAt,
-      DRHPDraft: values?.drhp,
-      RHPDraft: values?.rhp,
-      promotersName: values?.pramotersName,
-      preIssueShareHolding: values?.sharehold,
-      postIssueShareHolding: values?.posthold,
-    };
-    dispatch(createMainLineIpo({ payload }));
-  };
+  // console.log(IpoType);
 
   return (
     <>
       <div>
         <Formik
+          enableReinitialize
           initialValues={
-            EditIpo
+            IpoType === "Edit"
               ? {
-                  company_name: IPODATA?.companyName,
-                  faceValue: IPODATA?.faceValue,
-                  FromPrice: IPODATA?.fromPrice,
-                  toPrice: IPODATA?.toPrice,
-                  lotSize: IPODATA?.lotSize,
-                  issueSize: IPODATA?.issueSize,
-                  freshIssue: IPODATA?.freshIssue,
-                  OfferForSale: IPODATA?.offerForSale,
-                  retailQuota: IPODATA?.General?.reatailQuota,
-                  qibQuota: IPODATA?.qibQuota,
-                  niiQuota: IPODATA?.nilQuota,
-                  issueType: IPODATA?.issueType,
-                  listingAt: IPODATA?.listingAt,
-                  drhp: IPODATA?.DRHPDraft,
-                  rhp: IPODATA?.RHPDraft,
-                  pramotersName: IPODATA?.promotersName,
-                  sharehold: IPODATA?.preIssueShareHolding,
-                  posthold: IPODATA?.postIssueShareHolding,
+                  companyName: prefillData?.companyName || "",
+                  companyDescription: prefillData?.companyDescription || "",
+                  ObjectOfIssue: prefillData?.ObjectOfIssue || "",
+                  faceValue: prefillData?.faceValue || "",
+                  fromPrice: prefillData?.fromPrice || "",
+                  toPrice: prefillData?.toPrice || "",
+                  lotSize: prefillData?.lotSize || "",
+                  issueSize: prefillData?.issueSize || "",
+                  freshIssue: prefillData?.freshIssue || "",
+                  OfferForSale: prefillData?.offerForSale || "",
+                  reatailQuota: prefillData?.reatailQuota || "",
+                  qibQuota: prefillData?.qibQuota || "",
+                  nilQuota: prefillData?.nilQuota || "",
+                  issueType: prefillData?.issueType || "",
+                  listingAt: prefillData?.listingAt || "",
+                  DRHPDraft: prefillData?.DRHPDraft || "",
+                  RHPDraft: prefillData?.RHPDraft || "",
+                  promotersName: prefillData?.promotersName || [],
+                  // promotersName: prefillDATATATA,
+                  // prefillData?.promotersName !== undefined || ""
+                  //   ? JSON?.parse(prefillData?.promotersName || "")
+                  //   : [],
+                  preIssueShareHolding: prefillData?.preIssueShareHolding || "",
+                  postIssueShareHolding:
+                    prefillData?.postIssueShareHolding || "",
                 }
               : {
-                  company_name: "",
-                  faceValue: "",
-                  FromPrice: "",
-                  toPrice: "",
-                  lotSize: "",
-                  issueSize: "",
-                  freshIssue: "",
-                  OfferForSale: "",
-                  retailQuota: "",
-                  qibQuota: "",
-                  niiQuota: "",
-                  issueType: "",
-                  listingAt: "",
-                  drhp: "",
-                  rhp: "",
-                  pramotersName: [],
-                  sharehold: "",
-                  posthold: "",
+                  companyName: formData?.companyName || "",
+                  companyDescription: formData?.companyDescription || "",
+                  ObjectOfIssue: formData?.ObjectOfIssue || "",
+                  faceValue: formData?.faceValue || "",
+                  fromPrice: formData?.fromPrice || "",
+                  toPrice: formData?.toPrice || "",
+                  lotSize: formData?.lotSize || "",
+                  issueSize: formData?.issueSize || "",
+                  freshIssue: formData?.freshIssue || "",
+                  OfferForSale: formData?.offerForSale || "",
+                  reatailQuota: formData?.reatailQuota || "",
+                  qibQuota: formData?.qibQuota || "",
+                  nilQuota: formData?.nilQuota || "",
+                  issueType: formData?.issueType || "",
+                  listingAt: formData?.listingAt || "",
+                  DRHPDraft: formData?.DRHPDraft || "",
+                  RHPDraft: formData?.RHPDraft || "",
+                  promotersName: formData?.promotersName || [],
+                  preIssueShareHolding: formData?.preIssueShareHolding || "",
+                  postIssueShareHolding: formData?.postIssueShareHolding || "",
                 }
           }
-          onSubmit={(values) => handleSubmit(values)}
+          onSubmit={(values) => {
+            if (IpoType === "Edit") {
+              // let One = {
+              //   ...values,
+              //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
+              // };
+              // let data = { ...prefillData, ...One };
+              let data = { ...prefillData, ...values };
+              setPrefillData(data);
+              setActiveStepIndex(activeStepIndex + 1);
+            } else {
+              let data = { ...formData, ...values };
+              setFormData(data);
+              setActiveStepIndex(activeStepIndex + 1);
+            }
+          }}
         >
           {({ values }) => (
             <Form>
@@ -125,34 +140,40 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <label className="required form-label">Company Name</label>
                     <Field
                       type="text"
-                      name="company_name"
+                      name="companyName"
                       className="form-control mb-2"
-                      placeholder="Comapany Name"
-                      // value="Elin Electronics Ltd."
+                      placeholder="Comapny Name"
                       required
                     />
                   </div>
 
                   <div className="mb-10">
                     <label className="form-label ">Comapny Description</label>
-                    <ReactQuill
-                      className="min-h-200px h-200px "
-                      modules={modules}
-                      // onChange={setCompanyDescription}
-                      onChange={handleEditorChange}
-                      value={companyDescription}
-                    />
+                    <Field name="companyDescription">
+                      {({ field }) => (
+                        <ReactQuill
+                          className="min-h-200px h-200px "
+                          modules={modules}
+                          value={field.value}
+                          onChange={field.onChange(field.name)}
+                        />
+                      )}
+                    </Field>{" "}
                   </div>
                   <br />
                   <br />
                   <div className="mt-4">
                     <label className="form-label ">Objects of the Issue</label>
-                    <ReactQuill
-                      className="min-h-150px h-150px mb-2 "
-                      modules={modules}
-                      onChange={handleEditorChange}
-                      value={objectsOfIssue}
-                    />
+                    <Field name="ObjectOfIssue">
+                      {({ field }) => (
+                        <ReactQuill
+                          className="min-h-200px h-200px "
+                          modules={modules}
+                          value={field.value}
+                          onChange={field.onChange(field.name)}
+                        />
+                      )}
+                    </Field>
                   </div>
                 </div>
               </div>
@@ -175,7 +196,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="faceValue"
                           className="form-control"
-                          // value="₹5"
                         />
                         <span className="input-group-text">Per Share</span>
                       </div>
@@ -189,14 +209,12 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="fromPrice"
                           className="form-control"
-                          // value="₹234 to ₹247"
                         />
                         <span className="input-group-text">to</span>
                         <Field
                           type="number"
                           name="toPrice"
                           className="form-control"
-                          // value="₹234 to ₹247"
                         />
                         <span className="input-group-text">Per Share</span>
                       </div>
@@ -210,7 +228,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="lotSize"
                           className="form-control"
-                          // value="60"
                         />
                         <span className="input-group-text">Share</span>
                       </div>
@@ -225,7 +242,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="issueSize"
                           className="form-control"
-                          // value="₹475 Crores"
                         />
                         <span className="input-group-text">Crores</span>
                       </div>
@@ -241,7 +257,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="freshIssue"
                           className="form-control"
-                          // value="₹175 Crores"
                         />
                         <span className="input-group-text">Crores</span>
                       </div>
@@ -256,7 +271,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           type="number"
                           name="OfferForSale"
                           className="form-control"
-                          // value="₹300 Crores"
                         />
                         <span className="input-group-text">Crores</span>
                       </div>
@@ -268,9 +282,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       <div className="input-group">
                         <Field
                           type="number"
-                          name="retailQuota"
+                          name="reatailQuota"
                           className="form-control"
-                          // value="35%"
                         />
                         <span className="input-group-text">%</span>
                       </div>
@@ -283,7 +296,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                           name="qibQuota"
                           type="number"
                           className="form-control"
-                          // value="50%"
                         />
                         <span className="input-group-text">%</span>
                       </div>
@@ -294,9 +306,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       <div className="input-group">
                         <Field
                           type="number"
-                          name="niiQuota"
+                          name="nilQuota"
                           className="form-control"
-                          // value="15%"
                         />
                         <span className="input-group-text">%</span>
                       </div>
@@ -317,7 +328,6 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       <label className="form-label">Listing At</label>
                       <Field
                         name="listingAt"
-                        // id="multiSelectCustom"
                         placeholder="Multi Select"
                         isMulti={true}
                         component={MultiSelect}
@@ -333,9 +343,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       <label className="form-label">DRHP Draft</label>
                       <Field
                         type="text"
-                        name="drhp"
+                        name="DRHPDraft"
                         className="form-control"
-                        // value=""
                       />
                     </div>
 
@@ -343,9 +352,8 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       <label className="form-label">RHP Draft</label>
                       <Field
                         type="text"
-                        name="rhp"
+                        name="RHPDraft"
                         className="form-control"
-                        // value=""
                       />
                     </div>
                   </div>
@@ -367,7 +375,7 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       </label>
                       <div className="input-group">
                         <Field
-                          name="sharehold"
+                          name="preIssueShareHolding"
                           type="number"
                           className="form-control"
                         />
@@ -381,7 +389,7 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                       </label>
                       <div className="input-group">
                         <Field
-                          name="posthold"
+                          name="postIssueShareHolding"
                           type="number"
                           className="form-control"
                         />
@@ -394,41 +402,18 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                     <div className="form-group">
                       <label className="form-label">Promoters Name</label>
                       <div data-repeater-list="kt_promoters_list">
-                        {/* {/ map array /} */}
-                        {/* {pramotersName?.map((i,Itm) => {
-                        <div data-repeater-item>
-                          <div className="form-group row mb-5">
-                            <div className="col-md-8">
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={Itm}
-                              />
-                            </div>
-                            <div className="col-md-4">
-                              <a
-                                href="javascript:;"
-                                data-repeater-delete
-                                className="btn btn-sm btn-light-danger"
-                              >
-                                <i className="la la-trash-o"></i>Delete
-                              </a>
-                            </div>
-                          </div>
-                        </div>;
-                      })} */}
                         <FieldArray
-                          name="pramotersName"
+                          name="promotersName"
                           render={(arrayHelpers) => (
                             <div>
-                              {values?.pramotersName?.map(
-                                (pramotersName, index) => (
+                              {values?.promotersName?.map(
+                                (promotersName, index) => (
                                   <div key={index}>
                                     {/** both these conventions do the same */}
                                     <div className="col-md-8 d-flex">
                                       <Field
                                         className="form-control mt-2"
-                                        name={`pramotersName[${index}].name`}
+                                        name={`promotersName[${index}].name`}
                                       />
                                       <div className="col-md-4">
                                         <button
@@ -453,7 +438,10 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                               <button
                                 type="button"
                                 className="btn btn-light-primary mt-2"
-                                onClick={() => arrayHelpers.push({ name: "" })}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  arrayHelpers.push({ name: "" });
+                                }}
                               >
                                 <i className="la la-plus" /> Add
                               </button>
@@ -462,24 +450,11 @@ const GeneralTab = ({ IPODATA, EditIpo }) => {
                         />
                       </div>
                     </div>
-
-                    <div className="form-group mt-5">
-                      {/* <button
-                        // href="javascript:;"
-                        data-repeater-create
-                        className="btn btn-light-primary"
-                      >
-                        <i className="la la-plus"></i>Add
-                      </button> */}
-                    </div>
                   </div>
                 </div>
                 <div className="d-flex justify-content-end">
-                  <a href="mainlineipo.html" className="btn btn-light me-5">
-                    Cancel
-                  </a>
                   <button type="submit" className="btn btn-primary">
-                    <span className="indicator-label">Save Changes</span>
+                    <span className="indicator-label">{"Next >>"}</span>
                   </button>
                 </div>
               </div>

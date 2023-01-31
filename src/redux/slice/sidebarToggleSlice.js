@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import React from "react";
 
 export const initialState = {
-  activeSidebar: false,
+  activeClass: false,
 };
 const sidebarToggleSlice = createSlice({
   name: "sidebarToggleSlice",
   initialState,
   reducers: {
     toggleSidebar: (state, action) => {
-      state.activeSidebar = action.payload;
+      state.active = action.payload;
     },
   },
 });

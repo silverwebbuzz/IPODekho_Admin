@@ -1,14 +1,23 @@
 import React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import Tabs from "../Components/TabComponent/Tabs";
+import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 
 const IpoDetail = () => {
   const location = useLocation();
-  console.log(location);
   const IPOdata = location.state?.data;
-  console.log(IPOdata);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let payload = {
+      id: IPOdata?.id,
+      CategoryForIPOS: "MainlineIPO",
+    };
+    dispatch(getIpoById({ payload }));
+  }, [dispatch]);
   return (
     <>
       <PageHeading title={"IPO Details"} />

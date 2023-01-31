@@ -10,15 +10,15 @@ const MultiSelect = ({
   function onChange(option) {
     form.setFieldValue(
       field.name,
-      option ? option.map((item) => item.value) : []
+      option ? option?.map((item) => item.value) : []
     );
   }
 
   const getValue = () => {
     if (options) {
       return isMulti
-        ? options.filter((option) => field.value.indexOf(option.value) >= 0)
-        : options.find((option) => option.value === field.value);
+        ? options?.filter((option) => field.value?.indexOf(option.value) >= 0)
+        : options?.find((option) => option.value === field?.value);
     } else {
       return isMulti ? [] : "";
     }

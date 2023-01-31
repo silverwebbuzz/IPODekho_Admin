@@ -1,26 +1,56 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../assets/css/style.bundle.css";
 import "../assets/plugins/global/plugins.bundle.css";
-import CommonAddIcon from "../Components/CommonAddIcon";
-import CommonFilterIcon from "../Components/CommonFilterIcon";
-import CommonSearchIcon from "../Components/CommonSearchIcon";
+import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
+import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
+import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import PageHeading from "../Components/PageHeading";
 import { Link, NavLink } from "react-router-dom";
-import CommonEditIcon from "../Components/CommonEditIcon";
+import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
+import { FormContext } from "../App";
+import { useState } from "react";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
+  const { setFormData, setActiveStepIndex, setIPO } = useContext(FormContext);
+  const [GMPV, setGMP] = useState("");
   const { getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+
+  const handleFormData = () => {
+    // let data = {...formData, ...}
+    setActiveStepIndex(1);
+    setFormData({});
+  };
+  const handleGMPNumber = (e, ID) => {
+    setGMP(e?.target?.value);
+    let payload = {
+      id: ID,
+      GMP: e?.target?.value,
+    };
+    dispatch(updateIPO({ payload }));
+  };
+  const handleGmp = (e, ID) => {
+    let payload = {
+      id: ID,
+      GMPStatus: e.target?.checked === true ? "ON" : "OFF",
+    };
+    dispatch(updateIPO({ payload }));
+  };
   useEffect(() => {
-    dispatch(getAllMainLineIpo());
+    let payload = {
+      CategoryForIPOS: "MainlineIPO",
+    };
+    dispatch(getAllMainLineIpo({ payload }));
+    setIPO("MainlineIPO");
   }, [dispatch]);
+
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />
@@ -56,7 +86,6 @@ const MainLineIPO = () => {
                   <CommonFilterIcon />
                 </span>
                 Filter
-                {/* <!--end::Svg Icon-->Filter */}
               </button>
 
               <div
@@ -84,10 +113,10 @@ const MainLineIPO = () => {
                     >
                       <option></option>
                       <option value="Live">Live</option>
-                      <option value="Waiting Allotment">
+                      <option value="WaitingAllotment">
                         Waiting Allotment
                       </option>
-                      <option value="Allotment Out">Allotment Out</option>
+                      <option value="AllotmentOut">Allotment Out</option>
                       <option value="Upcoming">Upcoming</option>
                       <option value="Listed">Listed</option>
                     </select>
@@ -114,15 +143,18 @@ const MainLineIPO = () => {
                 </div>
               </div>
 
-              <NavLink to="/add_ipo">
-                <button type="button" className="btn btn-primary">
+              <Link to="/mainline_ipo/add_ipo">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => handleFormData()}
+                >
                   <span className="svg-icon svg-icon-2">
                     <CommonAddIcon />
                   </span>
                   Add IPO
                 </button>
-                {/* <!--end::Svg Icon-->Add IPO */}
-              </NavLink>
+              </Link>
             </div>
           </div>
         </div>
@@ -171,7 +203,7 @@ const MainLineIPO = () => {
                     </td>
                     <td className="w-150px mw-150px">{Itm?.offerDate}</td>
                     <td className="w-100px mw-100px">
-                      ₹{Itm?.offerPriceFrom} to ₹{Itm?.offerPriceTo}
+                      ₹{Itm?.fromPrice} to ₹{Itm?.toPrice}
                     </td>
                     <td>{Itm?.lotSize} Shares</td>
                     <td className="text-center">
@@ -179,63 +211,52 @@ const MainLineIPO = () => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          value=""
-                          checked
+                          // value=
+                          defaultChecked={
+                            Itm?.GMPStatus === "ON" ? true : false
+                          }
+                          //
+                          // checked
+                          onChange={(e) => handleGmp(e, Itm?.id)}
                         />
                       </div>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control w-70px mt-3"
-                        value="780"
+                        defaultValue={Itm?.GMP}
+                        // value={GMPV}
+                        onChange={(e) => handleGMPNumber(e, Itm?.id)}
                       />
                     </td>
                     <td>
-                      <div className={"badge badge-light-danger fw-bold"}>
-                        {Itm?.IPOStatus}
-                      </div>
-                      {() => {
-                        if (Itm?.IPOStatus === "live")
-                          return (
-                            <div className={"badge badge-light-danger fw-bold"}>
-                              Live
-                            </div>
-                          );
-                        if (Itm?.IPOStatus === "waitingAllotment")
-                          return (
-                            <div
-                              className={"badge badge-light-warning fw-bold"}
-                            >
-                              Waiting Allotment
-                            </div>
-                          );
-                        if (Itm?.IPOStatus === "allotmentOut")
-                          return (
-                            <div
-                              className={"badge badge-light-primary fw-bold"}
-                            >
-                              Allotment Out
-                            </div>
-                          );
-                        if (Itm?.IPOStatus === "upcoming")
-                          return (
-                            <div className={"badge badge-light-info fw-bold"}>
-                              Upcoming
-                            </div>
-                          );
-                        if (Itm?.IPOStatus === "listed")
-                          return (
-                            <div
-                              className={"badge badge-light-success fw-bold"}
-                            >
-                              Listed
-                            </div>
-                          );
-                      }}
+                      {Itm?.IPOStatus === "Live" ? (
+                        <div className="badge badge-light-danger fw-bold">
+                          Live
+                        </div>
+                      ) : Itm?.IPOStatus === "Upcoming" ? (
+                        <div className="badge badge-light-info fw-bold">
+                          Upcoming
+                        </div>
+                      ) : Itm?.IPOStatus === "Listed" ? (
+                        <div className="badge badge-light-primary fw-bold">
+                          Listed
+                        </div>
+                      ) : Itm?.IPOStatus === "AllotmentOut" ? (
+                        <div className="badge badge-light-primary fw-bold">
+                          Allotment Out
+                        </div>
+                      ) : (
+                        Itm?.IPOStatus === "WaitingAllotment" && (
+                          <div className="badge badge-light-warning fw-bold">
+                            Waiting Allotment
+                          </div>
+                        )
+                      )}
                     </td>
                     <td className="text-end w-200px">
                       <div className="menu-item px-3">
                         <Link
-                          to="/ipo_edit"
+                          to="/mainline_ipo/ipo_edit"
                           state={{ data: Itm }}
                           className="btn btn-light btn-primary btn-sm"
                         >
@@ -245,8 +266,7 @@ const MainLineIPO = () => {
                         </Link>
 
                         <Link
-                          // to="/ipo_detail"
-                          to="/ipo_detail"
+                          to="/mainline_ipo/ipo_detail"
                           state={{ data: Itm }}
                           className="btn btn-light btn-light-primary btn-sm px-3"
                         >

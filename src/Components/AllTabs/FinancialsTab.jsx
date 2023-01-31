@@ -1,657 +1,470 @@
-import React from "react";
+import { Field, FieldArray, Form, Formik } from "formik";
+import React, { useContext } from "react";
+import { FormContext } from "../../App";
 
 const FinancialsTab = () => {
+  const {
+    activeStepIndex,
+    setActiveStepIndex,
+    formData,
+    setFormData,
+    prefillData,
+    setPrefillData,
+    IpoType,
+  } = useContext(FormContext);
+  const handlePrevious = () => {
+    setActiveStepIndex(activeStepIndex - 1);
+  };
+  // console.log(
+  //   "@##@@#@#",
+  //   JSON.stringify(JSON.stringify(formData?.promotersName))
+  // );
+  // console.log(IpoType);
   return (
     <>
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Company Financials (in Crore)</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div id="kt_financial_info">
-            <div className="form-group">
-              <div className="form-group row">
-                <div className="col-md-4">
-                  <label className="form-label">Period</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Assets</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Revenue</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Profit</label>
-                </div>
-              </div>
-              <div data-repeater-list="kt_financial_info">
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control kt_financial_info_period"
-                        value="Sep 30, 2022"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="589.24"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="604.74"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="20.67"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
+      <div>
+        <Formik
+          initialValues={
+            IpoType === "Edit"
+              ? {
+                  companyFinancials: prefillData?.companyFinancials || [],
+                  // prefillData?.companyFinancials !== undefined ||
+                  // prefillData?.companyFinancials !== ""
+                  //   ? JSON?.parse(prefillData?.companyFinancials)
+                  //   : [],
+                  financialLotsize: prefillData?.financialLotsize || [],
+                  // prefillData?.financialLotsize !== undefined ||
+                  // prefillData?.financialLotsize !== ""
+                  //   ? JSON?.parse(prefillData?.financialLotsize || "")
+                  //   : [],
+                  peersComparison: prefillData?.peersComparison || [],
+                  // prefillData?.peersComparison !== undefined ||
+                  // prefillData?.peersComparison !== ""
+                  //   ? JSON?.parse(prefillData?.peersComparison)
+                  //   : [],
+                  earningPerShare: prefillData?.earningPerShare || "",
+                  earningPERatio: prefillData?.earningPERatio || "",
+                  returnonNetWorth: prefillData?.returnonNetWorth || "",
+                  netAssetValue: prefillData?.netAssetValue || "",
+                }
+              : {
+                  companyFinancials: formData?.companyFinancials || [
+                    { period: "", assets: "", revenue: "", profit: "" },
+                  ],
+                  financialLotsize: formData?.financialLotsize || [],
+                  peersComparison: formData?.peersComparison || [],
+                  earningPerShare: formData?.earningPerShare || "",
+                  earningPERatio: formData?.earningPERatio || "",
+                  returnonNetWorth: formData?.returnonNetWorth || "",
+                  netAssetValue: formData?.netAssetValue || "",
+                }
+          }
+          onSubmit={(values) => {
+            if (IpoType === "Edit") {
+              let data = { ...prefillData, ...values };
+              setPrefillData(data);
+              setActiveStepIndex(activeStepIndex + 1);
+            } else {
+              let data = { ...formData, ...values };
+              setFormData(data);
+              setActiveStepIndex(activeStepIndex + 1);
+            }
+          }}
+        >
+          {({ values }) => (
+            <Form>
+              <div className="card card-flush py-4">
+                <div className="card-header">
+                  <div className="card-title">
+                    <h2>Company Financials (in Crore)</h2>
                   </div>
                 </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control kt_financial_info_period"
-                        value="Mar 31, 2022"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="532.61"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="1094.67"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="39.15"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control kt_financial_info_period"
-                        value="Mar 31, 2021"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="508.31"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="864.9"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="34.86"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control kt_financial_info_period"
-                        value="Mar 31, 2020"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="387.63"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="786.37"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="27.49"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control kt_financial_info_period"
-                        value="Mar 31, 2019"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="397.73"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="829.74"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="29.07"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="form-group mt-5">
-              <a
-                href="javascript:;"
-                data-repeater-create
-                className="btn btn-light-primary"
-              >
-                <i className="la la-plus"></i>Add
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div className="card-body pt-0">
+                  <div id="kt_financial_info">
+                    <div className="form-group">
+                      <div className="form-group row">
+                        <div className="col-md-4">
+                          <label className="form-label">Period</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Assets</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Revenue</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Profit</label>
+                        </div>
+                      </div>
+                      <div>
+                        <FieldArray
+                          name="companyFinancials"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values.companyFinancials?.map(
+                                (companyFinacials, index) => (
+                                  <div data-repeater-item>
+                                    <div
+                                      key={index}
+                                      className="form-group row mb-5"
+                                    >
+                                      <div className="form-group row mb-5">
+                                        <div className="col-md-4">
+                                          <Field
+                                            type="text"
+                                            className="form-control"
+                                            name={`companyFinancials.${index}.period`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`companyFinancials.${index}.assets`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`companyFinancials.${index}.revenue`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`companyFinancials.${index}.profit`}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-2">
+                                        <button
+                                          className="btn btn-sm btn-light-danger"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            arrayHelpers.remove(index);
+                                          }}
+                                        >
+                                          <i className="la la-trash-o"></i>
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
 
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Valuations</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div className="d-flex flex-wrap gap-5">
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Earning Per Share (EPS)</label>
-              <input type="text" className="form-control" value="₹9.20" />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Price/Earning P/E Ratio</label>
-              <input type="text" className="form-control" value="31.33" />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Return on Net Worth (RoNW)s</label>
-              <input type="text" className="form-control" value="12.92%" />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Net Asset Value (NAV)</label>
-              <input type="text" className="form-control" value="₹75.20" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Lot Size</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div id="kt_ipo_lot_size_repeater">
-            <div className="form-group">
-              <div className="form-group row">
-                <div className="col-md-4">
-                  <label className="form-label">Application</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Lots</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Shares</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Amount</label>
-                </div>
-              </div>
-              <div data-repeater-list="kt_ipo_lot_size_repeater">
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="Retail (Min)"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="1" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="60" />
-                    </div>
-                    <div className="col-md-2">
-                      <div className="input-group">
-                        <span className="input-group-text">₹</span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value="14,820"
+                              <div className="form-group mt-5">
+                                <button
+                                  className="btn btn-light-primary"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    arrayHelpers.push({
+                                      period: "",
+                                      assets: "",
+                                      revenue: "",
+                                      profit: "",
+                                    });
+                                  }}
+                                >
+                                  <i className="la la-plus"></i>Add
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         />
                       </div>
                     </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
                   </div>
                 </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="Retail (Max)"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="13" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="780" />
-                    </div>
-                    <div className="col-md-2">
-                      <div className="input-group">
-                        <span className="input-group-text">₹</span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value="192,660"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
+              </div>
+
+              <div className="card card-flush py-4">
+                <div className="card-header">
+                  <div className="card-title">
+                    <h2>Valuations</h2>
                   </div>
                 </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
+
+                <div className="card-body pt-0">
+                  <div className="d-flex flex-wrap gap-5">
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">
+                        Earning Per Share (EPS)
+                      </label>
+                      <Field
                         type="text"
+                        name="earningPerShare"
                         className="form-control"
-                        value="S-HNI (Min)"
                       />
                     </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="14" />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="840" />
-                    </div>
-                    <div className="col-md-2">
-                      <div className="input-group">
-                        <span className="input-group-text">₹</span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value="207,480"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-4">
-                      <input
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">
+                        Price/Earning P/E Ratio
+                      </label>
+                      <Field
+                        name="earningPERatio"
                         type="text"
                         className="form-control"
-                        value="B-HNI (Min)"
                       />
                     </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="68" />
-                    </div>
-                    <div className="col-md-2">
-                      <input
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">
+                        Return on Net Worth (RoNW)s
+                      </label>
+                      <Field
                         type="text"
+                        name="returnonNetWorth"
                         className="form-control"
-                        value="4,080"
                       />
                     </div>
-                    <div className="col-md-2">
-                      <div className="input-group">
-                        <span className="input-group-text">₹</span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value="1,007,760"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">
+                        Net Asset Value (NAV)
+                      </label>
+                      <Field
+                        type="text"
+                        name="netAssetValue"
+                        className="form-control"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="form-group mt-5">
-              <a
-                href="javascript:;"
-                data-repeater-create
-                className="btn btn-light-primary"
-              >
-                <i className="la la-plus"></i>Add
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Peers Comparison</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div id="kt_ipo_peers_comparison_repeater">
-            <div className="form-group">
-              <div className="form-group row">
-                <div className="col-md-2">
-                  <label className="form-label"></label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">P/B</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">P/E</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">RoNW</label>
-                </div>
-                <div className="col-md-2">
-                  <label className="form-label">Revenue</label>
-                </div>
-              </div>
-              <div data-repeater-list="kt_ipo_peers_comparison_repeater">
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="Elin Electronics"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="3.28"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="31.3"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="12.92%"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="1,095 Cr."
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
+              <div className="card card-flush py-4">
+                <div className="card-header">
+                  <div className="card-title">
+                    <h2>Lot Size</h2>
                   </div>
                 </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="Dixon Tech"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="21.83"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="text" className="form-control" value="105" />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="21.9%"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="10,697 Cr."
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div data-repeater-item>
-                  <div className="form-group row mb-5">
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="Amber Ent."
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="3.76"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="52.2"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="6.67%"
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value="4,206 Cr."
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <a
-                        href="javascript:;"
-                        data-repeater-delete
-                        className="btn btn-sm btn-light-danger"
-                      >
-                        <i className="la la-trash-o"></i>Delete
-                      </a>
+
+                <div className="card-body pt-0">
+                  <div id="kt_ipo_lot_size_repeater">
+                    <div className="form-group">
+                      <div className="form-group row">
+                        <div className="col-md-4">
+                          <label className="form-label">Application</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Lots</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Shares</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Amount</label>
+                        </div>
+                      </div>
+                      <div>
+                        <FieldArray
+                          name="financialLotsize"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values?.financialLotsize?.map(
+                                (financialLotsize, index) => (
+                                  <div data-repeater-item>
+                                    <div
+                                      key={index}
+                                      className="form-group row mb-5"
+                                    >
+                                      <div className="form-group row mb-5">
+                                        <div className="col-md-4">
+                                          <Field
+                                            type="text"
+                                            className="form-control"
+                                            name={`financialLotsize.${index}.application`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`financialLotsize.${index}.lots`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`financialLotsize.${index}.shares`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`financialLotsize.${index}.amount`}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-2">
+                                        <button
+                                          className="btn btn-sm btn-light-danger"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            arrayHelpers.remove(index);
+                                          }}
+                                        >
+                                          <i className="la la-trash-o"></i>
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+
+                              <div className="form-group mt-5">
+                                <button
+                                  className="btn btn-light-primary"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    arrayHelpers.push({
+                                      application: "",
+                                      lots: "",
+                                      shares: "",
+                                      amount: "",
+                                    });
+                                  }}
+                                >
+                                  <i className="la la-plus"></i>Add
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="form-group mt-5">
-              <a
-                href="javascript:;"
-                data-repeater-create
-                className="btn btn-light-primary"
-              >
-                <i className="la la-plus"></i>Add
-              </a>
-            </div>
-          </div>
-        </div>
+              <div className="card card-flush py-4">
+                <div className="card-header">
+                  <div className="card-title">
+                    <h2>Peers Comparison</h2>
+                  </div>
+                </div>
+
+                <div className="card-body pt-0">
+                  <div id="kt_ipo_peers_comparison_repeater">
+                    <div className="form-group">
+                      <div className="form-group row">
+                        <div className="col-md-2">
+                          <label className="form-label"></label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">P/B</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">P/E</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">RoNW</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label">Revenue</label>
+                        </div>
+                      </div>
+                      <div>
+                        <FieldArray
+                          name="peersComparison"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values.peersComparison?.map(
+                                (peersComparison, index) => (
+                                  <div data-repeater-item>
+                                    <div
+                                      key={index}
+                                      className="form-group row mb-5"
+                                    >
+                                      <div className="form-group row mb-5">
+                                        <div className="col-md-2">
+                                          <Field
+                                            type="text"
+                                            className="form-control"
+                                            name={`peersComparison.${index}.company_name`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            type="text"
+                                            className="form-control"
+                                            name={`peersComparison.${index}.PB`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`peersComparison.${index}.PE`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`peersComparison.${index}.RoNW`}
+                                          />
+                                        </div>
+                                        <div className="col-md-2">
+                                          <Field
+                                            className="form-control "
+                                            name={`peersComparison.${index}.Revenue`}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-2">
+                                        <button
+                                          className="btn btn-sm btn-light-danger"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            arrayHelpers.remove(index);
+                                          }}
+                                        >
+                                          <i className="la la-trash-o"></i>
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+
+                              <div className="form-group mt-5">
+                                <button
+                                  className="btn btn-light-primary"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    arrayHelpers.push({
+                                      company_name: "",
+                                      PB: "",
+                                      PE: "",
+                                      RoNW: "",
+                                      Revenue: "",
+                                    });
+                                  }}
+                                >
+                                  <i className="la la-plus"></i>Add
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex justify-content-end">
+                <button className="btn btn-light me-5" onClick={handlePrevious}>
+                  {"<< Previous"}
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  <span className="indicator-label">{"Next >>"}</span>
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </>
   );

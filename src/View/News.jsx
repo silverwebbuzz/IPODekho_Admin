@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
-import CommonAddIcon from "../Components/CommonAddIcon";
-import CommonSearchIcon from "../Components/CommonSearchIcon";
+import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
+import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import PageHeading from "../Components/PageHeading";
 
 const News = () => {
@@ -31,12 +30,12 @@ const News = () => {
               className="d-flex justify-content-end"
               data-kt-user-table-toolbar="base"
             >
-              <Link to="/add_news" type="button" className="btn btn-primary">
+              <a href="news-add.html" type="button" className="btn btn-primary">
                 <span className="svg-icon svg-icon-2">
                   <CommonAddIcon />
                 </span>
                 Add News
-              </Link>
+              </a>
             </div>
 
             <div

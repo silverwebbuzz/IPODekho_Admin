@@ -1,210 +1,236 @@
+import { Field, Form, Formik } from "formik";
+import DatePicker from "react-datepicker";
 import React from "react";
+import { useSelector } from "react-redux";
+import { FormContext } from "../../App";
+import { useContext } from "react";
 
 const DisabledListedInfoTab = () => {
+  const { getById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { prefillData } = useContext(FormContext);
+
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        disabled
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMMM Do, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
   return (
     <>
-      <div className="card card-flush py-4">
-        <div className="card-header">
-          <div className="card-title">
-            <h2>Listing Info</h2>
-          </div>
-        </div>
-
-        <div className="card-body pt-0">
-          <div className="d-flex flex-wrap gap-5 mb-10">
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Listing Date</label>
-              <input
-                disabled
-                type="text"
-                className="form-control"
-                id="live_listtiing_date"
-                value="Dec 30,2022"
-              />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Listing Price</label>
-              <div className="input-group">
-                <span className="input-group-text">₹</span>
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="244.00"
-                />
-              </div>
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Listing Position</label>
-              <div className="d-flex">
-                <div className="form-check form-check-custom form-check-success form-check-solid me-10">
-                  <input
-                    disabled
-                    className="form-check-input"
-                    type="radio"
-                    value="Positive"
-                    name="listing_position"
-                    id="listing_Positive"
-                  />
-                  <label className="form-check-label" for="listing_Positive">
-                    Positive
-                  </label>
+      <div>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            // listingDate: prefillData?.listingDate,
+            listingPrice: prefillData?.listingPrice,
+            listingPosition: prefillData?.listingPosition,
+            listingDifferent: prefillData?.listingDifferent,
+            NSECode: prefillData?.NSECode,
+            BSEScript: prefillData?.BSEScript,
+            // closingDate: prefillData?.closingDate,
+            closingPrice: prefillData?.closingPrice,
+            scriptPosition: prefillData?.scriptPosition,
+            closingDifferent: prefillData?.closingDifferent,
+            weekHigh: prefillData?.weekHigh,
+            weekLow: prefillData?.weekLow,
+          }}
+        >
+          {({ values, setFieldValue }) => (
+            <Form>
+              <div className="card card-flush py-4">
+                <div className="card-header">
+                  <div className="card-title">
+                    <h2>Listing Info</h2>
+                  </div>
                 </div>
 
-                <div className="form-check form-check-custom form-check-danger form-check-solid">
-                  <input
-                    disabled
-                    className="form-check-input"
-                    type="radio"
-                    value="Negative"
-                    name="listing_position"
-                    checked
-                    id="listing_Negative"
-                  />
-                  <label className="form-check-label" for="listing_Negative">
-                    Negative
-                  </label>
+                <div className="card-body pt-0">
+                  <div className="d-flex flex-wrap gap-5 mb-10">
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Listing Date</label>
+                      <DatePickerField
+                        name="listingDate"
+                        value={values?.listingDate}
+                        onChange={setFieldValue}
+                      />
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Listing Price</label>
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          disabled
+                          type="number"
+                          className="form-control"
+                          name="listingPrice"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Listing Position</label>
+                      <div className="d-flex">
+                        <div className="form-check form-check-custom form-check-success form-check-solid me-10">
+                          <Field
+                            disabled
+                            className="form-check-input"
+                            type="radio"
+                            value="Positive"
+                            name="listingPosition"
+                          />
+                          <label className="form-check-label">Positive</label>
+                        </div>
+
+                        <div className="form-check form-check-custom form-check-danger form-check-solid">
+                          <Field
+                            disabled
+                            className="form-check-input"
+                            type="radio"
+                            value="Negative"
+                            name="listingPosition"
+                          />
+                          <label className="form-check-label">Negative</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Listing Different</label>
+                      <div className="input-group">
+                        <Field
+                          disabled
+                          type="number"
+                          className="form-control"
+                          name="listingDifferent"
+                        />
+                        <span className="input-group-text">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex flex-wrap gap-5 mb-10">
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">NSE Code</label>
+                      <Field
+                        disabled
+                        type="number"
+                        className="form-control"
+                        name="NSECode"
+                      />
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">BSE Script</label>
+                      <Field
+                        disabled
+                        type="text"
+                        className="form-control"
+                        name="BSEScript"
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex flex-wrap gap-5 mb-10">
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Closing Date</label>
+                      <DatePickerField
+                        name="closingDate"
+                        value={values?.closingDate}
+                        onChange={setFieldValue}
+                      />
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Closing Price</label>
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          disabled
+                          type="number"
+                          className="form-control"
+                          name="closingPrice"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Script Position</label>
+                      <div className="d-flex">
+                        <div className="form-check form-check-custom form-check-success form-check-solid me-10">
+                          <Field
+                            disabled
+                            className="form-check-input"
+                            type="radio"
+                            value="Positive"
+                            name="scriptPosition"
+                          />
+                          <label className="form-check-label">Positive</label>
+                        </div>
+
+                        <div className="form-check form-check-custom form-check-danger form-check-solid">
+                          <Field
+                            disabled
+                            className="form-check-input"
+                            type="radio"
+                            value="Negative"
+                            name="scriptPosition"
+                          />
+                          <label className="form-check-label">Negative</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Closing Different</label>
+                      <div className="input-group">
+                        <Field
+                          disabled
+                          type="text"
+                          className="form-control"
+                          name="closingDifferent"
+                        />
+                        <span className="input-group-text">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex flex-wrap gap-5 mb-10">
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">52 Week High</label>
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          disabled
+                          type="number"
+                          className="form-control"
+                          name="weekHigh"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">52 Week Low</label>
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          disabled
+                          type="number"
+                          className="form-control"
+                          name="weekLow"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Listing Different</label>
-              <div className="input-group">
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="1.21"
-                />
-                <span className="input-group-text">%</span>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex flex-wrap gap-5 mb-10">
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">NSE Code</label>
-              <input
-                disabled
-                type="text"
-                className="form-control"
-                id="live_listtiing_date"
-                value="ELIN"
-              />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">BSE Script</label>
-              <input
-                disabled
-                type="text"
-                className="form-control"
-                value="543725"
-              />
-            </div>
-          </div>
-          <div className="d-flex flex-wrap gap-5 mb-10">
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Closing Date</label>
-              <input
-                disabled
-                type="text"
-                className="form-control"
-                id="live_closing_date"
-                value="Jan 02,2023"
-              />
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Closing Price</label>
-              <div className="input-group">
-                <span className="input-group-text">₹</span>
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="228.10"
-                />
-              </div>
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Script Position</label>
-              <div className="d-flex">
-                <div className="form-check form-check-custom form-check-success form-check-solid me-10">
-                  <input
-                    disabled
-                    className="form-check-input"
-                    type="radio"
-                    value="Positive"
-                    name="script_position"
-                    id="script_Positive"
-                  />
-                  <label className="form-check-label" for="script_Positive">
-                    Positive
-                  </label>
-                </div>
-
-                <div className="form-check form-check-custom form-check-danger form-check-solid">
-                  <input
-                    disabled
-                    className="form-check-input"
-                    type="radio"
-                    value="Negative"
-                    name="script_position"
-                    checked
-                    id="script_Negative"
-                  />
-                  <label className="form-check-label" for="script_Negative">
-                    Negative
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">Closing Different</label>
-              <div className="input-group">
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="7.7"
-                />
-                <span className="input-group-text">%</span>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex flex-wrap gap-5 mb-10">
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">52 Week High</label>
-              <div className="input-group">
-                <span className="input-group-text">₹</span>
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="245.00"
-                />
-              </div>
-            </div>
-
-            <div className="w-100 fv-row flex-md-root">
-              <label className="form-label">52 Week Low</label>
-              <div className="input-group">
-                <span className="input-group-text">₹</span>
-                <input
-                  disabled
-                  type="text"
-                  className="form-control"
-                  value="217.70"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </>
   );

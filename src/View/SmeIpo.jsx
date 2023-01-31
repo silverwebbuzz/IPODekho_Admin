@@ -1,13 +1,55 @@
-import React from "react";
+import React, { useContext } from "react";
 import PageHeading from "../Components/PageHeading";
-import CommonSearchIcon from "../Components/CommonSearchIcon";
-import CommonAddIcon from "../Components/CommonAddIcon";
-import CommonFilterIcon from "../Components/CommonFilterIcon";
+import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
-import { Link } from "react-router-dom";
-import CommonEditIcon from "../Components/CommonEditIcon";
-
+import { getAllMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import "../assets/css/style.bundle.css";
+import "../assets/plugins/global/plugins.bundle.css";
+import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
+import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
+import { Link, NavLink } from "react-router-dom";
+import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
+import "../assets/plugins/custom/datatables/datatables.bundle.css";
+import { FormContext } from "../App";
+import { useState } from "react";
 const SmeIpo = () => {
+  const dispatch = useDispatch();
+
+  const { setFormData, setActiveStepIndex, setIPO } = useContext(FormContext);
+  const [GMP, setGMP] = useState("");
+  const { getAllMainLineIpoData } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const handleFormData = () => {
+    // let data = {...formData, ...}
+    setActiveStepIndex(1);
+    setFormData({});
+  };
+  const handleGMPNumber = (e, ID) => {
+    setGMP(e?.target?.value);
+    let payload = {
+      id: ID,
+      GMP: e?.target?.value,
+    };
+    console.log(payload);
+  };
+  const handleGmp = (e, ID) => {
+    let payload = {
+      id: ID,
+      GMPStatus: e.target?.checked === true ? "ON" : "OFF",
+    };
+    console.log(payload);
+  };
+  useEffect(() => {
+    let payload = {
+      CategoryForIPOS: "SmeIPO", //SmeIPO
+    };
+    dispatch(getAllMainLineIpo({ payload }));
+    setIPO("SmeIPO");
+  }, [dispatch]);
+  console.log(getAllMainLineIpoData);
   return (
     <>
       <PageHeading title={"SME IPOs"} />
@@ -33,7 +75,6 @@ const SmeIpo = () => {
               className="d-flex justify-content-end"
               data-kt-user-table-toolbar="base"
             >
-              {/*Begin Filter Button */}
               <button
                 type="button"
                 className="btn btn-light-primary me-3"
@@ -89,7 +130,6 @@ const SmeIpo = () => {
                     >
                       Reset
                     </button>
-
                     <button
                       type="submit"
                       className="btn btn-primary fw-semibold px-6"
@@ -101,18 +141,20 @@ const SmeIpo = () => {
                   </div>
                 </div>
               </div>
-              {/* End Filter Button */}
 
-              {/*Begin Add Button */}
-              <Link to="/add_ipo">
-                <button className="btn btn-primary">
+              <Link to="/sme_ipo/add_ipo">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => handleFormData()}
+                >
                   <span className="svg-icon svg-icon-2">
                     <CommonAddIcon />
                   </span>
                   Add IPO
                 </button>
+                {/* <!--end::Svg Icon-->Add IPO */}
               </Link>
-              {/*End Add Button */}
             </div>
           </div>
         </div>
@@ -120,7 +162,7 @@ const SmeIpo = () => {
         <div className="card-body py-4">
           <table
             className="table align-middle table-row-dashed fs-6 gy-5"
-            id="smeipo_table"
+            id="mainlineipo_table"
           >
             <thead>
               <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
@@ -135,70 +177,120 @@ const SmeIpo = () => {
             </thead>
 
             <tbody className="text-gray-600 fw-semibold">
-              <tr>
-                <td className="d-flex align-items-center mw-230px w-230px">
-                  <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                    <a href="ipo-detail.html">
-                      <div className="symbol-label">
-                        <img
-                          src="assets/media/ipo/Elin-Electronics-logo.jpeg"
-                          alt="Elin Electronics"
-                          className="w-100"
+              {getAllMainLineIpoData?.map((Itm) => {
+                return (
+                  <tr>
+                    <td className="d-flex align-items-center mw-230px w-230px">
+                      <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                        <a href="ipo-detail.html">
+                          <div className="symbol-label">
+                            <img
+                              src="assets/media/ipo/Elin-Electronics-logo.jpeg"
+                              alt="Elin Electronics"
+                              className="w-100"
+                            />
+                          </div>
+                        </a>
+                      </div>
+                      <div className="d-flex flex-column">
+                        <a
+                          href="ipo-detail.html"
+                          className="text-gray-800 text-hover-primary mb-1"
+                        >
+                          {Itm?.companyName}
+                        </a>
+                      </div>
+                    </td>
+                    <td className="w-150px mw-150px">{Itm?.offerDate}</td>
+                    <td className="w-100px mw-100px">
+                      ₹{Itm?.offerPriceFrom} to ₹{Itm?.offerPriceTo}
+                    </td>
+                    <td>{Itm?.lotSize} Shares</td>
+                    <td className="text-center">
+                      <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value=""
+                          // checked
+                          onChange={(e) => handleGmp(e, Itm?.id)}
                         />
                       </div>
-                    </a>
-                  </div>
-                  <div className="d-flex flex-column">
-                    <a
-                      href="ipo-detail.html"
-                      className="text-gray-800 text-hover-primary mb-1"
-                    >
-                      Elin Electronics Ltd.
-                    </a>
-                  </div>
-                </td>
-                <td className="w-150px mw-150px">
-                  Dec 20, 2022 to Dec 22, 2022
-                </td>
-                <td className="w-100px mw-100px">₹234 to ₹247</td>
-                <td>60 Shares</td>
-                <td className="text-center">
-                  <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      checked
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control w-70px mt-3"
-                    value="780"
-                  />
-                </td>
-                <td>
-                  <div className="badge badge-light-danger fw-bold">Live</div>
-                </td>
-                <td className="text-end w-200px">
-                  <div className="menu-item px-3">
-                    <a
-                      href="ipo-edit.html"
-                      className="btn btn-light btn-primary btn-sm"
-                    >
-                      <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">
-                        <CommonEditIcon />{" "}
-                      </span>
-                    </a>
-                    <a
-                      href="ipo-detail.html"
-                      className="btn btn-light btn-light-primary btn-sm px-3"
-                    >
-                      <i className="bi bi-eye fs-2 pe-0"></i>
-                    </a>
-                  </div>
-                </td>
-              </tr>
+                      <input
+                        type="number"
+                        className="form-control w-70px mt-3"
+                        defaultValue={Itm?.GMP}
+                        // value={GMP}
+                        onChange={(e) => handleGMPNumber(e, Itm?.id)}
+                      />
+                    </td>
+                    <td>
+                      <div className={"badge badge-light-danger fw-bold"}>
+                        {Itm?.IPOStatus}
+                      </div>
+                      {() => {
+                        if (Itm?.IPOStatus === "live")
+                          return (
+                            <div className={"badge badge-light-danger fw-bold"}>
+                              Live
+                            </div>
+                          );
+                        if (Itm?.IPOStatus === "waitingAllotment")
+                          return (
+                            <div
+                              className={"badge badge-light-warning fw-bold"}
+                            >
+                              Waiting Allotment
+                            </div>
+                          );
+                        if (Itm?.IPOStatus === "allotmentOut")
+                          return (
+                            <div
+                              className={"badge badge-light-primary fw-bold"}
+                            >
+                              Allotment Out
+                            </div>
+                          );
+                        if (Itm?.IPOStatus === "upcoming")
+                          return (
+                            <div className={"badge badge-light-info fw-bold"}>
+                              Upcoming
+                            </div>
+                          );
+                        if (Itm?.IPOStatus === "listed")
+                          return (
+                            <div
+                              className={"badge badge-light-success fw-bold"}
+                            >
+                              Listed
+                            </div>
+                          );
+                      }}
+                    </td>
+                    <td className="text-end w-200px">
+                      <div className="menu-item px-3">
+                        <Link
+                          to="/sme_ipo/ipo_edit"
+                          state={{ data: Itm }}
+                          className="btn btn-light btn-primary btn-sm"
+                        >
+                          <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">
+                            <CommonEditIcon />{" "}
+                          </span>
+                        </Link>
+
+                        <Link
+                          to="/sme_ipo/ipo_detail"
+                          state={{ data: Itm }}
+                          className="btn btn-light btn-light-primary btn-sm px-3"
+                        >
+                          <i className="bi bi-eye fs-2 pe-0"></i>
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -5,58 +5,45 @@ import ReactQuill from "react-quill";
 import "../../assets/css/style.bundle.css";
 import "../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../Constants/commonConstants";
-import { Formik, Form, Field } from "formik";
-const GeneralTab = ({ IPODATA }) => {
-  const [companyDescription, setCompanyDescription] =
-    useState("<h1>HEllO</h1>");
-  console.log(IPODATA);
+import { Formik, Form, Field, FieldArray } from "formik";
+import MultiSelect from "../MultiSelect";
+import { useSelector } from "react-redux";
+import { FormContext } from "../../App";
+import { useContext } from "react";
 
-  // company_name: values.company_name,
-  // faceValue: values.faceValue,
-  // price: values.price,
-  // lotSize: values.lotSize,
-  // issueSize: values.issueSize,
-  // freshIssue: values.freshIssue,
-  // OfferForSale: values.OfferForSale,
-  // retailQuota: values.retailQuota,
-  // qibQuota: values.qibQuota,
-  // niiQuota: values.niiQuota,
-  // issueType: values.issueType,
-  // listingAt: values.listingAt,
-  // drhp: values.drhp,
-  // rhp: values.rhp,
-  // sharehold: values.sharehold,
-  // posthold: values.posthold,
-  const initialValues = {
-    company_name: IPODATA?.companyName,
-    faceValue: IPODATA?.faceValue,
-    FromPrice: IPODATA?.fromPrice,
-    toPrice: IPODATA?.toPrice,
-    lotSize: IPODATA?.lotSize,
-    issueSize: IPODATA?.issueSize,
-    freshIssue: IPODATA?.freshIssue,
-    OfferForSale: IPODATA?.offerForSale,
-    retailQuota: IPODATA?.General?.reatailQuota,
-    qibQuota: IPODATA?.qibQuota,
-    niiQuota: IPODATA?.nilQuota,
-    issueType: IPODATA?.issueType,
-    listingAt: IPODATA?.listingAt,
-    drhp: IPODATA?.DRHPDraft,
-    rhp: IPODATA?.RHPDraft,
-    sharehold: IPODATA?.preIssueShareHolding,
-    posthold: IPODATA?.postIssueShareHolding,
-  };
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+const GeneralTab = () => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { prefillData } = useContext(FormContext);
+
   return (
     <>
       <div>
         <Formik
-          initialValues={initialValues}
-          onSubmit={(values) => handleSubmit(values)}
+          enableReinitialize
+          initialValues={{
+            companyName: prefillData?.companyName,
+            companyDescription: prefillData?.companyDescription,
+            ObjectOfIssue: prefillData?.ObjectOfIssue,
+            faceValue: prefillData?.faceValue,
+            fromPrice: prefillData?.fromPrice,
+            toPrice: prefillData?.toPrice,
+            lotSize: prefillData?.lotSize,
+            issueSize: prefillData?.issueSize,
+            freshIssue: prefillData?.freshIssue,
+            offerForSale: prefillData?.offerForSale,
+            reatailQuota: prefillData?.reatailQuota,
+            qibQuota: prefillData?.qibQuota,
+            nilQuota: prefillData?.nilQuota,
+            issueType: prefillData?.issueType,
+            listingAt: prefillData?.listingAt,
+            DRHPDraft: prefillData?.DRHPDraft,
+            RHPDraft: prefillData?.RHPDraft,
+            preIssueShareHolding: prefillData?.preIssueShareHolding,
+            postIssueShareHolding: prefillData?.postIssueShareHolding,
+            promotersName: prefillData?.promotersName,
+          }}
         >
-          {({ values, errors, touched, isSubmitting }) => (
+          {({ values }) => (
             <Form>
               <div className="card card-flush py-4">
                 <div className="card-header">
@@ -67,14 +54,11 @@ const GeneralTab = ({ IPODATA }) => {
 
                 <div className="card-body pt-0">
                   <div className="mb-10 fv-row">
-                    <label className="required form-label">Comapny Name</label>
+                    <label className="required form-label">Company Name</label>
                     <Field
                       type="text"
-                      name="company_name"
+                      name="companyName"
                       className="form-control mb-2"
-                      placeholder="Comapny Name"
-                      // value="Elin Electronics Ltd."
-                      required
                       disabled
                     />
                   </div>
@@ -85,20 +69,18 @@ const GeneralTab = ({ IPODATA }) => {
                       readOnly
                       className="min-h-200px h-200px "
                       modules={modules}
-                      onChange={setCompanyDescription}
-                      value={companyDescription}
+                      value={values?.companyDescription}
                     />
                   </div>
                   <br />
                   <br />
-                  <div className="mt-4">
+                  <div className="mt-4 mb-16">
                     <label className="form-label ">Objects of the Issue</label>
                     <ReactQuill
                       readOnly
                       className="min-h-150px h-150px mb-2 "
                       modules={modules}
-                      onChange={setCompanyDescription}
-                      value={companyDescription}
+                      value={values?.ObjectOfIssue}
                     />
                   </div>
                 </div>
@@ -128,21 +110,24 @@ const GeneralTab = ({ IPODATA }) => {
                       </div>
                     </div>
 
-                    <div className="input-group">
-                      <Field
-                        type="number"
-                        name="FromPrice"
-                        className="form-control"
-                        // value="₹234 to ₹247"
-                      />
-                      <span className="input-group-text">to</span>
-                      <Field
-                        type="number"
-                        name="toPrice"
-                        className="form-control"
-                        // value="₹234 to ₹247"
-                      />
-                      <span className="input-group-text">Per Share</span>
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Price</label>
+                      <div className="input-group">
+                        <Field
+                          type="number"
+                          name="fromPrice"
+                          className="form-control"
+                          disabled
+                        />
+                        <span className="input-group-text">to</span>
+                        <Field
+                          type="number"
+                          name="toPrice"
+                          className="form-control"
+                          disabled
+                        />
+                        <span className="input-group-text">Per Share</span>
+                      </div>
                     </div>
                   </div>
                   <div className="d-flex flex-wrap gap-5 mb-10">
@@ -195,7 +180,7 @@ const GeneralTab = ({ IPODATA }) => {
                         <span className="input-group-text">Approx</span>
                         <Field
                           type="text"
-                          name="OfferForSale"
+                          name="offerForSale"
                           className="form-control"
                           disabled
                           // value="₹300 Crores"
@@ -208,7 +193,7 @@ const GeneralTab = ({ IPODATA }) => {
                       <label className="form-label">Retail Quota</label>
                       <Field
                         type="text"
-                        name="retailQuota"
+                        name="reatailQuota"
                         className="form-control"
                         disabled
                         // value="35%"
@@ -230,7 +215,7 @@ const GeneralTab = ({ IPODATA }) => {
                       <label className="form-label">NII Quota</label>
                       <Field
                         type="text"
-                        name="niiQuota"
+                        name="nilQuota"
                         className="form-control"
                         disabled
                         // value="15%"
@@ -251,21 +236,16 @@ const GeneralTab = ({ IPODATA }) => {
 
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Listing At</label>
-                      {/* <Field
-                      name="listingAt"
-                      className="form-select mb-2"
-                      data-control="select2"
-                      data-placeholder="Select an option"
-                      data-allow-clear="true"
-                      multiple="multiple"
-                    >
-                      <option value="BSE" selected>
-                        BSE
-                      </option>
-                      <option value="NSE" selected>
-                        NSE
-                      </option>
-                    </Field> */}
+                      <Field
+                        disabled
+                        name="listingAt"
+                        isMulti={true}
+                        component={MultiSelect}
+                        options={[
+                          { value: "BSE", label: "BSE" },
+                          { value: "NSE", label: "NSE" },
+                        ]}
+                      />
                     </div>
                   </div>
                   <div className="d-flex flex-wrap gap-5">
@@ -273,7 +253,7 @@ const GeneralTab = ({ IPODATA }) => {
                       <label className="form-label">DRHP Draft</label>
                       <Field
                         type="text"
-                        name="drhp"
+                        name="DRHPDraft"
                         className="form-control"
                         disabled
                         // value=""
@@ -284,7 +264,7 @@ const GeneralTab = ({ IPODATA }) => {
                       <label className="form-label">RHP Draft</label>
                       <Field
                         type="text"
-                        name="rhp"
+                        name="RHPDraft"
                         className="form-control"
                         disabled
                         // value=""
@@ -308,7 +288,7 @@ const GeneralTab = ({ IPODATA }) => {
                         Pre Issue Share Holding
                       </label>
                       <Field
-                        name="sharehold"
+                        name="preIssueShareHolding"
                         type="text"
                         className="form-control"
                         // value="53.98%"
@@ -321,7 +301,7 @@ const GeneralTab = ({ IPODATA }) => {
                         Post Issue Share Holding
                       </label>
                       <Field
-                        name="posthold"
+                        name="postIssueShareHolding"
                         type="text"
                         className="form-control"
                         // value="32.93%"
@@ -334,58 +314,29 @@ const GeneralTab = ({ IPODATA }) => {
                     <div className="form-group">
                       <label className="form-label">Promoters Name</label>
                       <div data-repeater-list="kt_promoters_list">
-                        {/* map array */}
-                        {IPODATA?.General?.promotersName?.map((Itm) => {
-                          return (
-                            <div data-repeater-item>
-                              <div className="form-group row mb-5">
-                                <div className="col-md-8">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    value={Itm}
-                                    disabled
-                                  />
-                                </div>
-                                <div className="col-md-4">
-                                  <a
-                                    href="javascript:;"
-                                    data-repeater-delete
-                                    className="btn btn-sm btn-light-danger"
-                                    disabled
-                                  >
-                                    <i className="la la-trash-o"></i>Delete
-                                  </a>
-                                </div>
-                              </div>
+                        <FieldArray
+                          name="promotersName"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values?.promotersName?.map(
+                                (promotersName, index) => (
+                                  <div key={index}>
+                                    <div className="col-md-8 d-flex">
+                                      <Field
+                                        disabled
+                                        className="form-control mt-2"
+                                        name={`promotersName[${index}].name`}
+                                      />
+                                    </div>
+                                  </div>
+                                )
+                              )}
                             </div>
-                          );
-                        })}
+                          )}
+                        />
                       </div>
                     </div>
-
-                    <div className="form-group mt-5">
-                      <a
-                        href="javascript:;"
-                        data-repeater-create
-                        className="btn btn-light-primary"
-                      >
-                        <i className="la la-plus"></i>Add
-                      </a>
-                    </div>
                   </div>
-                </div>
-                <div className="d-flex justify-content-end">
-                  {/* <a href="mainlineipo.html" className="btn btn-light me-5">
-                    Cancel
-                  </a>
-                  <button
-                    type="submit"
-                    // id="kt_ecommerce_add_product_submit"
-                    className="btn btn-primary"
-                  >
-                    <span className="indicator-label">Save Changes</span>
-                  </button> */}
                 </div>
               </div>
             </Form>

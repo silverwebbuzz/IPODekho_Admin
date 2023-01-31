@@ -1,39 +1,36 @@
 import React from "react";
 import { useRef } from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import DefaultDarkLogo from "../assets/media/logos/default-dark.svg";
 import DefaultSmallLogo from "../assets/media/logos/default-small.svg";
-import { toggleSidebar } from "../redux/slice/sidebarToggleSlice";
-import ContactUsIcon from "./ContactUsIcon";
-import FaqsIcon from "./FaqsIcon";
-import IpoAllotmentIcon from "./IpoAllotmentIcon";
-import MainLineIpoIcon from "./MainLineIpoIcon";
-import NewsIcon from "./NewsIcon";
-import NotificationsIcon from "./NotificationsIcon";
-import OffersIcon from "./OffersIcon";
-import PrivacyPolicyIcon from "./PrivacyPolicyIcon";
-import SidebarToggleIcon from "./SidebarToggleIcon";
-import SmeIpoIcon from "./SmeIpoIcon";
-import TermsAndConditionsIcon from "./TermsAndConditionsIcon";
-import UserIcon from "./UserIcon";
+import ContactUsIcon from "../assets/media/Icons/ContactUsIcon";
+import FaqsIcon from "../assets/media/Icons/FaqsIcon";
+import IpoAllotmentIcon from "../assets/media/Icons/IpoAllotmentIcon";
+import MainLineIpoIcon from "../assets/media/Icons/MainLineIpoIcon";
+import NewsIcon from "../assets/media/Icons/NewsIcon";
+import NotificationsIcon from "../assets/media/Icons/NotificationsIcon";
+import OffersIcon from "../assets/media/Icons/OffersIcon";
+import PrivacyPolicyIcon from "../assets/media/Icons/PrivacyPolicyIcon";
+import SidebarToggleIcon from "../assets/media/Icons/SidebarToggleIcon";
+import SmeIpoIcon from "../assets/media/Icons/SmeIpoIcon";
+import TermsAndConditionsIcon from "../assets/media/Icons/TermsAndConditionsIcon";
+import UserIcon from "../assets/media/Icons/UserIcon";
 
 const Sidebar = () => {
-  const [anim, setAnim] = useState();
   const minimizeSidebar = useRef({ body: document.body, animate: "" });
-  const { activeSidebar } = useSelector((state) => state.toggleReducer);
-  const dispatch = useDispatch();
+  const [active, setActive] = useState(false);
+  const [anim, setAnim] = useState();
 
   const handleToggle = () => {
-    dispatch(toggleSidebar(!activeSidebar));
+    setActive(!active);
     setAnim("animating");
     setTimeout(() => {
       setAnim("");
     }, 100);
   };
 
-  if (activeSidebar) {
+  if (active) {
     minimizeSidebar.current.body.setAttribute(
       "data-kt-app-sidebar-minimize",
       "on"
@@ -50,7 +47,7 @@ const Sidebar = () => {
       <div
         id="kt_app_sidebar"
         ref={minimizeSidebar.animate}
-        className={`app-sidebar flex-column ${anim} `}
+        className={`app-sidebar flex-column ${anim}`}
         data-kt-drawer="true"
         data-kt-drawer-name="app-sidebar"
         data-kt-drawer-activate="{default: true, lg: false}"
@@ -60,7 +57,7 @@ const Sidebar = () => {
         data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"
       >
         <div className="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
-          <NavLink to="/">
+          <NavLink to="/mainline_ipo">
             <img
               alt="Logo"
               src={DefaultDarkLogo}
@@ -76,7 +73,7 @@ const Sidebar = () => {
           <div
             id="kt_app_sidebar_toggle"
             className={`app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate ${
-              activeSidebar ? "active" : ""
+              active ? "active" : ""
             }`}
             onClick={handleToggle}
             data-kt-toggle="true"
@@ -109,7 +106,11 @@ const Sidebar = () => {
               data-kt-menu-expand="false"
             >
               <div className="menu-item">
-                <NavLink to="/" className="menu-link" activeClassName="active">
+                <NavLink
+                  to="/mainline_ipo"
+                  className="menu-link"
+                  activeClassName="active"
+                >
                   <MainLineIpoIcon />
                   <span className="menu-title">Mainline IPO</span>
                 </NavLink>
