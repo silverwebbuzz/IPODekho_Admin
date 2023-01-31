@@ -2,13 +2,13 @@ import React from "react";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import "../../assets/css/style.bundle.css";
-import "../../assets/plugins/global/plugins.bundle.css";
-import { modules } from "../../Constants/commonConstants";
+import "../../../assets/css/style.bundle.css";
+import "../../../assets/plugins/global/plugins.bundle.css";
 import { Formik, Form, Field, FieldArray } from "formik";
-import MultiSelect from "../MultiSelect";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import MultiSelect from "../../MultiSelect";
+import { modules } from "../../../Constants/commonConstants";
 
 const DisabledGeneralTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);

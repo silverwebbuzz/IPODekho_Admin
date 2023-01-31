@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
-import Tabs from "../Components/Tabs";
+import Tabs from "../../src/Components/Tabs/Tabs";
 import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 
 const IpoDetail = () => {

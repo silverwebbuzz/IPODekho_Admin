@@ -1,9 +1,30 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
 const FinancialsTab = () => {
   const IpoType = "EDit";
+
+  const dispatch = useDispatch();
+  // const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  // const ID = JSON.parse(localStorage.getItem("ID")) || null;
+  const handleSubmit = (values) => {
+    //wZ7HMiyNnwNPfGJz3MGu
+    // let payload = {
+    //   CategoryForIPOS: "MainlineIPO",
+    //   id: ID,
+    //   earningPerShare: values?.earningPerShare || "",
+    //   earningPERatio: values?.earningPERatio || "",
+    //   returnonNetWorth: values?.returnonNetWorth || "",
+    //   netAssetValue: values?.netAssetValue || "",
+    //   companyFinancials: values?.companyFinancials || [],
+    //   financialLotsize: values?.financialLotsize || [],
+    //   peersComparison: values?.peersComparison || [],
+    // };
+    // dispatch(createMainLineIpo({ payload }));
+  };
   return (
     <>
       <div>
@@ -33,15 +54,7 @@ const FinancialsTab = () => {
                 }
           }
           onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
+            handleSubmit(values);
           }}
         >
           {({ values }) => (

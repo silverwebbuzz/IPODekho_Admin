@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+// import { useContext } from "react";
+// import { IDContext } from "../../App";
 import {
   ADMIN_CREATE_MAIN_IPO,
   ADMIN_GET_ALL_MAIN_IPO,
   ADMIN_GET_IPO_BY_ID,
+  ADMIN_IMG_UPLOAD,
   ADMIN_UPDATE_IPO,
   BASE_URL_FOR_ADMIN,
 } from "../../UrlConfig";
@@ -11,12 +14,14 @@ import {
 const initialState = {
   loading: false,
   getIPODataById: [],
+  ID: [],
   getAllMainLineIpoData: [],
 };
 
 export const getAllMainLineIpo = createAsyncThunk(
   "admin/getAllMainLineIpo",
   async ({ payload }, { rejectWithValue }) => {
+    // const { setId } = useContext(IDContext);
     try {
       const response = await axios.post(
         BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_MAIN_IPO,
@@ -28,6 +33,7 @@ export const getAllMainLineIpo = createAsyncThunk(
           },
         }
       );
+      // setId("hello");
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -65,7 +71,9 @@ export const updateIPO = createAsyncThunk(
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
+
+            // "Content-Type": "application/json",
           },
         }
       );
@@ -75,18 +83,44 @@ export const updateIPO = createAsyncThunk(
     }
   }
 );
+//ADMIN_IMG_UPLOAD
+export const uploadIMG = createAsyncThunk(
+  "admin/uploadIMG",
+  async ({ payload }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${
+          payload.id ? payload.id : null
+        }`,
+        payload,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
+      console.log(response);
+      return response?.data?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 export const createMainLineIpo = createAsyncThunk(
   "admin/createMainLineIpo",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${BASE_URL_FOR_ADMIN + ADMIN_CREATE_MAIN_IPO}`,
+        `${BASE_URL_FOR_ADMIN + ADMIN_CREATE_MAIN_IPO}${
+          payload.id ? payload.id : null
+        }`,
         payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
-            "Content-Type": "Content-Type': 'multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -122,7 +156,20 @@ const mainLineIpoSlice = createSlice({
       .addCase(getIpoById.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(createMainLineIpo.pending, (state) => {
+      .addCase(uploadIMG.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadIMG.fulfilled, (state, action) => {
+        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
+        state.ID = action.payload?.id;
+        state.loading = false;
+      })
+      .addCase(uploadIMG.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(createMainLineIpo.pending, (state, action) => {
+        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
+        state.ID = action.payload?.id;
         state.loading = true;
       })
       .addCase(createMainLineIpo.fulfilled, (state) => {

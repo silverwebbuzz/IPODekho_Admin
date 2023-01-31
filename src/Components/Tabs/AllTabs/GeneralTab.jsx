@@ -2,19 +2,54 @@ import React from "react";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import "../../assets/css/style.bundle.css";
-import "../../assets/plugins/global/plugins.bundle.css";
+import "../../../assets/css/style.bundle.css";
+import "../../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../../MultiSelect";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { IDContext } from "../../../App";
 
 const GeneralTab = () => {
-  const customStyle = {
-    verticalAlign: "middle",
+  const dispatch = useDispatch();
+  // const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  // const { id, setId } = useContext(IDContext);
+  console.log(id);
+  // const ID = JSON.parse(localStorage.getItem("ID")) || null;
+  const handleSubmit = (e, values) => {
+    //wZ7HMiyNnwNPfGJz3MGu
+    // e.preventDefault();
+
+    let payload = {
+      CategoryForIPOS: "MainlineIPO",
+      id: "",
+      companyName: values?.companyName || "",
+      companyDescription: values?.companyDescription || "",
+      ObjectOfIssue: values?.ObjectOfIssue || "",
+      faceValue: values?.faceValue || "",
+      fromPrice: values?.fromPrice || "",
+      toPrice: values?.toPrice || "",
+      lotSize: values?.lotSize || "",
+      issueSize: values?.issueSize || "",
+      freshIssue: values?.freshIssue || "",
+      offerForSale: values?.OfferForSale || "",
+      reatailQuota: values?.reatailQuota || "",
+      qibQuota: values?.qibQuota || "",
+      nilQuota: values?.nilQuota || "",
+      issueType: values?.issueType || "",
+      listingAt: values?.listingAt || "",
+      DRHPDraft: values?.DRHPDraft || "",
+      RHPDraft: values?.RHPDraft || "",
+      preIssueShareHolding: values?.preIssueShareHolding || "",
+      postIssueShareHolding: values?.postIssueShareHolding || "",
+      promotersName: values?.promotersName || [],
+    };
+    dispatch(createMainLineIpo({ payload }));
   };
-  // let fvalue = formData?.pramotersName;
+  // console.log(JSON.parse(localStorage.getItem("ID")));
   // const jsonArray = JSON.parse(
   //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
   // );
@@ -93,21 +128,24 @@ const GeneralTab = () => {
                   postIssueShareHolding: "",
                 }
           }
-          onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let One = {
-              //   ...values,
-              //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
-              // };
-              // let data = { ...prefillData, ...One };
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
+          onSubmit={(e, values) => {
+            console.log(values);
+            handleSubmit(e, values);
+            // if (IpoType === "Edit") {
+            //   // let One = {
+            //   //   ...values,
+            //   //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
+            //   // };
+            //   // let data = { ...prefillData, ...One };
+            //   // let data = { ...prefillData, ...values };
+            //   // setPrefillData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // } else {
+
+            //   // let data = { ...formData, ...values };
+            //   // setFormData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // }
           }}
         >
           {({ values }) => (
@@ -438,7 +476,7 @@ const GeneralTab = () => {
                 </div>
                 <div className="d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary">
-                    <span className="indicator-label">{"Next >>"}</span>
+                    <span className="indicator-label">Save Changes</span>
                   </button>
                 </div>
               </div>

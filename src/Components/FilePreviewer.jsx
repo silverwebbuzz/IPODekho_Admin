@@ -1,31 +1,20 @@
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import "../assets/css/FilePreviewer.css";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import { uploadIMG } from "../redux/slice/mainLineIpoSlices";
 
 const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
   const [imagePreview, setImagePreview] = useState();
-
+  const dispatch = useDispatch();
   const filePicekerRef = useRef(null);
 
   const previewFile = (e) => {
-    // const reader = new FileReader();
-    // const selectedFile = e.target.files[0];
-    // if (selectedFile) {
-    //   reader.readAsDataURL(selectedFile);
-    // }
-    // reader.onload = (readerEvent) => {
-    //   if (selectedFile.type.includes("image")) {
-    //     setImagePreview(readerEvent.target.result);
-    //     if (ipoImage) {
-    //       const data = { ...formData, ["file"]: readerEvent.target.result };
-    //       setFormData(data);
-    //     }
-    //   }
-    // };
-    // if (ipoImage) {
-    //   const data = { ...formData, ["file"]: e.target.files[0] };
-    //   setFormData(data);
-    // }
+    console.log(" e?.target?.files[0]", e?.target?.files[0]);
+    let formData = new FormData();
+    formData.append("file", e?.target?.files[0]);
+    let payload = formData;
+    dispatch(uploadIMG({ payload }));
   };
 
   function clearFiles() {

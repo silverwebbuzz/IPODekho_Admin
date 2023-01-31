@@ -8,8 +8,8 @@ import PageHeading from "../Components/PageHeading";
 import { useEffect } from "react";
 import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
-import Tabs from "../Components/Tabs";
 import { Link } from "react-router-dom";
+import Tabs from "../Components/Tabs/Tabs";
 const AddIpo = () => {
   const dispatch = useDispatch();
 
