@@ -4,18 +4,7 @@ import { useContext } from "react";
 import { FormContext } from "../../App";
 
 const RegistrarInfoTab = () => {
-  const {
-    activeStepIndex,
-    setActiveStepIndex,
-    formData,
-    setFormData,
-    prefillData,
-    setPrefillData,
-    IpoType,
-  } = useContext(FormContext);
-  const handlePrevious = () => {
-    setActiveStepIndex(activeStepIndex - 1);
-  };
+  const IpoType = "Edit";
   return (
     <>
       <div>
@@ -23,37 +12,37 @@ const RegistrarInfoTab = () => {
           initialValues={
             IpoType === "Edit"
               ? {
-                  address: prefillData?.address || "",
-                  companyPhone: prefillData?.companyPhone || "",
-                  email: prefillData?.email || "",
-                  website: prefillData?.website || "",
-                  registerName: prefillData?.registerName || "",
-                  registerPhone: prefillData?.registerPhone || "",
-                  registerEmail: prefillData?.registerEmail || "",
-                  registerWebsite: prefillData?.registerWebsite || "",
-                  allotmentLink: prefillData?.allotmentLink || "",
+                  address: "",
+                  companyPhone: "",
+                  email: "",
+                  website: "",
+                  registerName: "",
+                  registerPhone: "",
+                  registerEmail: "",
+                  registerWebsite: "",
+                  allotmentLink: "",
                 }
               : {
-                  address: formData?.address || "",
-                  companyPhone: formData?.companyPhone || "",
-                  email: formData?.email || "",
-                  website: formData?.website || "",
-                  registerName: formData?.registerName || "",
-                  registerPhone: formData?.registerPhone || "",
-                  companyRegisterEmail: formData?.companyRegisterEmail || "",
-                  registerWebsite: formData?.registerWebsite || "",
-                  allotmentLink: formData?.allotmentLink || "",
+                  address: "",
+                  companyPhone: "",
+                  email: "",
+                  website: "",
+                  registerName: "",
+                  registerPhone: "",
+                  registerEmail: "",
+                  registerWebsite: "",
+                  allotmentLink: "",
                 }
           }
           onSubmit={(values) => {
             if (IpoType === "Edit") {
-              let data = { ...prefillData, ...values };
-              setPrefillData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...prefillData, ...values };
+              // setPrefillData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             } else {
-              let data = { ...formData, ...values };
-              setFormData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...formData, ...values };
+              // setFormData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             }
           }}
         >
@@ -121,7 +110,6 @@ const RegistrarInfoTab = () => {
                       type="text"
                       name="registerName"
                       className="form-control"
-                      //value="KFin Technologies Limited"
                     />
                   </div>
 
@@ -132,7 +120,6 @@ const RegistrarInfoTab = () => {
                         type="text"
                         className="form-control"
                         name="registerPhone"
-                        //value="04067162222, 04079611000"
                       />
                     </div>
 
@@ -142,7 +129,6 @@ const RegistrarInfoTab = () => {
                         type="text"
                         className="form-control"
                         name="registerEmail"
-                        ////value="elinindia.ipo@kfintech.com"
                       />
                     </div>
 
@@ -152,7 +138,6 @@ const RegistrarInfoTab = () => {
                         type="text"
                         className="form-control"
                         name="registerWebsite"
-                        ////value="https://karisma.kfintech.com/"
                       />
                     </div>
                   </div>
@@ -163,15 +148,11 @@ const RegistrarInfoTab = () => {
                       type="text"
                       className="form-control"
                       name="allotmentLink"
-                      ////value="https://kosmic.kfintech.com/ipostatus/"
                     />
                   </div>
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <button className="btn btn-light me-5" onClick={handlePrevious}>
-                  {"<< Previous"}
-                </button>
                 <button type="submit" className="btn btn-primary">
                   <span className="indicator-label">{"Next >>"}</span>
                 </button>

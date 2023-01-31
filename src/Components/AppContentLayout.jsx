@@ -7,7 +7,7 @@ const AppContentLayout = ({ children }) => {
         id="kt_app_content_container"
         className="app-container container-xxl"
       >
-        <div className="card">{children}</div>
+        {children}
       </div>
     </div>
   );

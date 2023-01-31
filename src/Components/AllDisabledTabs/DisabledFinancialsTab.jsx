@@ -10,10 +10,10 @@ const DisabledFinancialsTab = () => {
       <Formik
         enableReinitialize
         initialValues={{
-          companyFinancials: "",
+          companyFinancials: [],
           earningPerShare: "",
-          financialLotsize: "",
-          peersComparison: "",
+          financialLotsize: [],
+          peersComparison: [],
           earningPERatio: "",
           returnonNetWorth: "",
           netAssetValue: "",

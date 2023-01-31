@@ -25,13 +25,13 @@ const DisabledListedInfoTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            // listingDate: "",
+            listingDate: "",
             listingPrice: "",
             listingPosition: "",
             listingDifferent: "",
             NSECode: "",
             BSEScript: "",
-            // closingDate: "",
+            closingDate: "",
             closingPrice: "",
             scriptPosition: "",
             closingDifferent: "",

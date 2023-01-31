@@ -37,7 +37,7 @@ const DisabledGeneralTab = () => {
             RHPDraft: "",
             preIssueShareHolding: "",
             postIssueShareHolding: "",
-            promotersName: "",
+            promotersName: [],
             // companyName: prefillData?.companyName,
             // companyDescription: prefillData?.companyDescription,
             // ObjectOfIssue: prefillData?.ObjectOfIssue,
