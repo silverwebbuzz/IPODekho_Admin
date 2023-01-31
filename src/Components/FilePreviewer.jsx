@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
-import "./FilePreviewer.css";
-import blankImage from "../../assets/media/offer/blank-image.svg";
+import "../assets/css/FilePreviewer.css";
+import blankImage from "../assets/media/offer/blank-image.svg";
 import { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../App";
 
 const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
   const [imagePreview, setImagePreview] = useState();

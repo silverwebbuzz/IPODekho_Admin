@@ -5,7 +5,7 @@ import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import PageHeading from "../Components/PageHeading";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import { useEffect } from "react";

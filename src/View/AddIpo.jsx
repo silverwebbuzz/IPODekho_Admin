@@ -5,21 +5,15 @@ import { useContext } from "react";
 import DatePicker from "react-datepicker";
 import { FormContext } from "../App";
 import AppContentLayout from "../Components/AppContentLayout";
-import FilePreviewer from "../Components/FilePreviewer/FilePreviewer";
+import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
-import Steppers from "../FormContent/Stepper";
-import { Stepper } from "react-form-stepper";
 import { useEffect } from "react";
-import ChatTab from "../Components/AllTabs/ChatTab";
 import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setChatTab } from "../redux/slice/chatSlice";
+import Tabs from "../Components/Tabs";
 const AddIpo = () => {
-  const { activeStepIndex, formData, setFormData, setIpoType, IPO } =
-    useContext(FormContext);
   const [IPOStatus, setIPOStatus] = useState("Live");
   const dispatch = useDispatch();
-  const { chatTab } = useSelector((state) => state.chatReducer);
   const handleIpoChange = (e) => {
     setIPOStatus(e.target.value);
     const one = { ...formData, ["IPOStatus"]: e.target.value };
@@ -202,28 +196,7 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-              <Stepper
-                styleConfig={stepStyleConfig}
-                steps={[
-                  { label: "General" },
-                  { label: "Financials" },
-                  { label: "Company/Registrar Info" },
-                  { label: "Subscription" },
-                  { label: "Listing Info" },
-                ]}
-                activeStep={
-                  activeStepIndex === 1
-                    ? 0
-                    : activeStepIndex === 2
-                    ? 1
-                    : activeStepIndex === 3
-                    ? 2
-                    : activeStepIndex === 4
-                    ? 3
-                    : 4
-                }
-              />
-              {chatTab ? <ChatTab /> : <Steppers />}
+              <Tabs />
             </div>
             {/* <Steppers IpoType="Add" /> */}
             <div className="d-flex justify-content-end">
@@ -246,12 +219,12 @@ const AddIpo = () => {
           </div>
         </div>
       </AppContentLayout>
-      <div
+      {/* <div
         className="chat-icon-style"
         onClick={() => dispatch(setChatTab(!chatTab))}
       >
         <i className="bi bi-chat-fill"></i>
-      </div>
+      </div> */}
     </>
   );
 };

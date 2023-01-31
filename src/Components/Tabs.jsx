@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import TabPaneLayout from "./TabPaneLayout";
-import DisabledGeneralTab from "../AllDisabledTabs/DisabledGeneralTab";
-import DisabledFinancialsTab from "../AllDisabledTabs/DisabledFinancialsTab";
-import DisabledRegistrarInfoTab from "../AllDisabledTabs/DisabledCompanyRegistrarInfoTab";
-import DisabledSubscriptionTab from "../AllDisabledTabs/DisabledSubscriptionTab";
-import DisabledListedInfoTab from "../AllDisabledTabs/DisabledListedInfoTab";
+import DisabledGeneralTab from "./AllDisabledTabs/DisabledGeneralTab";
+import DisabledFinancialsTab from "./AllDisabledTabs/DisabledFinancialsTab";
+import DisabledRegistrarInfoTab from "./AllDisabledTabs/DisabledCompanyRegistrarInfoTab";
+import DisabledSubscriptionTab from "./AllDisabledTabs/DisabledSubscriptionTab";
+import DisabledListedInfoTab from "./AllDisabledTabs/DisabledListedInfoTab";
+import ChatTab from "./AllTabs/ChatTab";
 
 const Tabs = () => {
   const pointerStyle = { cursor: "pointer" };
@@ -79,7 +80,7 @@ const Tabs = () => {
           </span>
         </li>
 
-        {/* <li className="nav-item">
+        <li className="nav-item">
           <span
             style={pointerStyle}
             onClick={() => setActiveTab("ipo_chat")}
@@ -90,7 +91,7 @@ const Tabs = () => {
           >
             Chat
           </span>
-        </li> */}
+        </li>
       </ul>
 
       <div className="tab-content">
@@ -114,7 +115,11 @@ const Tabs = () => {
           <TabPaneLayout>
             <DisabledListedInfoTab />
           </TabPaneLayout>
-        ) : null}
+        ) : (
+          <TabPaneLayout>
+            <ChatTab />
+          </TabPaneLayout>
+        )}
       </div>
     </>
   );

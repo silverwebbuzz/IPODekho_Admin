@@ -4,18 +4,19 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 import DatePicker from "react-datepicker";
-import { Stepper } from "react-form-stepper";
+// import { Stepper } from "react-form-stepper";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { FormContext } from "../App";
 import ChatTab from "../Components/AllTabs/ChatTab";
 import AppContentLayout from "../Components/AppContentLayout";
-import FilePreviewer from "../Components/FilePreviewer/FilePreviewer";
+import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
 // import Tabs from "../Components/TabComponent/Tabs";
-import Steppers from "../FormContent/Stepper";
+// import Steppers from "../FormContent/Stepper";
 import { getIpoById, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/css/customStepperStyle.css";
+import Tabs from "../Components/Tabs";
 
 const EditIpo = () => {
   const {
@@ -294,28 +295,7 @@ const EditIpo = () => {
             {/* <Tabs EditIpo="EditIpo" data={ipoPrefillData} /> */}
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
               <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                <Stepper
-                  styleConfig={stepStyleConfig}
-                  steps={[
-                    { label: "General" },
-                    { label: "Financials" },
-                    { label: "Company/Registrar Info" },
-                    { label: "Subscription" },
-                    { label: "Listing Info" },
-                  ]}
-                  activeStep={
-                    activeStepIndex === 1
-                      ? 0
-                      : activeStepIndex === 2
-                      ? 1
-                      : activeStepIndex === 3
-                      ? 2
-                      : activeStepIndex === 4
-                      ? 3
-                      : 4
-                  }
-                />
-                {chatTab ? <ChatTab /> : <Steppers />}
+                <Tabs />
               </div>
               {/* <Steppers IpoType="Add" /> */}
               <div className="d-flex justify-content-end">

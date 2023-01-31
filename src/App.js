@@ -1,8 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./Components/Layout";
-import { useState } from "react";
-import { createContext } from "react";
 
 const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));
@@ -18,53 +16,32 @@ const Notifications = lazy(() => import("./View/Notifications"));
 const AddIpo = lazy(() => import("./View/AddIpo"));
 const IpoEdit = lazy(() => import("./View/IpoEdit"));
 const IpoDetail = lazy(() => import("./View/IpoDetail"));
-export const FormContext = createContext();
 const App = () => {
-  const [activeStepIndex, setActiveStepIndex] = useState(1);
-  const [formData, setFormData] = useState({});
-  const [prefillData, setPrefillData] = useState({});
-  const [IpoType, setIpoType] = useState("Add");
-  const [IPO, setIPO] = useState("MainlineIPO");
   return (
     <>
-      <FormContext.Provider
-        value={{
-          activeStepIndex,
-          setActiveStepIndex,
-          formData,
-          setFormData,
-          prefillData,
-          setPrefillData,
-          IpoType,
-          setIpoType,
-          IPO,
-          setIPO,
-        }}
-      >
-        <Layout>
-          <Suspense fallback={<h1>Loading...</h1>}>
-            <Routes>
-              <Route path="mainline_ipo" element={<MainLineIPO />} />
-              <Route path="mainline_ipo/add_ipo" element={<AddIpo />} />
-              <Route path="mainline_ipo/ipo_detail" element={<IpoDetail />} />
-              <Route path="mainline_ipo/ipo_edit" element={<IpoEdit />} />
-              <Route path="sme_ipo" element={<SmeIpo />} />
-              <Route path="sme_ipo/add_ipo" element={<AddIpo />} />
-              <Route path="sme_ipo/ipo_detail" element={<IpoDetail />} />
-              <Route path="sme_ipo/ipo_edit" element={<IpoEdit />} />
-              <Route path="news" element={<News />} />
-              <Route path="offers" element={<Offers />} />
-              <Route path="faqs" element={<Faqs />} />
-              <Route path="ipo_allotment_tips" element={<IpoAllotmentTips />} />
-              <Route path="privacy_policy" element={<PrivacyPolicy />} />
-              <Route path="terms_conditions" element={<TermsAndConditions />} />
-              <Route path="contact_us" element={<ContactUs />} />
-              <Route path="user" element={<Users />} />
-              <Route path="notifications" element={<Notifications />} />
-            </Routes>
-          </Suspense>
-        </Layout>
-      </FormContext.Provider>
+      <Layout>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <Routes>
+            <Route path="mainline_ipo" element={<MainLineIPO />} />
+            <Route path="mainline_ipo/add_ipo" element={<AddIpo />} />
+            <Route path="mainline_ipo/ipo_detail" element={<IpoDetail />} />
+            <Route path="mainline_ipo/ipo_edit" element={<IpoEdit />} />
+            <Route path="sme_ipo" element={<SmeIpo />} />
+            <Route path="sme_ipo/add_ipo" element={<AddIpo />} />
+            <Route path="sme_ipo/ipo_detail" element={<IpoDetail />} />
+            <Route path="sme_ipo/ipo_edit" element={<IpoEdit />} />
+            <Route path="news" element={<News />} />
+            <Route path="offers" element={<Offers />} />
+            <Route path="faqs" element={<Faqs />} />
+            <Route path="ipo_allotment_tips" element={<IpoAllotmentTips />} />
+            <Route path="privacy_policy" element={<PrivacyPolicy />} />
+            <Route path="terms_conditions" element={<TermsAndConditions />} />
+            <Route path="contact_us" element={<ContactUs />} />
+            <Route path="user" element={<Users />} />
+            <Route path="notifications" element={<Notifications />} />
+          </Routes>
+        </Suspense>
+      </Layout>
     </>
   );
 };
