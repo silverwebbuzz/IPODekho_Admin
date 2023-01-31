@@ -2,12 +2,9 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import DatePicker from "react-datepicker";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useContext } from "react";
-import { FormContext } from "../../App";
 
 const DisabledSubscriptionTab = () => {
   const { getById } = useSelector((state) => state?.mainLineIpoSlice);
-  const { prefillData } = useContext(FormContext);
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -27,15 +24,24 @@ const DisabledSubscriptionTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            subscriptionDetails: prefillData?.subscriptionDetails,
-            qualifiedInstitutions: prefillData?.qualifiedInstitutions,
-            nonInstitutionalBuyers: prefillData?.nonInstitutionalBuyers,
-            bNII: prefillData?.bNII,
-            sNII: prefillData?.sNII,
-            retailInvestors: prefillData?.retailInvestors,
-            employees: prefillData?.employees,
-            others: prefillData?.others,
-            total: prefillData?.total,
+            subscriptionDetails: "",
+            qualifiedInstitutions: "",
+            nonInstitutionalBuyers: "",
+            bNII: "",
+            sNII: "",
+            retailInvestors: "",
+            employees: "",
+            others: "",
+            total: "",
+            // subscriptionDetails: prefillData?.subscriptionDetails,
+            // qualifiedInstitutions: prefillData?.qualifiedInstitutions,
+            // nonInstitutionalBuyers: prefillData?.nonInstitutionalBuyers,
+            // bNII: prefillData?.bNII,
+            // sNII: prefillData?.sNII,
+            // retailInvestors: prefillData?.retailInvestors,
+            // employees: prefillData?.employees,
+            // others: prefillData?.others,
+            // total: prefillData?.total,
           }}
         >
           {({ values, setFieldValue }) => (

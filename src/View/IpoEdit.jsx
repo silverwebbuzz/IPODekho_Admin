@@ -1,133 +1,118 @@
 import { Form, Formik, Field } from "formik";
 import moment, { invalid } from "moment/moment";
 import React, { useState } from "react";
-import { useContext } from "react";
 import { useEffect } from "react";
 import DatePicker from "react-datepicker";
-// import { Stepper } from "react-form-stepper";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { FormContext } from "../App";
-import ChatTab from "../Components/AllTabs/ChatTab";
+
 import AppContentLayout from "../Components/AppContentLayout";
 import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
-// import Tabs from "../Components/TabComponent/Tabs";
-// import Steppers from "../FormContent/Stepper";
+
 import { getIpoById, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs";
 
 const EditIpo = () => {
-  const {
-    setActiveStepIndex,
-    activeStepIndex,
-    prefillData,
-    setPrefillData,
-    setIpoType,
-    IPO,
-  } = useContext(FormContext);
-  const { chatTab } = useSelector((state) => state.chatReducer);
+  // const dispatch = useDispatch();
+  // const location = useLocation();
+  // const ipoPrefillData = location.state?.data;
+  // const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  // const [IPOStatus, setIPOStatus] = useState("Live");
+  // const handleIpoChange = (e) => {
+  //   setIPOStatus(e.target.value);
+  //   const one = { ...prefillData, ["IPOStatus"]: e.target.value };
+  //   // setPrefillData(one);
+  //   let payload = {
+  //     id: prefillData.id,
+  //     IPOStatus: e.target.value,
+  //   };
+  //   dispatch(updateIPO({ payload }));
+  // };
+  // const stepStyleConfig = {
+  //   activeBgColor: "#ed1d24",
+  //   completedBgColor: "#009270",
+  // };
+  // const DatePickerField = ({ name, value, onChange }) => {
+  //   return (
+  //     <DatePicker
+  //       selected={(value && new Date(value)) || null}
+  //       className="form-control"
+  //       dateFormat="MMMM Do yyyy"
+  //       onChange={(val) => {
+  //         onChange(name, val);
+  //       }}
+  //     />
+  //   );
+  // };
+  // console.log(IPO);
+  // useEffect(() => {
+  //   if (ipoPrefillData?.id) {
+  //     setActiveStepIndex(1);
+  //     let payload = {
+  //       id: ipoPrefillData?.id,
+  //       CategoryForIPOS: "MainlineIPO",
+  //     };
+  //     dispatch(getIpoById({ payload }));
+  //   }
+  // }, [ipoPrefillData?.id]);
 
-  // const [prefillData, setPrefillData] = useState({});
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const ipoPrefillData = location.state?.data;
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  const [IPOStatus, setIPOStatus] = useState("Live");
-  const handleIpoChange = (e) => {
-    setIPOStatus(e.target.value);
-    const one = { ...prefillData, ["IPOStatus"]: e.target.value };
-    // setPrefillData(one);
-    let payload = {
-      id: prefillData.id,
-      IPOStatus: e.target.value,
-    };
-    dispatch(updateIPO({ payload }));
-  };
-  const stepStyleConfig = {
-    activeBgColor: "#ed1d24",
-    completedBgColor: "#009270",
-  };
-  const DatePickerField = ({ name, value, onChange }) => {
-    return (
-      <DatePicker
-        selected={(value && new Date(value)) || null}
-        className="form-control"
-        dateFormat="MMMM Do yyyy"
-        onChange={(val) => {
-          onChange(name, val);
-        }}
-      />
-    );
-  };
-  console.log(IPO);
-  useEffect(() => {
-    if (ipoPrefillData?.id) {
-      setActiveStepIndex(1);
-      let payload = {
-        id: ipoPrefillData?.id,
-        CategoryForIPOS: "MainlineIPO",
-      };
-      dispatch(getIpoById({ payload }));
-    }
-  }, [ipoPrefillData?.id]);
-
-  useEffect(() => {
-    if (getIPODataById) {
-      setIpoType("Edit");
-      let Data = { ...prefillData, ...getIPODataById };
-      setPrefillData(Data);
-    }
-  }, [getIPODataById]);
-  useEffect(() => {
-    console.log("getIPODataById", getIPODataById);
-    if (getIPODataById) {
-      let one = {};
-      const asArray = Object.entries(getIPODataById); // convert object into array
-      asArray?.filter(([key, value]) => {
-        if (key === "promotersName") {
-          let fvalue = value;
-          let jsonArray = JSON.parse(
-            JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-          );
-          one[key] = jsonArray || [];
-        }
-        if (key === "companyFinancials") {
-          let fvalue = value;
-          let jsonArray = JSON.parse(
-            JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-          );
-          one[key] = jsonArray;
-        }
-        if (key === "financialLotsize") {
-          let fvalue = value;
-          let jsonArray = JSON.parse(
-            JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-          );
-          one[key] = jsonArray;
-        }
-        if (key === "peersComparison") {
-          let fvalue = value;
-          let jsonArray = JSON.parse(
-            JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-          );
-          one[key] = jsonArray;
-        }
-        if (key === "subscriptionDetails") {
-          let fvalue = value;
-          let jsonArray = JSON.parse(
-            JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-          );
-          one[key] = jsonArray;
-        }
-      });
-      setPrefillData((preState) => {
-        return { ...preState, ...one };
-      });
-    }
-  }, [getIPODataById]);
-  console.log(prefillData?.IPOOpenDate);
+  // useEffect(() => {
+  //   if (getIPODataById) {
+  //     setIpoType("Edit");
+  //     let Data = { ...prefillData, ...getIPODataById };
+  //     setPrefillData(Data);
+  //   }
+  // }, [getIPODataById]);
+  // useEffect(() => {
+  //   console.log("getIPODataById", getIPODataById);
+  //   if (getIPODataById) {
+  //     let one = {};
+  //     const asArray = Object.entries(getIPODataById); // convert object into array
+  //     asArray?.filter(([key, value]) => {
+  //       if (key === "promotersName") {
+  //         let fvalue = value;
+  //         let jsonArray = JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //         );
+  //         one[key] = jsonArray || [];
+  //       }
+  //       if (key === "companyFinancials") {
+  //         let fvalue = value;
+  //         let jsonArray = JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //         );
+  //         one[key] = jsonArray;
+  //       }
+  //       if (key === "financialLotsize") {
+  //         let fvalue = value;
+  //         let jsonArray = JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //         );
+  //         one[key] = jsonArray;
+  //       }
+  //       if (key === "peersComparison") {
+  //         let fvalue = value;
+  //         let jsonArray = JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //         );
+  //         one[key] = jsonArray;
+  //       }
+  //       if (key === "subscriptionDetails") {
+  //         let fvalue = value;
+  //         let jsonArray = JSON.parse(
+  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
+  //         );
+  //         one[key] = jsonArray;
+  //       }
+  //     });
+  //     setPrefillData((preState) => {
+  //       return { ...preState, ...one };
+  //     });
+  //   }
+  // }, [getIPODataById]);
+  // console.log(prefillData?.IPOOpenDate);
   return (
     <>
       <PageHeading title={"IPO Edit"} />
@@ -175,8 +160,8 @@ const EditIpo = () => {
                 <select
                   className="form-select mb-2"
                   data-placeholder="Select an option"
-                  onChange={(e) => handleIpoChange(e)}
-                  value={IPOStatus}
+                  onChange={(e) => console.log(e)}
+                  value=""
                 >
                   <option></option>
                   <option value="Live" selected="selected">
@@ -201,17 +186,20 @@ const EditIpo = () => {
               <Formik
                 enableReinitialize
                 initialValues={{
-                  IPOOpenDate: prefillData?.IPOOpenDate,
-                  IPOCloseDate: prefillData?.IPOCloseDate || "",
-                  IPOAllotmentDate: prefillData?.IPOAllotmentDate || "",
-                  IPORefundsInitiation: prefillData?.IPORefundsInitiation || "",
-                  IPODematTransfer: prefillData?.IPODematTransfer || "",
-                  IPOListingDate: prefillData?.IPOListingDate || "",
+                  IPOOpenDate: "",
+                  IPOCloseDate: "",
+                  IPOAllotmentDate: "",
+                  IPORefundsInitiation: "",
+                  IPODematTransfer: "",
+                  IPOListingDate: "",
+                  // IPOOpenDate: prefillData?.IPOOpenDate,
+                  // IPOCloseDate: prefillData?.IPOCloseDate || "",
+                  // IPOAllotmentDate: prefillData?.IPOAllotmentDate || "",
+                  // IPORefundsInitiation: prefillData?.IPORefundsInitiation || "",
+                  // IPODematTransfer: prefillData?.IPODematTransfer || "",
+                  // IPOListingDate: prefillData?.IPOListingDate || "",
                 }}
-                onSubmit={(values) => {
-                  const data = { ...prefillData, ...values };
-                  setPrefillData(data);
-                }}
+                onSubmit={(values) => console.log("values")}
               >
                 {({ values, setFieldValue }) => (
                   <Form>

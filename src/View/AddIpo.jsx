@@ -1,9 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useState } from "react";
-import { useContext } from "react";
 import DatePicker from "react-datepicker";
-import { FormContext } from "../App";
 import AppContentLayout from "../Components/AppContentLayout";
 import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
@@ -11,14 +9,10 @@ import { useEffect } from "react";
 import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
 import Tabs from "../Components/Tabs";
+import { Link } from "react-router-dom";
 const AddIpo = () => {
-  const [IPOStatus, setIPOStatus] = useState("Live");
   const dispatch = useDispatch();
-  const handleIpoChange = (e) => {
-    setIPOStatus(e.target.value);
-    const one = { ...formData, ["IPOStatus"]: e.target.value };
-    setFormData(one);
-  };
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -31,13 +25,7 @@ const AddIpo = () => {
       />
     );
   };
-  const stepStyleConfig = {
-    activeBgColor: "#ed1d24",
-    completedBgColor: "#009270",
-  };
-  useEffect(() => {
-    setIpoType("Add");
-  }, []);
+
   return (
     <>
       <PageHeading title={"IPO Add"} />
@@ -85,8 +73,8 @@ const AddIpo = () => {
                 <select
                   className="form-select mb-2"
                   data-placeholder="Select an option"
-                  onChange={(e) => handleIpoChange(e)}
-                  value={IPOStatus}
+                  onChange={(e) => console.log(e)}
+                  value=""
                 >
                   <option></option>
                   <option value="Live" selected="selected">
@@ -110,17 +98,22 @@ const AddIpo = () => {
               </div>
               <Formik
                 initialValues={{
-                  IPOOpenDate: formData?.IPOOpenDate,
-                  IPOCloseDate: formData?.IPOCloseDate,
-                  IPOAllotmentDate: formData?.IPOAllotmentDate,
-                  IPORefundsInitiation: formData?.IPORefundsInitiation,
-                  IPODematTransfer: formData?.IPODematTransfer,
-                  IPOListingDate: formData?.IPOListingDate,
+                  IPOOpenDate: "",
+                  IPOCloseDate: "",
+                  IPOAllotmentDate: "",
+                  IPORefundsInitiation: "",
+                  IPODematTransfer: "",
+                  IPOListingDate: "",
                 }}
-                onSubmit={(values) => {
-                  const data = { ...formData, ...values };
-                  setFormData(data);
-                }}
+                // initialValues={{
+                //   IPOOpenDate: formData?.IPOOpenDate,
+                //   IPOCloseDate: formData?.IPOCloseDate,
+                //   IPOAllotmentDate: formData?.IPOAllotmentDate,
+                //   IPORefundsInitiation: formData?.IPORefundsInitiation,
+                //   IPODematTransfer: formData?.IPODematTransfer,
+                //   IPOListingDate: formData?.IPOListingDate,
+                // }}
+                onSubmit={(values) => {}}
               >
                 {({ values, setFieldValue }) => (
                   <Form>
@@ -200,10 +193,9 @@ const AddIpo = () => {
             </div>
             {/* <Steppers IpoType="Add" /> */}
             <div className="d-flex justify-content-end">
-              {/* <Link to="/" className="btn btn-light me-5">
+              <Link to="/" className="btn btn-light me-5">
                 Cancel
-              </Link> */}
-              {/* 
+              </Link>
               <button
                 type="submit"
                 id="kt_ecommerce_add_product_submit"
@@ -214,17 +206,11 @@ const AddIpo = () => {
                   Please wait...
                   <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                 </span>
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
       </AppContentLayout>
-      {/* <div
-        className="chat-icon-style"
-        onClick={() => dispatch(setChatTab(!chatTab))}
-      >
-        <i className="bi bi-chat-fill"></i>
-      </div> */}
     </>
   );
 };

@@ -8,12 +8,9 @@ import { modules } from "../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
 import MultiSelect from "../MultiSelect";
 import { useSelector } from "react-redux";
-import { FormContext } from "../../App";
-import { useContext } from "react";
 
 const DisabledGeneralTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  const { prefillData } = useContext(FormContext);
 
   return (
     <>
@@ -21,26 +18,46 @@ const DisabledGeneralTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            companyName: prefillData?.companyName,
-            companyDescription: prefillData?.companyDescription,
-            ObjectOfIssue: prefillData?.ObjectOfIssue,
-            faceValue: prefillData?.faceValue,
-            fromPrice: prefillData?.fromPrice,
-            toPrice: prefillData?.toPrice,
-            lotSize: prefillData?.lotSize,
-            issueSize: prefillData?.issueSize,
-            freshIssue: prefillData?.freshIssue,
-            offerForSale: prefillData?.offerForSale,
-            reatailQuota: prefillData?.reatailQuota,
-            qibQuota: prefillData?.qibQuota,
-            nilQuota: prefillData?.nilQuota,
-            issueType: prefillData?.issueType,
-            listingAt: prefillData?.listingAt,
-            DRHPDraft: prefillData?.DRHPDraft,
-            RHPDraft: prefillData?.RHPDraft,
-            preIssueShareHolding: prefillData?.preIssueShareHolding,
-            postIssueShareHolding: prefillData?.postIssueShareHolding,
-            promotersName: prefillData?.promotersName,
+            companyName: "",
+            companyDescription: "",
+            ObjectOfIssue: "",
+            faceValue: "",
+            fromPrice: "",
+            toPrice: "",
+            lotSize: "",
+            issueSize: "",
+            freshIssue: "",
+            offerForSale: "",
+            reatailQuota: "",
+            qibQuota: "",
+            nilQuota: "",
+            issueType: "",
+            listingAt: "",
+            DRHPDraft: "",
+            RHPDraft: "",
+            preIssueShareHolding: "",
+            postIssueShareHolding: "",
+            promotersName: "",
+            // companyName: prefillData?.companyName,
+            // companyDescription: prefillData?.companyDescription,
+            // ObjectOfIssue: prefillData?.ObjectOfIssue,
+            // faceValue: prefillData?.faceValue,
+            // fromPrice: prefillData?.fromPrice,
+            // toPrice: prefillData?.toPrice,
+            // lotSize: prefillData?.lotSize,
+            // issueSize: prefillData?.issueSize,
+            // freshIssue: prefillData?.freshIssue,
+            // offerForSale: prefillData?.offerForSale,
+            // reatailQuota: prefillData?.reatailQuota,
+            // qibQuota: prefillData?.qibQuota,
+            // nilQuota: prefillData?.nilQuota,
+            // issueType: prefillData?.issueType,
+            // listingAt: prefillData?.listingAt,
+            // DRHPDraft: prefillData?.DRHPDraft,
+            // RHPDraft: prefillData?.RHPDraft,
+            // preIssueShareHolding: prefillData?.preIssueShareHolding,
+            // postIssueShareHolding: prefillData?.postIssueShareHolding,
+            // promotersName: prefillData?.promotersName,
           }}
         >
           {({ values }) => (

@@ -12,22 +12,15 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
-import { FormContext } from "../App";
 import { useState } from "react";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
-  const { setFormData, setActiveStepIndex, setIPO } = useContext(FormContext);
   const [GMPV, setGMP] = useState("");
   const { getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
-  const handleFormData = () => {
-    // let data = {...formData, ...}
-    setActiveStepIndex(1);
-    setFormData({});
-  };
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
@@ -48,7 +41,6 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-    setIPO("MainlineIPO");
   }, [dispatch]);
 
   return (
@@ -144,11 +136,7 @@ const MainLineIPO = () => {
               </div>
 
               <Link to="/mainline_ipo/add_ipo">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => handleFormData()}
-                >
+                <button type="button" className="btn btn-primary">
                   <span className="svg-icon svg-icon-2">
                     <CommonAddIcon />
                   </span>

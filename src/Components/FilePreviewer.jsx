@@ -1,12 +1,9 @@
 import { useState, useRef } from "react";
 import "../assets/css/FilePreviewer.css";
 import blankImage from "../assets/media/offer/blank-image.svg";
-import { useContext } from "react";
-import { FormContext } from "../App";
 
 const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
   const [imagePreview, setImagePreview] = useState();
-  const { formData, setFormData } = useContext(FormContext);
 
   const filePicekerRef = useRef(null);
 
@@ -25,10 +22,10 @@ const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
     //     }
     //   }
     // };
-    if (ipoImage) {
-      const data = { ...formData, ["file"]: e.target.files[0] };
-      setFormData(data);
-    }
+    // if (ipoImage) {
+    //   const data = { ...formData, ["file"]: e.target.files[0] };
+    //   setFormData(data);
+    // }
   };
 
   function clearFiles() {

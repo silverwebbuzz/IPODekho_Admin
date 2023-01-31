@@ -2,12 +2,9 @@ import { Field, Form, Formik } from "formik";
 import DatePicker from "react-datepicker";
 import React from "react";
 import { useSelector } from "react-redux";
-import { FormContext } from "../../App";
-import { useContext } from "react";
 
 const DisabledListedInfoTab = () => {
   const { getById } = useSelector((state) => state?.mainLineIpoSlice);
-  const { prefillData } = useContext(FormContext);
 
   const DatePickerField = ({ name, value, onChange }) => {
     return (
@@ -28,18 +25,30 @@ const DisabledListedInfoTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            // listingDate: prefillData?.listingDate,
-            listingPrice: prefillData?.listingPrice,
-            listingPosition: prefillData?.listingPosition,
-            listingDifferent: prefillData?.listingDifferent,
-            NSECode: prefillData?.NSECode,
-            BSEScript: prefillData?.BSEScript,
-            // closingDate: prefillData?.closingDate,
-            closingPrice: prefillData?.closingPrice,
-            scriptPosition: prefillData?.scriptPosition,
-            closingDifferent: prefillData?.closingDifferent,
-            weekHigh: prefillData?.weekHigh,
-            weekLow: prefillData?.weekLow,
+            // listingDate: "",
+            listingPrice: "",
+            listingPosition: "",
+            listingDifferent: "",
+            NSECode: "",
+            BSEScript: "",
+            // closingDate: "",
+            closingPrice: "",
+            scriptPosition: "",
+            closingDifferent: "",
+            weekHigh: "",
+            weekLow: "",
+            // // listingDate: prefillData?.listingDate,
+            // listingPrice: prefillData?.listingPrice,
+            // listingPosition: prefillData?.listingPosition,
+            // listingDifferent: prefillData?.listingDifferent,
+            // NSECode: prefillData?.NSECode,
+            // BSEScript: prefillData?.BSEScript,
+            // // closingDate: prefillData?.closingDate,
+            // closingPrice: prefillData?.closingPrice,
+            // scriptPosition: prefillData?.scriptPosition,
+            // closingDifferent: prefillData?.closingDifferent,
+            // weekHigh: prefillData?.weekHigh,
+            // weekLow: prefillData?.weekLow,
           }}
         >
           {({ values, setFieldValue }) => (

@@ -1,24 +1,29 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { FormContext } from "../../App";
 
 const DisabledFinancialsTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  const { prefillData } = useContext(FormContext);
 
   return (
     <>
       <Formik
         enableReinitialize
         initialValues={{
-          companyFinancials: prefillData?.companyFinancials,
-          earningPerShare: prefillData?.earningPerShare,
-          financialLotsize: prefillData?.financialLotsize,
-          peersComparison: prefillData?.peersComparison,
-          earningPERatio: prefillData?.earningPERatio,
-          returnonNetWorth: prefillData?.returnonNetWorth,
-          netAssetValue: prefillData?.netAssetValue,
+          companyFinancials: "",
+          earningPerShare: "",
+          financialLotsize: "",
+          peersComparison: "",
+          earningPERatio: "",
+          returnonNetWorth: "",
+          netAssetValue: "",
+          // companyFinancials: prefillData?.companyFinancials,
+          // earningPerShare: prefillData?.earningPerShare,
+          // financialLotsize: prefillData?.financialLotsize,
+          // peersComparison: prefillData?.peersComparison,
+          // earningPERatio: prefillData?.earningPERatio,
+          // returnonNetWorth: prefillData?.returnonNetWorth,
+          // netAssetValue: prefillData?.netAssetValue,
         }}
       >
         {({ values }) => (

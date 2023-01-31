@@ -12,21 +12,15 @@ import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import { Link, NavLink } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
-import { FormContext } from "../App";
 import { useState } from "react";
 const SmeIpo = () => {
   const dispatch = useDispatch();
 
-  const { setFormData, setActiveStepIndex, setIPO } = useContext(FormContext);
   const [GMP, setGMP] = useState("");
   const { getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-  const handleFormData = () => {
-    // let data = {...formData, ...}
-    setActiveStepIndex(1);
-    setFormData({});
-  };
+
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
@@ -47,7 +41,6 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO", //SmeIPO
     };
     dispatch(getAllMainLineIpo({ payload }));
-    setIPO("SmeIPO");
   }, [dispatch]);
   console.log(getAllMainLineIpoData);
   return (
@@ -146,7 +139,7 @@ const SmeIpo = () => {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => handleFormData()}
+                  onClick={() => console.log("handleFormData")}
                 >
                   <span className="svg-icon svg-icon-2">
                     <CommonAddIcon />
