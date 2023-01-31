@@ -1,10 +1,12 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setModalIsOpen } from "../../redux/slice/modalSlice";
 import { createOffer, updateOffer } from "../../redux/slice/offersSlice";
 import FilePreviewer from "../FilePreview/FilePreviewer";
 
 const OffersModal = ({ data }) => {
+  let subtitle;
   console.log(data);
   const { modalIsOpen, modalType } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
@@ -26,25 +28,23 @@ const OffersModal = ({ data }) => {
 
   return (
     <div
-      className="modal fade show"
+      // className="modal fade show"
       id="kt_modal_add_offer"
       tabindex="-1"
       aria-modal="true"
       role="dialog"
-      // className="modal fade"
-      style={{ display: "block" }}
-      // id="kt_modal_add_offer"
-      // tabindex="-1"
-      // aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered mw-650px">
         <div className="modal-content">
           <div className="modal-header" id="kt_modal_add_offer_header">
-            <h2 className="fw-bold">Add Offer</h2>
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)} className="fw-bold">
+              Add Offer
+            </h2>
 
             <div
               className="btn btn-icon btn-sm btn-active-icon-primary"
               data-bs-dismiss="modal"
+              onClick={() => dispatch(setModalIsOpen(false))}
             >
               <span className="svg-icon svg-icon-1">
                 <svg

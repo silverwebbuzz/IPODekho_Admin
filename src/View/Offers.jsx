@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import ReactModal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
@@ -27,16 +28,16 @@ const Offers = () => {
     setRowData(offer);
   };
 
-  if (modalIsOpen) {
-    document.body.setAttribute(
-      "style",
-      "overflow: hidden; padding-right: 19px"
-    );
-    document.body.className = "app-default modal-open";
-  } else {
-    document.body.removeAttribute("style");
-    document.body.className = "app-default";
-  }
+  // if (modalIsOpen) {
+  //   document.body.setAttribute(
+  //     "style",
+  //     "overflow: hidden; padding-right: 19px"
+  //   );
+  //   document.body.className = "app-default modal-open";
+  // } else {
+  //   document.body.removeAttribute("style");
+  //   document.body.className = "app-default";
+  // }
 
   return (
     <>
@@ -66,7 +67,7 @@ const Offers = () => {
               <button
                 onClick={() => {
                   dispatch(setModalIsOpen(true));
-                  dispatch(setModalIsOpen(!"EDIT"));
+                  dispatch(commonModalType(!"EDIT"));
                 }}
                 type="button"
                 className="btn btn-primary"
@@ -80,7 +81,9 @@ const Offers = () => {
               </button>
             </div>
             {/* MODAL */}
-            <OffersModal data={rowData} />
+            <ReactModal isOpen={modalIsOpen} onRequestClose={modalIsOpen}>
+              <OffersModal data={rowData} />
+            </ReactModal>
           </div>
         </div>
 
