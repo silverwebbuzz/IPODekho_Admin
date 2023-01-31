@@ -3,23 +3,7 @@ import React, { useContext } from "react";
 import { FormContext } from "../../App";
 
 const FinancialsTab = () => {
-  const {
-    activeStepIndex,
-    setActiveStepIndex,
-    formData,
-    setFormData,
-    prefillData,
-    setPrefillData,
-    IpoType,
-  } = useContext(FormContext);
-  const handlePrevious = () => {
-    setActiveStepIndex(activeStepIndex - 1);
-  };
-  // console.log(
-  //   "@##@@#@#",
-  //   JSON.stringify(JSON.stringify(formData?.promotersName))
-  // );
-  // console.log(IpoType);
+  const IpoType = "EDit";
   return (
     <>
       <div>
@@ -27,47 +11,36 @@ const FinancialsTab = () => {
           initialValues={
             IpoType === "Edit"
               ? {
-                  companyFinancials: prefillData?.companyFinancials || [],
-                  // prefillData?.companyFinancials !== undefined ||
-                  // prefillData?.companyFinancials !== ""
-                  //   ? JSON?.parse(prefillData?.companyFinancials)
-                  //   : [],
-                  financialLotsize: prefillData?.financialLotsize || [],
-                  // prefillData?.financialLotsize !== undefined ||
-                  // prefillData?.financialLotsize !== ""
-                  //   ? JSON?.parse(prefillData?.financialLotsize || "")
-                  //   : [],
-                  peersComparison: prefillData?.peersComparison || [],
-                  // prefillData?.peersComparison !== undefined ||
-                  // prefillData?.peersComparison !== ""
-                  //   ? JSON?.parse(prefillData?.peersComparison)
-                  //   : [],
-                  earningPerShare: prefillData?.earningPerShare || "",
-                  earningPERatio: prefillData?.earningPERatio || "",
-                  returnonNetWorth: prefillData?.returnonNetWorth || "",
-                  netAssetValue: prefillData?.netAssetValue || "",
+                  companyFinancials: [],
+                  financialLotsize: [],
+                  peersComparison: [],
+                  earningPerShare: "",
+                  earningPERatio: "",
+                  returnonNetWorth: "",
+                  netAssetValue: "",
                 }
               : {
-                  companyFinancials: formData?.companyFinancials || [
-                    { period: "", assets: "", revenue: "", profit: "" },
-                  ],
-                  financialLotsize: formData?.financialLotsize || [],
-                  peersComparison: formData?.peersComparison || [],
-                  earningPerShare: formData?.earningPerShare || "",
-                  earningPERatio: formData?.earningPERatio || "",
-                  returnonNetWorth: formData?.returnonNetWorth || "",
-                  netAssetValue: formData?.netAssetValue || "",
+                  // companyFinancials: formData?.companyFinancials || [
+                  //   { period: "", assets: "", revenue: "", profit: "" },
+                  // ],
+                  companyFinancials: [],
+                  financialLotsize: [],
+                  peersComparison: [],
+                  earningPerShare: "",
+                  earningPERatio: "",
+                  returnonNetWorth: "",
+                  netAssetValue: "",
                 }
           }
           onSubmit={(values) => {
             if (IpoType === "Edit") {
-              let data = { ...prefillData, ...values };
-              setPrefillData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...prefillData, ...values };
+              // setPrefillData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             } else {
-              let data = { ...formData, ...values };
-              setFormData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...formData, ...values };
+              // setFormData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             }
           }}
         >
@@ -455,9 +428,6 @@ const FinancialsTab = () => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <button className="btn btn-light me-5" onClick={handlePrevious}>
-                  {"<< Previous"}
-                </button>
                 <button type="submit" className="btn btn-primary">
                   <span className="indicator-label">{"Next >>"}</span>
                 </button>

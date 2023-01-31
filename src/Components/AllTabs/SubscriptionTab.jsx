@@ -5,18 +5,6 @@ import { FormContext } from "../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const SubscriptionTab = () => {
-  const {
-    activeStepIndex,
-    setActiveStepIndex,
-    formData,
-    setFormData,
-    setPrefillData,
-    prefillData,
-    IpoType,
-  } = useContext(FormContext);
-  const handlePrevious = () => {
-    setActiveStepIndex(activeStepIndex - 1);
-  };
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -29,6 +17,7 @@ const SubscriptionTab = () => {
       />
     );
   };
+  const IpoType = "Edit";
   return (
     <>
       <div>
@@ -36,31 +25,26 @@ const SubscriptionTab = () => {
           initialValues={
             IpoType === "Edit"
               ? {
-                  subscriptionDetails: prefillData?.subscriptionDetails || [], // !== undefined || ""
-                  //   ? JSON?.parse(prefillData?.subscriptionDetails)
-                  // : [],
-                  qualifiedInstitutions:
-                    prefillData?.qualifiedInstitutions || "",
-                  nonInstitutionalBuyers:
-                    prefillData?.nonInstitutionalBuyers || "",
-                  bNII: prefillData?.bNII || "",
-                  sNII: prefillData?.sNII || "",
-                  retailInvestors: prefillData?.retailInvestors || "",
-                  employees: prefillData?.employees || "",
-                  others: prefillData?.others || "",
-                  total: prefillData?.total || "",
+                  subscriptionDetails: [],
+                  qualifiedInstitutions: "",
+                  nonInstitutionalBuyers: "",
+                  bNII: "",
+                  sNII: "",
+                  retailInvestors: "",
+                  employees: "",
+                  others: "",
+                  total: "",
                 }
               : {
-                  subscriptionDetails: formData?.subscriptionDetails || [],
-                  qualifiedInstitutions: formData?.qualifiedInstitutions || "",
-                  nonInstitutionalBuyers:
-                    formData?.nonInstitutionalBuyers || "",
-                  bNII: formData?.bNII || "",
-                  sNII: formData?.sNII || "",
-                  retailInvestors: formData?.retailInvestors || "",
-                  employees: formData?.employees || "",
-                  others: formData?.others || "",
-                  total: formData?.total || "",
+                  subscriptionDetails: [],
+                  qualifiedInstitutions: "",
+                  nonInstitutionalBuyers: "",
+                  bNII: "",
+                  sNII: "",
+                  retailInvestors: "",
+                  employees: "",
+                  others: "",
+                  total: "",
                 }
           }
           onSubmit={(values) => {
@@ -73,10 +57,10 @@ const SubscriptionTab = () => {
                 +values?.retailInvestors +
                 +values?.employees +
                 +values?.others;
-              const one = { ...values, ["total"]: totalOf };
-              let data = { ...prefillData, ...one };
-              setPrefillData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // const one = { ...values, ["total"]: totalOf };
+              // let data = { ...prefillData, ...one };
+              // setPrefillData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             } else {
               const totalOf =
                 +values?.qualifiedInstitutions +
@@ -86,10 +70,10 @@ const SubscriptionTab = () => {
                 +values?.retailInvestors +
                 +values?.employees +
                 +values?.others;
-              const one = { ...values, ["total"]: totalOf };
-              const data = { ...formData, ...one };
-              setFormData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // const one = { ...values, ["total"]: totalOf };
+              // const data = { ...formData, ...one };
+              // setFormData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             }
           }}
         >
@@ -321,9 +305,6 @@ const SubscriptionTab = () => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <button className="btn btn-light me-5" onClick={handlePrevious}>
-                  {"<< Previous"}
-                </button>
                 <button type="submit" className="btn btn-primary">
                   <span className="indicator-label">{"Next >>"}</span>
                 </button>

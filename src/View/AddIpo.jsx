@@ -189,7 +189,7 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-              <Tabs />
+              <Tabs ADDIPO="ADDIPO" />
             </div>
             {/* <Steppers IpoType="Add" /> */}
             <div className="d-flex justify-content-end">

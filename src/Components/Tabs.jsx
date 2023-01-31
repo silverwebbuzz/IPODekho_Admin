@@ -7,8 +7,13 @@ import DisabledRegistrarInfoTab from "./AllDisabledTabs/DisabledCompanyRegistrar
 import DisabledSubscriptionTab from "./AllDisabledTabs/DisabledSubscriptionTab";
 import DisabledListedInfoTab from "./AllDisabledTabs/DisabledListedInfoTab";
 import ChatTab from "./AllTabs/ChatTab";
+import GeneralTab from "./AllTabs/GeneralTab";
+import FinancialsTab from "./AllTabs/FinancialsTab";
+import RegistrarInfoTab from "./AllTabs/CompanyRegistrarInfoTab";
+import SubscriptionTab from "./AllTabs/SubscriptionTab";
+import ListedInfoTab from "./AllTabs/ListedInfoTab";
 
-const Tabs = () => {
+const Tabs = ({ ADDIPO }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
 
@@ -97,23 +102,23 @@ const Tabs = () => {
       <div className="tab-content">
         {activeTab === "ipo_general" ? (
           <TabPaneLayout>
-            <DisabledGeneralTab />
+            {ADDIPO ? <GeneralTab /> : <DisabledGeneralTab />}
           </TabPaneLayout>
         ) : activeTab === "ipo_financials" ? (
           <TabPaneLayout>
-            <DisabledFinancialsTab />
+            {ADDIPO ? <FinancialsTab /> : <DisabledFinancialsTab />}
           </TabPaneLayout>
         ) : activeTab === "ipo_companyinfo" ? (
           <TabPaneLayout>
-            <DisabledRegistrarInfoTab />
+            {ADDIPO ? <RegistrarInfoTab /> : <DisabledRegistrarInfoTab />}
           </TabPaneLayout>
         ) : activeTab === "ipo_subscription" ? (
           <TabPaneLayout>
-            <DisabledSubscriptionTab />
+            {ADDIPO ? <SubscriptionTab /> : <DisabledSubscriptionTab />}
           </TabPaneLayout>
         ) : activeTab === "ipo_listed_info" ? (
           <TabPaneLayout>
-            <DisabledListedInfoTab />
+            {ADDIPO ? <ListedInfoTab /> : <DisabledListedInfoTab />}
           </TabPaneLayout>
         ) : (
           <TabPaneLayout>

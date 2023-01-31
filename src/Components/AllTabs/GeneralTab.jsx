@@ -9,19 +9,8 @@ import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
 import { useDispatch } from "react-redux";
 import MultiSelect from "../MultiSelect";
-import { useContext } from "react";
-import { FormContext } from "../../App";
-import { useEffect } from "react";
+
 const GeneralTab = () => {
-  const {
-    activeStepIndex,
-    setActiveStepIndex,
-    formData,
-    setFormData,
-    prefillData,
-    setPrefillData,
-    IpoType,
-  } = useContext(FormContext);
   const customStyle = {
     verticalAlign: "middle",
   };
@@ -51,7 +40,7 @@ const GeneralTab = () => {
   // console.log("@##@@#@#", JSON.stringify(formData?.promotersName));
 
   // console.log(IpoType);
-
+  const IpoType = "Edit";
   return (
     <>
       <div>
@@ -60,53 +49,48 @@ const GeneralTab = () => {
           initialValues={
             IpoType === "Edit"
               ? {
-                  companyName: prefillData?.companyName || "",
-                  companyDescription: prefillData?.companyDescription || "",
-                  ObjectOfIssue: prefillData?.ObjectOfIssue || "",
-                  faceValue: prefillData?.faceValue || "",
-                  fromPrice: prefillData?.fromPrice || "",
-                  toPrice: prefillData?.toPrice || "",
-                  lotSize: prefillData?.lotSize || "",
-                  issueSize: prefillData?.issueSize || "",
-                  freshIssue: prefillData?.freshIssue || "",
-                  OfferForSale: prefillData?.offerForSale || "",
-                  reatailQuota: prefillData?.reatailQuota || "",
-                  qibQuota: prefillData?.qibQuota || "",
-                  nilQuota: prefillData?.nilQuota || "",
-                  issueType: prefillData?.issueType || "",
-                  listingAt: prefillData?.listingAt || "",
-                  DRHPDraft: prefillData?.DRHPDraft || "",
-                  RHPDraft: prefillData?.RHPDraft || "",
-                  promotersName: prefillData?.promotersName || [],
-                  // promotersName: prefillDATATATA,
-                  // prefillData?.promotersName !== undefined || ""
-                  //   ? JSON?.parse(prefillData?.promotersName || "")
-                  //   : [],
-                  preIssueShareHolding: prefillData?.preIssueShareHolding || "",
-                  postIssueShareHolding:
-                    prefillData?.postIssueShareHolding || "",
+                  companyName: "",
+                  companyDescription: "",
+                  ObjectOfIssue: "",
+                  faceValue: "",
+                  fromPrice: "",
+                  toPrice: "",
+                  lotSize: "",
+                  issueSize: "",
+                  freshIssue: "",
+                  OfferForSale: "",
+                  reatailQuota: "",
+                  qibQuota: "",
+                  nilQuota: "",
+                  issueType: "",
+                  listingAt: "",
+                  DRHPDraft: "",
+                  RHPDraft: "",
+                  promotersName: [],
+                  preIssueShareHolding: "",
+                  postIssueShareHolding: "",
                 }
               : {
-                  companyName: formData?.companyName || "",
-                  companyDescription: formData?.companyDescription || "",
-                  ObjectOfIssue: formData?.ObjectOfIssue || "",
-                  faceValue: formData?.faceValue || "",
-                  fromPrice: formData?.fromPrice || "",
-                  toPrice: formData?.toPrice || "",
-                  lotSize: formData?.lotSize || "",
-                  issueSize: formData?.issueSize || "",
-                  freshIssue: formData?.freshIssue || "",
-                  OfferForSale: formData?.offerForSale || "",
-                  reatailQuota: formData?.reatailQuota || "",
-                  qibQuota: formData?.qibQuota || "",
-                  nilQuota: formData?.nilQuota || "",
-                  issueType: formData?.issueType || "",
-                  listingAt: formData?.listingAt || "",
-                  DRHPDraft: formData?.DRHPDraft || "",
-                  RHPDraft: formData?.RHPDraft || "",
-                  promotersName: formData?.promotersName || [],
-                  preIssueShareHolding: formData?.preIssueShareHolding || "",
-                  postIssueShareHolding: formData?.postIssueShareHolding || "",
+                  companyName: "",
+                  companyDescription: "",
+                  ObjectOfIssue: "",
+                  faceValue: "",
+                  fromPrice: "",
+                  toPrice: "",
+                  lotSize: "",
+                  issueSize: "",
+                  freshIssue: "",
+                  OfferForSale: "",
+                  reatailQuota: "",
+                  qibQuota: "",
+                  nilQuota: "",
+                  issueType: "",
+                  listingAt: "",
+                  DRHPDraft: "",
+                  RHPDraft: "",
+                  promotersName: [],
+                  preIssueShareHolding: "",
+                  postIssueShareHolding: "",
                 }
           }
           onSubmit={(values) => {
@@ -116,13 +100,13 @@ const GeneralTab = () => {
               //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
               // };
               // let data = { ...prefillData, ...One };
-              let data = { ...prefillData, ...values };
-              setPrefillData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...prefillData, ...values };
+              // setPrefillData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             } else {
-              let data = { ...formData, ...values };
-              setFormData(data);
-              setActiveStepIndex(activeStepIndex + 1);
+              // let data = { ...formData, ...values };
+              // setFormData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
             }
           }}
         >
