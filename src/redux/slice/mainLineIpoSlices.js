@@ -14,7 +14,7 @@ import {
 const initialState = {
   loading: false,
   getIPODataById: [],
-  ID: [],
+  ID: "",
   getAllMainLineIpoData: [],
 };
 
@@ -36,7 +36,7 @@ export const getAllMainLineIpo = createAsyncThunk(
       // setId("hello");
       return response?.data?.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );
@@ -57,7 +57,7 @@ export const getIpoById = createAsyncThunk(
       console.log("response?.data?.Data", response?.data?.Data);
       return response?.data?.Data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );
@@ -79,7 +79,7 @@ export const updateIPO = createAsyncThunk(
       );
       return response?.data?.Data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );
@@ -90,9 +90,9 @@ export const uploadIMG = createAsyncThunk(
     try {
       const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${
-          payload.id ? payload.id : null
+          payload.id?.id ? payload.id?.id : null
         }`,
-        payload,
+        payload.payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -104,7 +104,7 @@ export const uploadIMG = createAsyncThunk(
       console.log(response);
       return response?.data?.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data?.message);
     }
   }
 );
@@ -124,7 +124,8 @@ export const createMainLineIpo = createAsyncThunk(
           },
         }
       );
-      return response?.data;
+      console.log(response?.data?.data?.id);
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
     }
@@ -167,12 +168,12 @@ const mainLineIpoSlice = createSlice({
       .addCase(uploadIMG.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(createMainLineIpo.pending, (state, action) => {
-        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
-        state.ID = action.payload?.id;
+      .addCase(createMainLineIpo.pending, (state) => {
         state.loading = true;
       })
-      .addCase(createMainLineIpo.fulfilled, (state) => {
+      .addCase(createMainLineIpo.fulfilled, (state, action) => {
+        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
+        state.ID = action.payload?.id;
         state.loading = false;
       })
       .addCase(createMainLineIpo.rejected, (state) => {

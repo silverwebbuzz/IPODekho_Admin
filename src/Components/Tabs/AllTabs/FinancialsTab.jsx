@@ -1,29 +1,33 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
 const FinancialsTab = () => {
   const IpoType = "EDit";
-
   const dispatch = useDispatch();
-  // const { ID } = useSelector((state) => state.mainLineIpoSlice);
-  // const ID = JSON.parse(localStorage.getItem("ID")) || null;
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+
   const handleSubmit = (values) => {
-    //wZ7HMiyNnwNPfGJz3MGu
-    // let payload = {
-    //   CategoryForIPOS: "MainlineIPO",
-    //   id: ID,
-    //   earningPerShare: values?.earningPerShare || "",
-    //   earningPERatio: values?.earningPERatio || "",
-    //   returnonNetWorth: values?.returnonNetWorth || "",
-    //   netAssetValue: values?.netAssetValue || "",
-    //   companyFinancials: values?.companyFinancials || [],
-    //   financialLotsize: values?.financialLotsize || [],
-    //   peersComparison: values?.peersComparison || [],
-    // };
-    // dispatch(createMainLineIpo({ payload }));
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      earningPerShare: values?.earningPerShare || "",
+      earningPERatio: values?.earningPERatio || "",
+      returnonNetWorth: values?.returnonNetWorth || "",
+      netAssetValue: values?.netAssetValue || "",
+      companyFinancials: values?.companyFinancials || [],
+      financialLotsize: values?.financialLotsize || [],
+      peersComparison: values?.peersComparison || [],
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
   };
   return (
     <>

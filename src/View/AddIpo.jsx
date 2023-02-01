@@ -98,7 +98,8 @@ const AddIpo = () => {
               </div>
               <Formik
                 initialValues={{
-                  IPOOpenDate: "",
+                  IPOOpenDate:
+                    "Wed Feb 22 2023 00:00:00 GMT+0530 (India Standard Time)",
                   IPOCloseDate: "",
                   IPOAllotmentDate: "",
                   IPORefundsInitiation: "",
@@ -126,6 +127,7 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
+                        {console.log(values?.IPOOpenDate)}
                       </div>
 
                       <div className="w-100 fv-row mb-10">

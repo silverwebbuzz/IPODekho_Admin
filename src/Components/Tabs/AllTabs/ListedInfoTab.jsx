@@ -5,102 +5,38 @@ import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createMainLineIpo,
   updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import moment from "moment/moment";
 const ListedInfoTab = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const form = new FormData();
-  const handleAllDataSubmit = () => {
-    // console.log(JSON.stringify(JSON.stringify(formData?.financialLotsize)));
-    if (IpoType === "Edit") {
-      let payloadEditData = {
-        // id: prefillData?.id,
-        // companyName: prefillData?.companyName || "",
-        // companyDescription: prefillData?.companyDescription || "",
-        // ObjectOfIssue: prefillData?.ObjectOfIssue || "",
-        // faceValue: prefillData?.faceValue || "",
-        // fromPrice: prefillData?.fromPrice || "",
-        // toPrice: prefillData?.toPrice || "",
-        // lotSize: prefillData?.lotSize || "",
-        // issueSize: prefillData?.issueSize || "",
-        // freshIssue: prefillData?.freshIssue || "",
-        // offerForSale: prefillData?.OfferForSale || "",
-        // reatailQuota: prefillData?.reatailQuota || "",
-        // qibQuota: prefillData?.qibQuota || "",
-        // nilQuota: prefillData?.nilQuota || "",
-        // issueType: prefillData?.issueType || "",
-        // listingAt: prefillData?.listingAt || "",
-        // DRHPDraft: prefillData?.DRHPDraft || "",
-        // RHPDraft: prefillData?.RHPDraft || "",
-        // preIssueShareHolding: prefillData?.preIssueShareHolding || "",
-        // postIssueShareHolding: prefillData?.postIssueShareHolding || "",
-        // earningPerShare: prefillData?.earningPerShare || "",
-        // earningPERatio: prefillData?.earningPERatio || "",
-        // returnonNetWorth: prefillData?.returnonNetWorth || "",
-        // netAssetValue: prefillData?.netAssetValue || "",
-        // address: prefillData?.address || "",
-        // companyPhone: prefillData?.companyPhone || "",
-        // email: prefillData?.email || "",
-        // website: prefillData?.website || "",
-        // registerName: prefillData?.registerName || "",
-        // registerPhone: prefillData?.registerPhone || "",
-        // registerEmail: prefillData?.registerEmail || "",
-        // registerWebsite: prefillData?.registerWebsite || "",
-        // allotmentLink: prefillData?.allotmentLink || "",
-        // qualifiedInstitutions: prefillData?.qualifiedInstitutions || "",
-        // nonInstitutionalBuyers: prefillData?.nonInstitutionalBuyers || "",
-        // bNII: prefillData?.bNII || "",
-        // sNII: prefillData?.sNII || "",
-        // retailInvestors: prefillData?.retailInvestors || "",
-        // employees: prefillData?.employees || "",
-        // others: prefillData?.others || "",
-        // total: prefillData?.total || "",
-        // listingDate:
-        //   moment(prefillData?.listingDate).format("MMMM Do YYYY") || "",
-        // listingPrice: prefillData?.listingPrice || "",
-        // listingPosition: prefillData?.listingPosition || "",
-        // listingDifferent: prefillData?.listingDifferent || "",
-        // NSECode: prefillData?.NSECode || "",
-        // BSEScript: prefillData?.BSEScript || "",
-        // closingDate:
-        //   moment(prefillData?.closingDate).format("MMMM Do YYYY") || "",
-        // closingPrice: prefillData?.closingPrice || "",
-        // scriptPosition: prefillData?.scriptPosition || "",
-        // closingDifferent: prefillData?.closingDifferent || "",
-        // weekHigh: prefillData?.weekHigh || "",
-        // weekLow: prefillData?.weekLow || "",
-        // IPOStatus: prefillData?.IPOStatus || "",
-        // file: prefillData?.file,
-        // IPOOpenDate: prefillData?.IPOOpenDate || "",
-        // IPOCloseDate: prefillData?.IPOCloseDate || "",
-        // IPOAllotmentDate: prefillData?.IPOAllotmentDate || "",
-        // IPORefundsInitiation: prefillData?.IPORefundsInitiation || "",
-        // IPODematTransfer: prefillData?.IPODematTransfer || "",
-        // IPOListingDate: prefillData?.IPOListingDate || "",
-        // IPOOpenDate:
-        //   moment(prefillData?.IPOOpenDate).format("MMMM Do YYYY") || "",
-        // IPOCloseDate:
-        //   moment(prefillData?.IPOCloseDate).format("MMMM Do YYYY") || "",
-        // IPOAllotmentDate:
-        //   moment(prefillData?.IPOAllotmentDate).format("MMMM Do YYYY") || "",
-        // IPORefundsInitiation:
-        //   moment(prefillData?.IPORefundsInitiation).format("MMMM Do YYYY") ||
-        //   "",
-        // IPODematTransfer:
-        //   moment(prefillData?.IPODematTransfer).format("MMMM Do YYYY") || "",
-        // IPOListingDate:
-        //   moment(prefillData?.IPOListingDate).format("MMMM Do YYYY") || "",
-      };
 
-      const payload = form;
-      dispatch(updateIPO({ payload }));
-      navigate("/");
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  const handleSubmit = (values) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      listingDate: values?.listingDate || "",
+      listingPrice: values?.listingPrice || "",
+      listingPosition: values?.listingPosition || "",
+      listingDifferent: values?.listingDifferent || "",
+      NSECode: values?.NSECode || "",
+      BSEScript: values?.BSEScript || "",
+      closingDate: values?.closingDate || "",
+      closingPrice: values?.closingPrice || "",
+      scriptPosition: values?.scriptPosition || "",
+      closingDifferent: values?.closingDifferent || "",
+      weekHigh: values?.weekHigh || "",
+      weekLow: values?.weekLow || "",
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
     } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
     }
   };
   const DatePickerField = ({ name, value, onChange }) => {
@@ -153,20 +89,21 @@ const ListedInfoTab = () => {
                 }
           }
           onSubmit={(values) => {
+            handleSubmit(values);
             // handleAllDataSubmit(values);
-            if (IpoType === "Edit") {
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // handleAllDataSubmit();
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // handleAllDataSubmit();
-              // setTimeout(() => {
-              //   handleAllDataSubmit();
-              // }, 3000);
-            }
+            // if (IpoType === "Edit") {
+            //   // let data = { ...prefillData, ...values };
+            //   // setPrefillData(data);
+            //   // handleAllDataSubmit();
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // } else {
+            //   // let data = { ...formData, ...values };
+            //   // setFormData(data);
+            //   // handleAllDataSubmit();
+            //   // setTimeout(() => {
+            //   //   handleAllDataSubmit();
+            //   // }, 3000);
+            // }
           }}
         >
           {({ values, setFieldValue }) => (

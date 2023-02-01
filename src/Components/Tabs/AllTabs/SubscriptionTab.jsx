@@ -4,7 +4,33 @@ import { useContext } from "react";
 import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import { useDispatch, useSelector } from "react-redux";
 const SubscriptionTab = () => {
+  const dispatch = useDispatch();
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+
+  const handleSubmit = (one) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      subscriptionDetails: one?.subscriptionDetails || [],
+      qualifiedInstitutions: one?.qualifiedInstitutions || "",
+      nonInstitutionalBuyers: one?.nonInstitutionalBuyers || "",
+      bNII: one?.bNII || "",
+      sNII: one?.sNII || "",
+      retailInvestors: one?.retailInvestors || "",
+      employees: one?.employees || "",
+      others: one?.others || "",
+      total: one?.total || "",
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -57,8 +83,8 @@ const SubscriptionTab = () => {
                 +values?.retailInvestors +
                 +values?.employees +
                 +values?.others;
-              // const one = { ...values, ["total"]: totalOf };
-              // let data = { ...prefillData, ...one };
+              const one = { ...values, ["total"]: totalOf };
+              handleSubmit(one);
               // setPrefillData(data);
               // setActiveStepIndex(activeStepIndex + 1);
             } else {

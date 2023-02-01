@@ -19,13 +19,10 @@ const Notifications = lazy(() => import("./View/Notifications"));
 const AddIpo = lazy(() => import("./View/AddIpo"));
 const IpoEdit = lazy(() => import("./View/IpoEdit"));
 const IpoDetail = lazy(() => import("./View/IpoDetail"));
-export const IDContext = createContext();
+
 const App = () => {
-  // const { ID } = useSelector((state) => state.mainLineIpoSlice);
-  const [id, setId] = useState("");
   return (
     <>
-      {/* <IDContext.Provider value={{ id, setId }}> */}
       <Layout>
         <Suspense fallback={<h1>Loading...</h1>}>
           <Routes>
@@ -49,7 +46,6 @@ const App = () => {
           </Routes>
         </Suspense>
       </Layout>
-      {/* </IDContext.Provider> */}
     </>
   );
 };

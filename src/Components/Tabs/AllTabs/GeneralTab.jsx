@@ -15,17 +15,11 @@ import { IDContext } from "../../../App";
 
 const GeneralTab = () => {
   const dispatch = useDispatch();
-  // const { ID } = useSelector((state) => state.mainLineIpoSlice);
-  // const { id, setId } = useContext(IDContext);
-  console.log(id);
-  // const ID = JSON.parse(localStorage.getItem("ID")) || null;
-  const handleSubmit = (e, values) => {
-    //wZ7HMiyNnwNPfGJz3MGu
-    // e.preventDefault();
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
-    let payload = {
+  const handleSubmit = (values) => {
+    const payload = {
       CategoryForIPOS: "MainlineIPO",
-      id: "",
       companyName: values?.companyName || "",
       companyDescription: values?.companyDescription || "",
       ObjectOfIssue: values?.ObjectOfIssue || "",
@@ -47,7 +41,13 @@ const GeneralTab = () => {
       postIssueShareHolding: values?.postIssueShareHolding || "",
       promotersName: values?.promotersName || [],
     };
-    dispatch(createMainLineIpo({ payload }));
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
   };
   // console.log(JSON.parse(localStorage.getItem("ID")));
   // const jsonArray = JSON.parse(
@@ -128,9 +128,9 @@ const GeneralTab = () => {
                   postIssueShareHolding: "",
                 }
           }
-          onSubmit={(e, values) => {
-            console.log(values);
-            handleSubmit(e, values);
+          onSubmit={(values) => {
+            // console.log(values);
+            handleSubmit(values);
             // if (IpoType === "Edit") {
             //   // let One = {
             //   //   ...values,

@@ -1,9 +1,34 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
 const RegistrarInfoTab = () => {
+  const dispatch = useDispatch();
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  const handleSubmit = (values) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      address: values?.address || "",
+      companyPhone: values?.companyPhone || "",
+      email: values?.email || "",
+      website: values?.website || "",
+      registerName: values?.registerName || "",
+      registerPhone: values?.registerPhone || "",
+      registerEmail: values?.registerEmail || "",
+      registerWebsite: values?.registerWebsite || "",
+      allotmentLink: values?.allotmentLink || "",
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
   const IpoType = "Edit";
   return (
     <>
@@ -35,15 +60,16 @@ const RegistrarInfoTab = () => {
                 }
           }
           onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
+            handleSubmit(values);
+            // if (IpoType === "Edit") {
+            //   // let data = { ...prefillData, ...values };
+            //   // setPrefillData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // } else {
+            //   // let data = { ...formData, ...values };
+            //   // setFormData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // }
           }}
         >
           {({ values }) => (
