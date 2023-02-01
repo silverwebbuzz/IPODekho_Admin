@@ -253,7 +253,6 @@ const DisabledGeneralTab = () => {
                       name="DRHPDraft"
                       className="form-control"
                       disabled
-                      // value=""
                     />
                   </div>
 
@@ -264,7 +263,6 @@ const DisabledGeneralTab = () => {
                       name="RHPDraft"
                       className="form-control"
                       disabled
-                      // value=""
                     />
                   </div>
                 </div>
