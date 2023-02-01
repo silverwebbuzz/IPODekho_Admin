@@ -9,23 +9,24 @@ const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
   const [imagePreview, setImagePreview] = useState();
   const dispatch = useDispatch();
   const filePicekerRef = useRef(null);
-  // const [ID, setID] = useState(null);
-  // setID(JSON?.parse(localStorage.getItem("ID")));
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const previewFile = (e) => {
-    // let ID = null;
-    console.log(" e?.target?.files[0]", e?.target?.files[0]);
+    console.log(e?.target?.files[0]);
+
+    const imageFile = e.target.files[0];
+
+    const reader = new FileReader();
+    reader.addEventListener("load", (e) => {
+      setImagePreview(e.target.result);
+    });
+
     let formData = new FormData();
     if (ID) {
-      // ID = JSON?.parse(localStorage.getItem("ID"));
-      // formData.append("id", ID);
       formData.append("file", e?.target?.files[0]);
       let payload = { payload: formData, id: { id: ID } };
       dispatch(uploadIMG({ payload }));
     } else {
-      // ID = null;
-      // formData.append("id", ID);
       formData.append("file", e?.target?.files[0]);
       let payload = { payload: formData, id: { id: null } };
       dispatch(uploadIMG({ payload }));
@@ -40,7 +41,7 @@ const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
     <>
       <input
         ref={filePicekerRef}
-        accept="image/*, video/*"
+        accept="image/*"
         onChange={previewFile}
         type="file"
         hidden

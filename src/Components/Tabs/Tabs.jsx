@@ -18,7 +18,7 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
   const { ID } = useSelector((state) => state?.mainLineIpoSlice);
-  console.log("IDIDIDID", ID);
+
   return (
     <>
       <ul className="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">

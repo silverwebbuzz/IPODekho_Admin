@@ -175,7 +175,8 @@ const MainLineIPO = () => {
                           <a href="ipo-detail.html">
                             <div className="symbol-label">
                               <img
-                                src="assets/media/ipo/Elin-Electronics-logo.jpeg"
+                                style={{ height: "100%" }}
+                                src={Itm?.file}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />

@@ -34,6 +34,7 @@ export const getAllMainLineIpo = createAsyncThunk(
         }
       );
       // setId("hello");
+      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -102,7 +103,7 @@ export const uploadIMG = createAsyncThunk(
         }
       );
 
-      console.log(response);
+      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
