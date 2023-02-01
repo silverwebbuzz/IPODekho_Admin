@@ -4,18 +4,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const DisabledListedInfoTab = () => {
-  const { getById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
 
-  const DatePickerField = ({ name, value, onChange }) => {
+  const DatePickerField = ({ name, value }) => {
     return (
       <DatePicker
         disabled
         selected={(value && new Date(value)) || null}
         className="form-control"
         dateFormat="MMMM Do, yyyy"
-        onChange={(val) => {
-          onChange(name, val);
-        }}
       />
     );
   };
@@ -25,30 +22,18 @@ const DisabledListedInfoTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            listingDate: "",
-            listingPrice: "",
-            listingPosition: "",
-            listingDifferent: "",
-            NSECode: "",
-            BSEScript: "",
-            closingDate: "",
-            closingPrice: "",
-            scriptPosition: "",
-            closingDifferent: "",
-            weekHigh: "",
-            weekLow: "",
-            // // listingDate: prefillData?.listingDate,
-            // listingPrice: prefillData?.listingPrice,
-            // listingPosition: prefillData?.listingPosition,
-            // listingDifferent: prefillData?.listingDifferent,
-            // NSECode: prefillData?.NSECode,
-            // BSEScript: prefillData?.BSEScript,
-            // // closingDate: prefillData?.closingDate,
-            // closingPrice: prefillData?.closingPrice,
-            // scriptPosition: prefillData?.scriptPosition,
-            // closingDifferent: prefillData?.closingDifferent,
-            // weekHigh: prefillData?.weekHigh,
-            // weekLow: prefillData?.weekLow,
+            // listingDate: getIPODataById?.listingDate,
+            listingPrice: getIPODataById?.listingPrice,
+            listingPosition: getIPODataById?.listingPosition,
+            listingDifferent: getIPODataById?.listingDifferent,
+            NSECode: getIPODataById?.NSECode,
+            BSEScript: getIPODataById?.BSEScript,
+            // closingDate: getIPODataById?.closingDate,
+            closingPrice: getIPODataById?.closingPrice,
+            scriptPosition: getIPODataById?.scriptPosition,
+            closingDifferent: getIPODataById?.closingDifferent,
+            weekHigh: getIPODataById?.weekHigh,
+            weekLow: getIPODataById?.weekLow,
           }}
         >
           {({ values, setFieldValue }) => (
@@ -67,7 +52,6 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="listingDate"
                         value={values?.listingDate}
-                        onChange={setFieldValue}
                       />
                     </div>
 
@@ -151,7 +135,6 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="closingDate"
                         value={values?.closingDate}
-                        onChange={setFieldValue}
                       />
                     </div>
 

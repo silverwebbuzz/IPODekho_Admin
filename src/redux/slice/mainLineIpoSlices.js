@@ -46,7 +46,7 @@ export const getIpoById = createAsyncThunk(
     try {
       const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_IPO_BY_ID}${payload.id}`,
-        { CategoryForIPOS: payload.CategoryForIPOS },
+        payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -54,8 +54,8 @@ export const getIpoById = createAsyncThunk(
           },
         }
       );
-      console.log("response?.data?.Data", response?.data?.Data);
-      return response?.data?.Data;
+      console.log(response?.data);
+      return response?.data?.IPODetails;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
     }
@@ -77,6 +77,7 @@ export const updateIPO = createAsyncThunk(
           },
         }
       );
+      console.log(response?.data);
       return response?.data?.Data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -131,6 +132,7 @@ export const createMainLineIpo = createAsyncThunk(
     }
   }
 );
+
 const mainLineIpoSlice = createSlice({
   name: "mainLineIpoSlice",
   initialState,

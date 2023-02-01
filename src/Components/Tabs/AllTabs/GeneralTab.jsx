@@ -13,9 +13,9 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { IDContext } from "../../../App";
 
-const GeneralTab = () => {
+const GeneralTab = ({ ipoEdit }) => {
+  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
   const dispatch = useDispatch();
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
   const handleSubmit = (values) => {
     const payload = {
@@ -50,60 +50,35 @@ const GeneralTab = () => {
     }
   };
   // console.log(JSON.parse(localStorage.getItem("ID")));
-  // const jsonArray = JSON.parse(
-  //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
-  // );
-  // useEffect(() => {
-  //   const asArray = Object.entries(formData);
-  //   asArray?.filter(([key, value]) => {
-  //     if (key === "promotersName") {
-  //       let fvalue = value;
-  //       // let jsonArray = JSON.parse(
-  //       //   JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //       // );
-  //       setFormData({
-  //         ...formData,
-  //         promotersName: JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
-  //         ),
-  //       });
-  //     }
-  //   });
-  // }, []);
-  // console.log("formData?.promotersName", formData?.promotersName);
-  // console.log("prefillData?.promotersName", prefillData?.promotersName);
-  // console.log("@##@@#@#", JSON.stringify(formData?.promotersName));
 
-  // console.log(IpoType);
-  const IpoType = "Edit";
   return (
     <>
       <div>
         <Formik
           enableReinitialize
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
-                  companyName: "",
-                  companyDescription: "",
-                  ObjectOfIssue: "",
-                  faceValue: "",
-                  fromPrice: "",
-                  toPrice: "",
-                  lotSize: "",
-                  issueSize: "",
-                  freshIssue: "",
-                  OfferForSale: "",
-                  reatailQuota: "",
-                  qibQuota: "",
-                  nilQuota: "",
-                  issueType: "",
-                  listingAt: "",
-                  DRHPDraft: "",
-                  RHPDraft: "",
+                  companyName: getIPODataById?.companyName,
+                  companyDescription: getIPODataById?.companyDescription,
+                  ObjectOfIssue: getIPODataById?.ObjectOfIssue,
+                  faceValue: getIPODataById?.faceValue,
+                  fromPrice: getIPODataById?.fromPrice,
+                  toPrice: getIPODataById?.toPrice,
+                  lotSize: getIPODataById?.lotSize,
+                  issueSize: getIPODataById?.issueSize,
+                  freshIssue: getIPODataById?.freshIssue,
+                  offerForSale: getIPODataById?.offerForSale,
+                  reatailQuota: getIPODataById?.reatailQuota,
+                  qibQuota: getIPODataById?.qibQuota,
+                  nilQuota: getIPODataById?.nilQuota,
+                  issueType: getIPODataById?.issueType,
+                  listingAt: getIPODataById?.listingAt,
+                  DRHPDraft: getIPODataById?.DRHPDraft,
+                  RHPDraft: getIPODataById?.RHPDraft,
+                  preIssueShareHolding: getIPODataById?.preIssueShareHolding,
+                  postIssueShareHolding: getIPODataById?.postIssueShareHolding,
                   promotersName: [],
-                  preIssueShareHolding: "",
-                  postIssueShareHolding: "",
                 }
               : {
                   companyName: "",

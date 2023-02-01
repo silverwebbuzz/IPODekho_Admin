@@ -11,19 +11,12 @@ const DisabledFinancialsTab = () => {
         enableReinitialize
         initialValues={{
           companyFinancials: [],
-          earningPerShare: "",
+          earningPerShare: getIPODataById?.earningPerShare,
           financialLotsize: [],
           peersComparison: [],
-          earningPERatio: "",
-          returnonNetWorth: "",
-          netAssetValue: "",
-          // companyFinancials: prefillData?.companyFinancials,
-          // earningPerShare: prefillData?.earningPerShare,
-          // financialLotsize: prefillData?.financialLotsize,
-          // peersComparison: prefillData?.peersComparison,
-          // earningPERatio: prefillData?.earningPERatio,
-          // returnonNetWorth: prefillData?.returnonNetWorth,
-          // netAssetValue: prefillData?.netAssetValue,
+          earningPERatio: getIPODataById?.earningPERatio,
+          returnonNetWorth: getIPODataById?.returnonNetWorth,
+          netAssetValue: getIPODataById?.netAssetValue,
         }}
       >
         {({ values }) => (

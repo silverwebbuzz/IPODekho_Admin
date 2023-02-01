@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
-const RegistrarInfoTab = () => {
+const RegistrarInfoTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const handleSubmit = (values) => {
@@ -29,23 +29,26 @@ const RegistrarInfoTab = () => {
       dispatch(createMainLineIpo({ payload }));
     }
   };
-  const IpoType = "Edit";
+
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+
   return (
     <>
       <div>
         <Formik
+          enableReinitialize
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
-                  address: "",
-                  companyPhone: "",
-                  email: "",
-                  website: "",
-                  registerName: "",
-                  registerPhone: "",
-                  registerEmail: "",
-                  registerWebsite: "",
-                  allotmentLink: "",
+                  address: getIPODataById?.address,
+                  companyPhone: getIPODataById?.companyPhone,
+                  email: getIPODataById?.email,
+                  website: getIPODataById?.website,
+                  registerName: getIPODataById?.registerName,
+                  registerPhone: getIPODataById?.registerPhone,
+                  registerEmail: getIPODataById?.registerEmail,
+                  registerWebsite: getIPODataById?.registerWebsite,
+                  allotmentLink: getIPODataById?.allotmentLink,
                 }
               : {
                   address: "",

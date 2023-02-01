@@ -6,9 +6,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
-const SubscriptionTab = () => {
+const SubscriptionTab = ({ ipoEdit }) => {
+  const { ID, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
   const dispatch = useDispatch();
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
   const handleSubmit = (one) => {
     const payload = {
@@ -49,17 +51,18 @@ const SubscriptionTab = () => {
       <div>
         <Formik
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
                   subscriptionDetails: [],
-                  qualifiedInstitutions: "",
-                  nonInstitutionalBuyers: "",
-                  bNII: "",
-                  sNII: "",
-                  retailInvestors: "",
-                  employees: "",
-                  others: "",
-                  total: "",
+                  qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
+                  nonInstitutionalBuyers:
+                    getIPODataById?.nonInstitutionalBuyers,
+                  bNII: getIPODataById?.bNII,
+                  sNII: getIPODataById?.sNII,
+                  retailInvestors: getIPODataById?.retailInvestors,
+                  employees: getIPODataById?.employees,
+                  others: getIPODataById?.others,
+                  total: getIPODataById?.total,
                 }
               : {
                   subscriptionDetails: [],
@@ -315,15 +318,7 @@ const SubscriptionTab = () => {
                         </tr>
                         <tr>
                           <td className="fw-bold">Total</td>
-                          <td>
-                            {+values?.qualifiedInstitutions +
-                              +values?.nonInstitutionalBuyers +
-                              +values?.bNII +
-                              +values?.sNII +
-                              +values?.retailInvestors +
-                              +values?.employees +
-                              +values?.others}
-                          </td>
+                          <td>{values.total}</td>
                         </tr>
                       </tbody>
                     </table>

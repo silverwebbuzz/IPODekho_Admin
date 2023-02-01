@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const DisabledSubscriptionTab = () => {
-  const { getById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -25,23 +25,14 @@ const DisabledSubscriptionTab = () => {
           enableReinitialize
           initialValues={{
             subscriptionDetails: [],
-            qualifiedInstitutions: "",
-            nonInstitutionalBuyers: "",
-            bNII: "",
-            sNII: "",
-            retailInvestors: "",
-            employees: "",
-            others: "",
-            total: "",
-            // subscriptionDetails: prefillData?.subscriptionDetails,
-            // qualifiedInstitutions: prefillData?.qualifiedInstitutions,
-            // nonInstitutionalBuyers: prefillData?.nonInstitutionalBuyers,
-            // bNII: prefillData?.bNII,
-            // sNII: prefillData?.sNII,
-            // retailInvestors: prefillData?.retailInvestors,
-            // employees: prefillData?.employees,
-            // others: prefillData?.others,
-            // total: prefillData?.total,
+            qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
+            nonInstitutionalBuyers: getIPODataById?.nonInstitutionalBuyers,
+            bNII: getIPODataById?.bNII,
+            sNII: getIPODataById?.sNII,
+            retailInvestors: getIPODataById?.retailInvestors,
+            employees: getIPODataById?.employees,
+            others: getIPODataById?.others,
+            total: getIPODataById?.total,
           }}
         >
           {({ values, setFieldValue }) => (

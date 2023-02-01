@@ -9,15 +9,17 @@ import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 
 const IpoDetail = () => {
   const location = useLocation();
-  const IPOdata = location.state?.data;
+  const IPOdata = location.state.data;
   const dispatch = useDispatch();
+
   useEffect(() => {
-    let payload = {
+    const payload = {
       id: IPOdata?.id,
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS: IPOdata.CategoryForIPOS,
     };
     dispatch(getIpoById({ payload }));
   }, [dispatch]);
+
   return (
     <>
       <PageHeading title={"IPO Details"} />
@@ -212,26 +214,9 @@ const IpoDetail = () => {
             </div>
           </div>
 
-          {/* {/ Nav-Items /} */}
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-            <Tabs ipoDetail="ipoDetail" data={IPOdata} />
-            <div className="d-flex justify-content-end">
-              {/* <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link>
-
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button> */}
-            </div>
+            <Tabs ipoDetail="ipoDetail" />
+            <div className="d-flex justify-content-end"></div>
           </div>
         </form>
       </AppContentLayout>

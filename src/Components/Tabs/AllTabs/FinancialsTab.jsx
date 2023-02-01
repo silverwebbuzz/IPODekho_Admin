@@ -1,14 +1,11 @@
 import { Field, FieldArray, Form, Formik } from "formik";
-import React, { useContext } from "react";
-import { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FormContext } from "../../../App";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
-const FinancialsTab = () => {
-  const IpoType = "EDit";
+const FinancialsTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
 
   const handleSubmit = (values) => {
     const payload = {
@@ -29,20 +26,21 @@ const FinancialsTab = () => {
       dispatch(createMainLineIpo({ payload }));
     }
   };
+
   return (
     <>
       <div>
         <Formik
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
                   companyFinancials: [],
+                  earningPerShare: getIPODataById?.earningPerShare,
                   financialLotsize: [],
                   peersComparison: [],
-                  earningPerShare: "",
-                  earningPERatio: "",
-                  returnonNetWorth: "",
-                  netAssetValue: "",
+                  earningPERatio: getIPODataById?.earningPERatio,
+                  returnonNetWorth: getIPODataById?.returnonNetWorth,
+                  netAssetValue: getIPODataById?.netAssetValue,
                 }
               : {
                   // companyFinancials: formData?.companyFinancials || [

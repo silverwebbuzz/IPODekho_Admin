@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import PageHeading from "../Components/PageHeading";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
-import { getAllMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "../assets/css/style.bundle.css";
@@ -27,22 +27,23 @@ const SmeIpo = () => {
       id: ID,
       GMP: e?.target?.value,
     };
-    console.log(payload);
   };
+
   const handleGmp = (e, ID) => {
     let payload = {
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
-    console.log(payload);
+    dispatch(updateIPO({ payload }));
   };
+
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "SmeIPO", //SmeIPO
     };
     dispatch(getAllMainLineIpo({ payload }));
   }, [dispatch]);
-  console.log(getAllMainLineIpoData);
+
   return (
     <>
       <PageHeading title={"SME IPOs"} />
@@ -267,7 +268,7 @@ const SmeIpo = () => {
                         <div className="menu-item px-3">
                           <Link
                             to="/sme_ipo/ipo_edit"
-                            state={{ data: Itm }}
+                            state={{ data: Itm, type: "ipoEdit" }}
                             className="btn btn-light btn-primary btn-sm"
                           >
                             <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">

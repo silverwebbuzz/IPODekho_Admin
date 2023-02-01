@@ -11,7 +11,9 @@ import {
   updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import moment from "moment/moment";
-const ListedInfoTab = () => {
+const ListedInfoTab = ({ ipoEdit }) => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
@@ -58,20 +60,20 @@ const ListedInfoTab = () => {
         <Formik
           enableReinitialize
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
-                  listingDate: "",
-                  listingPrice: "",
-                  listingPosition: "",
-                  listingDifferent: "",
-                  NSECode: "",
-                  BSEScript: "",
-                  closingDate: "",
-                  closingPrice: "",
-                  scriptPosition: "",
-                  closingDifferent: "",
-                  weekHigh: "",
-                  weekLow: "",
+                  // listingDate: getIPODataById?.listingDate,
+                  listingPrice: getIPODataById?.listingPrice,
+                  listingPosition: getIPODataById?.listingPosition,
+                  listingDifferent: getIPODataById?.listingDifferent,
+                  NSECode: getIPODataById?.NSECode,
+                  BSEScript: getIPODataById?.BSEScript,
+                  // closingDate: getIPODataById?.closingDate,
+                  closingPrice: getIPODataById?.closingPrice,
+                  scriptPosition: getIPODataById?.scriptPosition,
+                  closingDifferent: getIPODataById?.closingDifferent,
+                  weekHigh: getIPODataById?.weekHigh,
+                  weekLow: getIPODataById?.weekLow,
                 }
               : {
                   listingDate: "",

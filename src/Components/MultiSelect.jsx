@@ -4,6 +4,7 @@ const MultiSelect = ({
   field,
   form,
   options,
+  disabled,
   isMulti = false,
   placeholder = "Select",
 }) => {
@@ -34,6 +35,21 @@ const MultiSelect = ({
         }
         onChange={(option) => form.setFieldValue(field.name, option.value)}
         onBlur={field.onBlur}
+        placeholder={placeholder}
+      />
+    );
+  }
+  if (disabled) {
+    return (
+      <Select
+        disabled
+        className="react-select-container"
+        classNamePrefix="react-select"
+        name={field.name}
+        value={getValue()}
+        // onChange={onChange}
+        options={options}
+        isMulti={true}
         placeholder={placeholder}
       />
     );
