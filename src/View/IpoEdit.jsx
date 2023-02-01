@@ -15,9 +15,18 @@ import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs";
 
 const EditIpo = () => {
-  // const dispatch = useDispatch();
-  // const location = useLocation();
-  // const ipoPrefillData = location.state?.data;
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const ipoPrefillData = location.state;
+
+  useEffect(() => {
+    const payload = {
+      id: ipoPrefillData?.data?.id,
+      CategoryForIPOS: ipoPrefillData?.data?.CategoryForIPOS,
+    };
+    dispatch(getIpoById({ payload }));
+  }, [dispatch]);
+
   // const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   // const [IPOStatus, setIPOStatus] = useState("Live");
   // const handleIpoChange = (e) => {
@@ -30,10 +39,7 @@ const EditIpo = () => {
   //   };
   //   dispatch(updateIPO({ payload }));
   // };
-  // const stepStyleConfig = {
-  //   activeBgColor: "#ed1d24",
-  //   completedBgColor: "#009270",
-  // };
+
   // const DatePickerField = ({ name, value, onChange }) => {
   //   return (
   //     <DatePicker
@@ -192,12 +198,12 @@ const EditIpo = () => {
                   IPORefundsInitiation: "",
                   IPODematTransfer: "",
                   IPOListingDate: "",
-                  // IPOOpenDate: prefillData?.IPOOpenDate,
-                  // IPOCloseDate: prefillData?.IPOCloseDate || "",
-                  // IPOAllotmentDate: prefillData?.IPOAllotmentDate || "",
-                  // IPORefundsInitiation: prefillData?.IPORefundsInitiation || "",
-                  // IPODematTransfer: prefillData?.IPODematTransfer || "",
-                  // IPOListingDate: prefillData?.IPOListingDate || "",
+                  // IPOOpenDate: ipoPrefillData?.IPOOpenDate,
+                  // IPOCloseDate: ipoPrefillData?.IPOCloseDate,
+                  // IPOAllotmentDate: ipoPrefillData?.IPOAllotmentDate,
+                  // IPORefundsInitiation: ipoPrefillData?.IPORefundsInitiation,
+                  // IPODematTransfer: ipoPrefillData?.IPODematTransfer,
+                  // IPOListingDate: ipoPrefillData?.IPOListingDate,
                 }}
                 onSubmit={(values) => console.log("values")}
               >
@@ -283,7 +289,7 @@ const EditIpo = () => {
             {/* <Tabs EditIpo="EditIpo" data={ipoPrefillData} /> */}
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
               <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                <Tabs />
+                <Tabs ipoPrefillData={ipoPrefillData.type} />
               </div>
               {/* <Steppers IpoType="Add" /> */}
               <div className="d-flex justify-content-end">

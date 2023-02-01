@@ -12,55 +12,32 @@ import { useEffect } from "react";
 
 const DisabledGeneralTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  const [disabledTab, setDisabledTab] = useState(null);
-  useEffect(() => {
-    setDisabledTab("disabled");
-  });
+
   return (
     <>
       <Formik
         enableReinitialize
         initialValues={{
-          companyName: "",
-          companyDescription: "",
-          ObjectOfIssue: "",
-          faceValue: "",
-          fromPrice: "",
-          toPrice: "",
-          lotSize: "",
-          issueSize: "",
-          freshIssue: "",
-          offerForSale: "",
-          reatailQuota: "",
-          qibQuota: "",
-          nilQuota: "",
-          issueType: "",
-          listingAt: "",
-          DRHPDraft: "",
-          RHPDraft: "",
-          preIssueShareHolding: "",
-          postIssueShareHolding: "",
+          companyName: getIPODataById?.companyName,
+          companyDescription: getIPODataById?.companyDescription,
+          ObjectOfIssue: getIPODataById?.ObjectOfIssue,
+          faceValue: getIPODataById?.faceValue,
+          fromPrice: getIPODataById?.fromPrice,
+          toPrice: getIPODataById?.toPrice,
+          lotSize: getIPODataById?.lotSize,
+          issueSize: getIPODataById?.issueSize,
+          freshIssue: getIPODataById?.freshIssue,
+          offerForSale: getIPODataById?.offerForSale,
+          reatailQuota: getIPODataById?.reatailQuota,
+          qibQuota: getIPODataById?.qibQuota,
+          nilQuota: getIPODataById?.nilQuota,
+          issueType: getIPODataById?.issueType,
+          listingAt: getIPODataById?.listingAt,
+          DRHPDraft: getIPODataById?.DRHPDraft,
+          RHPDraft: getIPODataById?.RHPDraft,
+          preIssueShareHolding: getIPODataById?.preIssueShareHolding,
+          postIssueShareHolding: getIPODataById?.postIssueShareHolding,
           promotersName: [],
-          // companyName: prefillData?.companyName,
-          // companyDescription: prefillData?.companyDescription,
-          // ObjectOfIssue: prefillData?.ObjectOfIssue,
-          // faceValue: prefillData?.faceValue,
-          // fromPrice: prefillData?.fromPrice,
-          // toPrice: prefillData?.toPrice,
-          // lotSize: prefillData?.lotSize,
-          // issueSize: prefillData?.issueSize,
-          // freshIssue: prefillData?.freshIssue,
-          // offerForSale: prefillData?.offerForSale,
-          // reatailQuota: prefillData?.reatailQuota,
-          // qibQuota: prefillData?.qibQuota,
-          // nilQuota: prefillData?.nilQuota,
-          // issueType: prefillData?.issueType,
-          // listingAt: prefillData?.listingAt,
-          // DRHPDraft: prefillData?.DRHPDraft,
-          // RHPDraft: prefillData?.RHPDraft,
-          // preIssueShareHolding: prefillData?.preIssueShareHolding,
-          // postIssueShareHolding: prefillData?.postIssueShareHolding,
-          // promotersName: prefillData?.promotersName,
         }}
       >
         {({ values }) => (
@@ -79,7 +56,7 @@ const DisabledGeneralTab = () => {
                     type="text"
                     name="companyName"
                     className="form-control mb-2"
-                    {...disabledTab}
+                    disabled
                   />
                 </div>
 

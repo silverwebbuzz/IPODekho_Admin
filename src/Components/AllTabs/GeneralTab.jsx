@@ -11,9 +11,6 @@ import { useDispatch } from "react-redux";
 import MultiSelect from "../MultiSelect";
 
 const GeneralTab = () => {
-  const customStyle = {
-    verticalAlign: "middle",
-  };
   // let fvalue = formData?.pramotersName;
   // const jsonArray = JSON.parse(
   //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))

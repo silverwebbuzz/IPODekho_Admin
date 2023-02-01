@@ -36,6 +36,7 @@ const MainLineIPO = () => {
     };
     dispatch(updateIPO({ payload }));
   };
+
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -246,7 +247,7 @@ const MainLineIPO = () => {
                         <div className="menu-item px-3">
                           <Link
                             to="/mainline_ipo/ipo_edit"
-                            state={{ data: Itm }}
+                            state={{ data: Itm, type: "ipoEdit" }}
                             className="btn btn-light btn-primary btn-sm"
                           >
                             <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">
