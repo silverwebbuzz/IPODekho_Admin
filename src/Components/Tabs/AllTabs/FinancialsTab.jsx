@@ -1,12 +1,14 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React from "react";
+import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import { TabContext } from "../Tabs";
 
 const FinancialsTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
+  const { tabData, setTabData } = useContext(TabContext);
   const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
-
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -43,19 +45,18 @@ const FinancialsTab = ({ ipoEdit }) => {
                   netAssetValue: getIPODataById?.netAssetValue,
                 }
               : {
-                  // companyFinancials: formData?.companyFinancials || [
-                  //   { period: "", assets: "", revenue: "", profit: "" },
-                  // ],
-                  companyFinancials: [],
-                  financialLotsize: [],
-                  peersComparison: [],
-                  earningPerShare: "",
-                  earningPERatio: "",
-                  returnonNetWorth: "",
-                  netAssetValue: "",
+                  companyFinancials: tabData?.companyFinancials || [],
+                  earningPerShare: tabData?.earningPerShare || "",
+                  financialLotsize: tabData?.financialLotsize || [],
+                  peersComparison: tabData?.peersComparison || [],
+                  earningPERatio: tabData?.earningPERatio || "",
+                  returnonNetWorth: tabData?.returnonNetWorth || "",
+                  netAssetValue: tabData?.netAssetValue || "",
                 }
           }
           onSubmit={(values) => {
+            let Data = { ...tabData, ...values };
+            setTabData(Data);
             handleSubmit(values);
           }}
         >

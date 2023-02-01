@@ -11,8 +11,11 @@ import {
   updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import moment from "moment/moment";
+import { TabContext } from "../Tabs";
 const ListedInfoTab = ({ ipoEdit }) => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { tabData, setTabData } = useContext(TabContext);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -62,50 +65,38 @@ const ListedInfoTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  // listingDate: getIPODataById?.listingDate,
-                  listingPrice: getIPODataById?.listingPrice,
-                  listingPosition: getIPODataById?.listingPosition,
-                  listingDifferent: getIPODataById?.listingDifferent,
-                  NSECode: getIPODataById?.NSECode,
-                  BSEScript: getIPODataById?.BSEScript,
-                  // closingDate: getIPODataById?.closingDate,
-                  closingPrice: getIPODataById?.closingPrice,
-                  scriptPosition: getIPODataById?.scriptPosition,
-                  closingDifferent: getIPODataById?.closingDifferent,
-                  weekHigh: getIPODataById?.weekHigh,
-                  weekLow: getIPODataById?.weekLow,
+                  listingDate: getIPODataById?.listingDate || "",
+                  listingPrice: getIPODataById?.listingPrice || "",
+                  listingPosition: getIPODataById?.listingPosition || "",
+                  listingDifferent: getIPODataById?.listingDifferent || "",
+                  NSECode: getIPODataById?.NSECode || "",
+                  BSEScript: getIPODataById?.BSEScript || "",
+                  closingDate: getIPODataById?.closingDate || "",
+                  closingPrice: getIPODataById?.closingPrice || "",
+                  scriptPosition: getIPODataById?.scriptPosition || "",
+                  closingDifferent: getIPODataById?.closingDifferent || "",
+                  weekHigh: getIPODataById?.weekHigh || "",
+                  weekLow: getIPODataById?.weekLow || "",
                 }
               : {
-                  listingDate: "",
-                  listingPrice: "",
-                  listingPosition: "",
-                  listingDifferent: "",
-                  NSECode: "",
-                  BSEScript: "",
-                  closingDate: "",
-                  closingPrice: "",
-                  scriptPosition: "",
-                  closingDifferent: "",
-                  weekHigh: "",
-                  weekLow: "",
+                  // listingDate: getIPODataById?.listingDate,
+                  listingPrice: tabData?.listingPrice || "",
+                  listingPosition: tabData?.listingPosition || "",
+                  listingDifferent: tabData?.listingDifferent || "",
+                  NSECode: tabData?.NSECode || "",
+                  BSEScript: tabData?.BSEScript || "",
+                  closingDate: tabData?.closingDate || "",
+                  closingPrice: tabData?.closingPrice || "",
+                  scriptPosition: tabData?.scriptPosition || "",
+                  closingDifferent: tabData?.closingDifferent || "",
+                  weekHigh: tabData?.weekHigh || "",
+                  weekLow: tabData?.weekLow || "",
                 }
           }
           onSubmit={(values) => {
+            let Data = { ...tabData, ...values };
+            setTabData(Data);
             handleSubmit(values);
-            // handleAllDataSubmit(values);
-            // if (IpoType === "Edit") {
-            //   // let data = { ...prefillData, ...values };
-            //   // setPrefillData(data);
-            //   // handleAllDataSubmit();
-            //   // setActiveStepIndex(activeStepIndex + 1);
-            // } else {
-            //   // let data = { ...formData, ...values };
-            //   // setFormData(data);
-            //   // handleAllDataSubmit();
-            //   // setTimeout(() => {
-            //   //   handleAllDataSubmit();
-            //   // }, 3000);
-            // }
           }}
         >
           {({ values, setFieldValue }) => (

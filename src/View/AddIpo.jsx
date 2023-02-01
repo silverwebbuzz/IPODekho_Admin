@@ -5,25 +5,44 @@ import DatePicker from "react-datepicker";
 import AppContentLayout from "../Components/AppContentLayout";
 import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
-import { useEffect } from "react";
 import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Tabs from "../Components/Tabs/Tabs";
+import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
 const AddIpo = () => {
   const dispatch = useDispatch();
-
+  const { ID, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}
       />
     );
+  };
+  const handleSubmit = (values) => {
+    let payload = {
+      IPOOpenDate: values?.IPOOpenDate || "",
+      IPOCloseDate: values?.IPOCloseDate || "",
+      IPOAllotmentDate: values?.IPOAllotmentDate || "",
+      IPORefundsInitiation: values?.IPORefundsInitiation || "",
+      IPODematTransfer: values?.IPODematTransfer || "",
+      IPOListingDate: values?.IPOListingDate || "",
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+    // id: ID,
   };
 
   return (
@@ -98,23 +117,16 @@ const AddIpo = () => {
               </div>
               <Formik
                 initialValues={{
-                  IPOOpenDate:
-                    "Wed Feb 22 2023 00:00:00 GMT+0530 (India Standard Time)",
+                  IPOOpenDate: "",
                   IPOCloseDate: "",
                   IPOAllotmentDate: "",
                   IPORefundsInitiation: "",
                   IPODematTransfer: "",
                   IPOListingDate: "",
                 }}
-                // initialValues={{
-                //   IPOOpenDate: formData?.IPOOpenDate,
-                //   IPOCloseDate: formData?.IPOCloseDate,
-                //   IPOAllotmentDate: formData?.IPOAllotmentDate,
-                //   IPORefundsInitiation: formData?.IPORefundsInitiation,
-                //   IPODematTransfer: formData?.IPODematTransfer,
-                //   IPOListingDate: formData?.IPOListingDate,
-                // }}
-                onSubmit={(values) => {}}
+                onSubmit={(values) => {
+                  handleSubmit(values);
+                }}
               >
                 {({ values, setFieldValue }) => (
                   <Form>
@@ -127,7 +139,6 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
-                        {console.log(values?.IPOOpenDate)}
                       </div>
 
                       <div className="w-100 fv-row mb-10">
@@ -194,7 +205,7 @@ const AddIpo = () => {
               <Tabs />
             </div>
             {/* <Steppers IpoType="Add" /> */}
-            <div className="d-flex justify-content-end">
+            {/* <div className="d-flex justify-content-end">
               <Link to="/" className="btn btn-light me-5">
                 Cancel
               </Link>
@@ -209,7 +220,7 @@ const AddIpo = () => {
                   <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                 </span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </AppContentLayout>
