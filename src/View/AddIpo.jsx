@@ -48,7 +48,7 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer ipoImage="ipoImage" />
+                    <FilePreviewer addImage="addImage" />
                   </div>
                 </div>
                 <div className="text-muted fs-7">

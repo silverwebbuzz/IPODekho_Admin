@@ -141,7 +141,10 @@ const EditIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer ipoImage="ipoImage" />
+                    <FilePreviewer
+                      editImage="editImage"
+                      ipoPrefillData={ipoPrefillData?.data?.file}
+                    />
                   </div>
                 </div>
                 <div className="text-muted fs-7">

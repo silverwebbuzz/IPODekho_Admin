@@ -5,36 +5,58 @@ import "../assets/css/FilePreviewer.css";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { uploadIMG } from "../redux/slice/mainLineIpoSlices";
 
-const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
-  const [imagePreview, setImagePreview] = useState();
+const FilePreviewer = ({
+  addImage,
+  newsImage,
+  offerModal,
+  editImage,
+  ipoPrefillData,
+}) => {
+  const [imagePreview, setImagePreview] = useState(ipoPrefillData);
   const dispatch = useDispatch();
   const filePicekerRef = useRef(null);
-
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
+
   const previewFile = (e) => {
-    console.log(e?.target?.files[0]);
-
-    const imageFile = e.target.files[0];
-
     const reader = new FileReader();
-    reader.addEventListener("load", (e) => {
-      setImagePreview(e.target.result);
-    });
+    const imageFile = e.target.files[0];
+    // reader.addEventListener("load", (e) => {
+    //   setImagePreview(e.target.result);
+    // });
+    if (imageFile) {
+      reader.readAsDataURL(imageFile);
+    }
+    reader.onload = (readerEvent) => {
+      if (imageFile.type.includes("image")) {
+        setImagePreview(readerEvent.target.result);
+      }
+    };
 
     let formData = new FormData();
-    if (ID) {
+    if (editImage) {
       formData.append("file", e?.target?.files[0]);
       let payload = { payload: formData, id: { id: ID } };
+      // the above line something like this payload = {file:"", id:""}
+      console.log(payload);
       dispatch(uploadIMG({ payload }));
     } else {
-      formData.append("file", e?.target?.files[0]);
-      let payload = { payload: formData, id: { id: null } };
-      dispatch(uploadIMG({ payload }));
+      if (ID) {
+        formData.append("file", e?.target?.files[0]);
+        let payload = { payload: formData, id: { id: ID } };
+        // the above line something like this payload = {file:"", id:""}
+        console.log(payload);
+        dispatch(uploadIMG({ payload }));
+      } else {
+        formData.append("file", e?.target?.files[0]);
+        let payload = { payload: formData, id: { id: null } };
+        console.log(payload);
+        dispatch(uploadIMG({ payload }));
+      }
     }
   };
 
   function clearFiles() {
-    setImagePreview(blankImage);
+    setImagePreview();
   }
 
   return (
@@ -60,7 +82,7 @@ const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
           <i class="bi bi-x fs-2"></i>
         </button>
       )}
-      {ipoImage ? (
+      {addImage ? (
         <div className="preview w-150px h-150px">
           {imagePreview != null && (
             <img className="image_position" src={imagePreview} alt="" />
