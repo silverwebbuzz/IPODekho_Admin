@@ -12,7 +12,7 @@ import PageHeading from "../Components/PageHeading";
 
 import { getIpoById, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/css/customStepperStyle.css";
-import Tabs from "../Components/Tabs";
+import Tabs from "../Components/Tabs/Tabs";
 
 const EditIpo = () => {
   const dispatch = useDispatch();
@@ -198,12 +198,6 @@ const EditIpo = () => {
                   IPORefundsInitiation: "",
                   IPODematTransfer: "",
                   IPOListingDate: "",
-                  // IPOOpenDate: ipoPrefillData?.IPOOpenDate,
-                  // IPOCloseDate: ipoPrefillData?.IPOCloseDate,
-                  // IPOAllotmentDate: ipoPrefillData?.IPOAllotmentDate,
-                  // IPORefundsInitiation: ipoPrefillData?.IPORefundsInitiation,
-                  // IPODematTransfer: ipoPrefillData?.IPODematTransfer,
-                  // IPOListingDate: ipoPrefillData?.IPOListingDate,
                 }}
                 onSubmit={(values) => console.log("values")}
               >
@@ -225,9 +219,6 @@ const EditIpo = () => {
                           type="date"
                           name="IPOCloseDate"
                           className="form-control mb-2"
-                          // value={values?.IPOCloseDate}
-                          // onChange={setFieldValue}
-                          // dateFormat="MMMM d, yyyy"
                         />
                       </div>
                       <div className="w-100 fv-row mb-10">
@@ -236,8 +227,6 @@ const EditIpo = () => {
                           type="date"
                           name="IPOAllotmentDate"
                           className="form-control mb-2"
-                          // value={values?.IPOAllotmentDate}
-                          // onChange={setFieldValue}
                         />
                       </div>
                       <div className="w-100 fv-row mb-10">
@@ -248,8 +237,6 @@ const EditIpo = () => {
                           type="date"
                           name="IPORefundsInitiation"
                           className="form-control mb-2"
-                          // value={values?.IPORefundsInitiation}
-                          // onChange={setFieldValue}
                         />
                       </div>
                       <div className="w-100 fv-row mb-10">
@@ -258,9 +245,6 @@ const EditIpo = () => {
                           type="date"
                           name="IPODematTransfer"
                           className="form-control mb-2"
-                          // value={values?.IPODematTransfer}
-                          // onChange={setFieldValue}
-                          // dateFormat="MMMM d, yyyy"
                         />
                       </div>
                       <div className="w-100 fv-row">
@@ -269,8 +253,6 @@ const EditIpo = () => {
                           type="date"
                           name="IPOListingDate"
                           className="form-control mb-2"
-                          // value={values?.IPOListingDate}
-                          // onChange={setFieldValue}
                         />
                       </div>
                       <div className="d-flex justify-content-center mt-4">
@@ -286,49 +268,13 @@ const EditIpo = () => {
           </div>
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-            {/* <Tabs EditIpo="EditIpo" data={ipoPrefillData} /> */}
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
               <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                 <Tabs ipoEdit={ipoPrefillData.type} />
               </div>
-              {/* <Steppers IpoType="Add" /> */}
-              <div className="d-flex justify-content-end">
-                {/* <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link> */}
-                {/* 
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button> */}
-              </div>
+              <div className="d-flex justify-content-end"></div>
             </div>
-            {/* <Steppers IpoType="Edit" />
-             */}
-            <div className="d-flex justify-content-end">
-              {/* <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link> */}
-              {/* 
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button> */}
-            </div>
+            <div className="d-flex justify-content-end"></div>
           </div>
         </div>
       </AppContentLayout>

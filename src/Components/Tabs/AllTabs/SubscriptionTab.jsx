@@ -1,12 +1,38 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useContext } from "react";
-import { FormContext } from "../../App";
+import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useSelector } from "react-redux";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import { useDispatch, useSelector } from "react-redux";
 const SubscriptionTab = ({ ipoEdit }) => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { ID, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const dispatch = useDispatch();
+
+  const handleSubmit = (one) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      subscriptionDetails: one?.subscriptionDetails || [],
+      qualifiedInstitutions: one?.qualifiedInstitutions || "",
+      nonInstitutionalBuyers: one?.nonInstitutionalBuyers || "",
+      bNII: one?.bNII || "",
+      sNII: one?.sNII || "",
+      retailInvestors: one?.retailInvestors || "",
+      employees: one?.employees || "",
+      others: one?.others || "",
+      total: one?.total || "",
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -50,35 +76,35 @@ const SubscriptionTab = ({ ipoEdit }) => {
                   total: "",
                 }
           }
-          // onSubmit={(values) => {
-          //   if (IpoType === "Edit") {
-          //     const totalOf =
-          //       +values?.qualifiedInstitutions +
-          //       +values?.nonInstitutionalBuyers +
-          //       +values?.bNII +
-          //       +values?.sNII +
-          //       +values?.retailInvestors +
-          //       +values?.employees +
-          //       +values?.others;
-          //     // const one = { ...values, ["total"]: totalOf };
-          //     // let data = { ...prefillData, ...one };
-          //     // setPrefillData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   } else {
-          //     const totalOf =
-          //       +values?.qualifiedInstitutions +
-          //       +values?.nonInstitutionalBuyers +
-          //       +values?.bNII +
-          //       +values?.sNII +
-          //       +values?.retailInvestors +
-          //       +values?.employees +
-          //       +values?.others;
-          //     // const one = { ...values, ["total"]: totalOf };
-          //     // const data = { ...formData, ...one };
-          //     // setFormData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   }
-          // }}
+          onSubmit={(values) => {
+            if (IpoType === "Edit") {
+              const totalOf =
+                +values?.qualifiedInstitutions +
+                +values?.nonInstitutionalBuyers +
+                +values?.bNII +
+                +values?.sNII +
+                +values?.retailInvestors +
+                +values?.employees +
+                +values?.others;
+              const one = { ...values, ["total"]: totalOf };
+              handleSubmit(one);
+              // setPrefillData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
+            } else {
+              const totalOf =
+                +values?.qualifiedInstitutions +
+                +values?.nonInstitutionalBuyers +
+                +values?.bNII +
+                +values?.sNII +
+                +values?.retailInvestors +
+                +values?.employees +
+                +values?.others;
+              // const one = { ...values, ["total"]: totalOf };
+              // const data = { ...formData, ...one };
+              // setFormData(data);
+              // setActiveStepIndex(activeStepIndex + 1);
+            }
+          }}
         >
           {({ values, setFieldValue }) => (
             <Form>

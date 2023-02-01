@@ -1,31 +1,35 @@
+import { useEffect } from "react";
 import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../assets/css/FilePreviewer.css";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import { uploadIMG } from "../redux/slice/mainLineIpoSlices";
 
 const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
   const [imagePreview, setImagePreview] = useState();
-
+  const dispatch = useDispatch();
   const filePicekerRef = useRef(null);
+  // const [ID, setID] = useState(null);
+  // setID(JSON?.parse(localStorage.getItem("ID")));
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
   const previewFile = (e) => {
-    // const reader = new FileReader();
-    // const selectedFile = e.target.files[0];
-    // if (selectedFile) {
-    //   reader.readAsDataURL(selectedFile);
-    // }
-    // reader.onload = (readerEvent) => {
-    //   if (selectedFile.type.includes("image")) {
-    //     setImagePreview(readerEvent.target.result);
-    //     if (ipoImage) {
-    //       const data = { ...formData, ["file"]: readerEvent.target.result };
-    //       setFormData(data);
-    //     }
-    //   }
-    // };
-    // if (ipoImage) {
-    //   const data = { ...formData, ["file"]: e.target.files[0] };
-    //   setFormData(data);
-    // }
+    // let ID = null;
+    console.log(" e?.target?.files[0]", e?.target?.files[0]);
+    let formData = new FormData();
+    if (ID) {
+      // ID = JSON?.parse(localStorage.getItem("ID"));
+      // formData.append("id", ID);
+      formData.append("file", e?.target?.files[0]);
+      let payload = { payload: formData, id: { id: ID } };
+      dispatch(uploadIMG({ payload }));
+    } else {
+      // ID = null;
+      // formData.append("id", ID);
+      formData.append("file", e?.target?.files[0]);
+      let payload = { payload: formData, id: { id: null } };
+      dispatch(uploadIMG({ payload }));
+    }
   };
 
   function clearFiles() {

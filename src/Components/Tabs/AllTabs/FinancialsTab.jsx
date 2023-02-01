@@ -1,10 +1,32 @@
 import { Field, FieldArray, Form, Formik } from "formik";
-import React, { useContext } from "react";
-import { useSelector } from "react-redux";
-import { FormContext } from "../../App";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 
 const FinancialsTab = ({ ipoEdit }) => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const dispatch = useDispatch();
+  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+
+  const handleSubmit = (values) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      earningPerShare: values?.earningPerShare || "",
+      earningPERatio: values?.earningPERatio || "",
+      returnonNetWorth: values?.returnonNetWorth || "",
+      netAssetValue: values?.netAssetValue || "",
+      companyFinancials: values?.companyFinancials || [],
+      financialLotsize: values?.financialLotsize || [],
+      peersComparison: values?.peersComparison || [],
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
+
   return (
     <>
       <div>
@@ -33,17 +55,9 @@ const FinancialsTab = ({ ipoEdit }) => {
                   netAssetValue: "",
                 }
           }
-          // onSubmit={(values) => {
-          //   if (IpoType === "Edit") {
-          //     // let data = { ...prefillData, ...values };
-          //     // setPrefillData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   } else {
-          //     // let data = { ...formData, ...values };
-          //     // setFormData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   }
-          // }}
+          onSubmit={(values) => {
+            handleSubmit(values);
+          }}
         >
           {({ values }) => (
             <Form>

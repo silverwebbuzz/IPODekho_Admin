@@ -2,42 +2,55 @@ import React from "react";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import "../../assets/css/style.bundle.css";
-import "../../assets/plugins/global/plugins.bundle.css";
-import { modules } from "../../Constants/commonConstants";
+import "../../../assets/css/style.bundle.css";
+import "../../../assets/plugins/global/plugins.bundle.css";
+import { modules } from "../../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
+import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
-import MultiSelect from "../MultiSelect";
+import MultiSelect from "../../MultiSelect";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { IDContext } from "../../../App";
 
 const GeneralTab = ({ ipoEdit }) => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  // let fvalue = formData?.pramotersName;
-  // const jsonArray = JSON.parse(
-  //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
-  // );
-  // useEffect(() => {
-  //   const asArray = Object.entries(formData);
-  //   asArray?.filter(([key, value]) => {
-  //     if (key === "promotersName") {
-  //       let fvalue = value;
-  //       // let jsonArray = JSON.parse(
-  //       //   JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //       // );
-  //       setFormData({
-  //         ...formData,
-  //         promotersName: JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
-  //         ),
-  //       });
-  //     }
-  //   });
-  // }, []);
-  // console.log("formData?.promotersName", formData?.promotersName);
-  // console.log("prefillData?.promotersName", prefillData?.promotersName);
-  // console.log("@##@@#@#", JSON.stringify(formData?.promotersName));
+  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+  const dispatch = useDispatch();
 
-  console.log(ipoEdit, getIPODataById);
+  const handleSubmit = (values) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      companyName: values?.companyName || "",
+      companyDescription: values?.companyDescription || "",
+      ObjectOfIssue: values?.ObjectOfIssue || "",
+      faceValue: values?.faceValue || "",
+      fromPrice: values?.fromPrice || "",
+      toPrice: values?.toPrice || "",
+      lotSize: values?.lotSize || "",
+      issueSize: values?.issueSize || "",
+      freshIssue: values?.freshIssue || "",
+      offerForSale: values?.OfferForSale || "",
+      reatailQuota: values?.reatailQuota || "",
+      qibQuota: values?.qibQuota || "",
+      nilQuota: values?.nilQuota || "",
+      issueType: values?.issueType || "",
+      listingAt: values?.listingAt || "",
+      DRHPDraft: values?.DRHPDraft || "",
+      RHPDraft: values?.RHPDraft || "",
+      preIssueShareHolding: values?.preIssueShareHolding || "",
+      postIssueShareHolding: values?.postIssueShareHolding || "",
+      promotersName: values?.promotersName || [],
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
+  // console.log(JSON.parse(localStorage.getItem("ID")));
+
   return (
     <>
       <div>
@@ -90,22 +103,25 @@ const GeneralTab = ({ ipoEdit }) => {
                   postIssueShareHolding: "",
                 }
           }
-          // onSubmit={(values) => {
-          //   if (ipoEdit) {
-          //     // let One = {
-          //     //   ...values,
-          //     //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
-          //     // };
-          //     // let data = { ...prefillData, ...One };
-          //     // let data = { ...prefillData, ...values };
-          //     // setPrefillData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   } else {
-          //     // let data = { ...formData, ...values };
-          //     // setFormData(data);
-          //     // setActiveStepIndex(activeStepIndex + 1);
-          //   }
-          // }}
+          onSubmit={(values) => {
+            // console.log(values);
+            handleSubmit(values);
+            // if (IpoType === "Edit") {
+            //   // let One = {
+            //   //   ...values,
+            //   //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
+            //   // };
+            //   // let data = { ...prefillData, ...One };
+            //   // let data = { ...prefillData, ...values };
+            //   // setPrefillData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // } else {
+
+            //   // let data = { ...formData, ...values };
+            //   // setFormData(data);
+            //   // setActiveStepIndex(activeStepIndex + 1);
+            // }
+          }}
         >
           {({ values }) => (
             <Form>
@@ -435,7 +451,7 @@ const GeneralTab = ({ ipoEdit }) => {
                 </div>
                 <div className="d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary">
-                    <span className="indicator-label">{"Next >>"}</span>
+                    <span className="indicator-label">Save Changes</span>
                   </button>
                 </div>
               </div>

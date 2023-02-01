@@ -8,8 +8,8 @@ import PageHeading from "../Components/PageHeading";
 import { useEffect } from "react";
 import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
-import Tabs from "../Components/Tabs";
 import { Link } from "react-router-dom";
+import Tabs from "../Components/Tabs/Tabs";
 const AddIpo = () => {
   const dispatch = useDispatch();
 
@@ -98,7 +98,8 @@ const AddIpo = () => {
               </div>
               <Formik
                 initialValues={{
-                  IPOOpenDate: "",
+                  IPOOpenDate:
+                    "Wed Feb 22 2023 00:00:00 GMT+0530 (India Standard Time)",
                   IPOCloseDate: "",
                   IPOAllotmentDate: "",
                   IPORefundsInitiation: "",
@@ -126,6 +127,7 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
+                        {console.log(values?.IPOOpenDate)}
                       </div>
 
                       <div className="w-100 fv-row mb-10">
