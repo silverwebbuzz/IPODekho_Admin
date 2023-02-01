@@ -69,6 +69,7 @@ export const updateIPO = createAsyncThunk(
           },
         }
       );
+      console.log(response?.data);
       return response?.data?.Data;
     } catch (error) {
       return rejectWithValue(error);

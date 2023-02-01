@@ -13,7 +13,7 @@ import RegistrarInfoTab from "./AllTabs/CompanyRegistrarInfoTab";
 import SubscriptionTab from "./AllTabs/SubscriptionTab";
 import ListedInfoTab from "./AllTabs/ListedInfoTab";
 
-const Tabs = ({ ipoDetail }) => {
+const Tabs = ({ ipoDetail, ipoEdit }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
 
@@ -102,23 +102,43 @@ const Tabs = ({ ipoDetail }) => {
       <div className="tab-content">
         {activeTab === "ipo_general" ? (
           <TabPaneLayout>
-            {ipoDetail ? <DisabledGeneralTab /> : <GeneralTab />}
+            {ipoDetail ? (
+              <DisabledGeneralTab />
+            ) : (
+              <GeneralTab ipoEdit={ipoEdit} />
+            )}
           </TabPaneLayout>
         ) : activeTab === "ipo_financials" ? (
           <TabPaneLayout>
-            {ipoDetail ? <DisabledFinancialsTab /> : <FinancialsTab />}
+            {ipoDetail ? (
+              <DisabledFinancialsTab />
+            ) : (
+              <FinancialsTab ipoEdit={ipoEdit} />
+            )}
           </TabPaneLayout>
         ) : activeTab === "ipo_companyinfo" ? (
           <TabPaneLayout>
-            {ipoDetail ? <DisabledRegistrarInfoTab /> : <RegistrarInfoTab />}
+            {ipoDetail ? (
+              <DisabledRegistrarInfoTab />
+            ) : (
+              <RegistrarInfoTab ipoEdit={ipoEdit} />
+            )}
           </TabPaneLayout>
         ) : activeTab === "ipo_subscription" ? (
           <TabPaneLayout>
-            {ipoDetail ? <DisabledSubscriptionTab /> : <SubscriptionTab />}
+            {ipoDetail ? (
+              <DisabledSubscriptionTab />
+            ) : (
+              <SubscriptionTab ipoEdit={ipoEdit} />
+            )}
           </TabPaneLayout>
         ) : activeTab === "ipo_listed_info" ? (
           <TabPaneLayout>
-            {ipoDetail ? <DisabledListedInfoTab /> : <ListedInfoTab />}
+            {ipoDetail ? (
+              <DisabledListedInfoTab />
+            ) : (
+              <ListedInfoTab ipoEdit={ipoEdit} />
+            )}
           </TabPaneLayout>
         ) : (
           <TabPaneLayout>

@@ -7,10 +7,11 @@ import "../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../redux/slice/mainLineIpoSlices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../MultiSelect";
 
-const GeneralTab = () => {
+const GeneralTab = ({ ipoEdit }) => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   // let fvalue = formData?.pramotersName;
   // const jsonArray = JSON.parse(
   //   JSON.parse(JSON.stringify(fvalue)?.replace(/\//g, ""))
@@ -36,36 +37,35 @@ const GeneralTab = () => {
   // console.log("prefillData?.promotersName", prefillData?.promotersName);
   // console.log("@##@@#@#", JSON.stringify(formData?.promotersName));
 
-  // console.log(IpoType);
-  const IpoType = "Edit";
+  console.log(ipoEdit, getIPODataById);
   return (
     <>
       <div>
         <Formik
           enableReinitialize
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
-                  companyName: "",
-                  companyDescription: "",
-                  ObjectOfIssue: "",
-                  faceValue: "",
-                  fromPrice: "",
-                  toPrice: "",
-                  lotSize: "",
-                  issueSize: "",
-                  freshIssue: "",
-                  OfferForSale: "",
-                  reatailQuota: "",
-                  qibQuota: "",
-                  nilQuota: "",
-                  issueType: "",
-                  listingAt: "",
-                  DRHPDraft: "",
-                  RHPDraft: "",
+                  companyName: getIPODataById?.companyName,
+                  companyDescription: getIPODataById?.companyDescription,
+                  ObjectOfIssue: getIPODataById?.ObjectOfIssue,
+                  faceValue: getIPODataById?.faceValue,
+                  fromPrice: getIPODataById?.fromPrice,
+                  toPrice: getIPODataById?.toPrice,
+                  lotSize: getIPODataById?.lotSize,
+                  issueSize: getIPODataById?.issueSize,
+                  freshIssue: getIPODataById?.freshIssue,
+                  offerForSale: getIPODataById?.offerForSale,
+                  reatailQuota: getIPODataById?.reatailQuota,
+                  qibQuota: getIPODataById?.qibQuota,
+                  nilQuota: getIPODataById?.nilQuota,
+                  issueType: getIPODataById?.issueType,
+                  listingAt: getIPODataById?.listingAt,
+                  DRHPDraft: getIPODataById?.DRHPDraft,
+                  RHPDraft: getIPODataById?.RHPDraft,
+                  preIssueShareHolding: getIPODataById?.preIssueShareHolding,
+                  postIssueShareHolding: getIPODataById?.postIssueShareHolding,
                   promotersName: [],
-                  preIssueShareHolding: "",
-                  postIssueShareHolding: "",
                 }
               : {
                   companyName: "",
@@ -90,22 +90,22 @@ const GeneralTab = () => {
                   postIssueShareHolding: "",
                 }
           }
-          onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let One = {
-              //   ...values,
-              //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
-              // };
-              // let data = { ...prefillData, ...One };
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
-          }}
+          // onSubmit={(values) => {
+          //   if (ipoEdit) {
+          //     // let One = {
+          //     //   ...values,
+          //     //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
+          //     // };
+          //     // let data = { ...prefillData, ...One };
+          //     // let data = { ...prefillData, ...values };
+          //     // setPrefillData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   } else {
+          //     // let data = { ...formData, ...values };
+          //     // setFormData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   }
+          // }}
         >
           {({ values }) => (
             <Form>

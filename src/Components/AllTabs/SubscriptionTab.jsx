@@ -4,7 +4,9 @@ import { useContext } from "react";
 import { FormContext } from "../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-const SubscriptionTab = () => {
+import { useSelector } from "react-redux";
+const SubscriptionTab = ({ ipoEdit }) => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -23,17 +25,18 @@ const SubscriptionTab = () => {
       <div>
         <Formik
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
                   subscriptionDetails: [],
-                  qualifiedInstitutions: "",
-                  nonInstitutionalBuyers: "",
-                  bNII: "",
-                  sNII: "",
-                  retailInvestors: "",
-                  employees: "",
-                  others: "",
-                  total: "",
+                  qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
+                  nonInstitutionalBuyers:
+                    getIPODataById?.nonInstitutionalBuyers,
+                  bNII: getIPODataById?.bNII,
+                  sNII: getIPODataById?.sNII,
+                  retailInvestors: getIPODataById?.retailInvestors,
+                  employees: getIPODataById?.employees,
+                  others: getIPODataById?.others,
+                  total: getIPODataById?.total,
                 }
               : {
                   subscriptionDetails: [],
@@ -47,35 +50,35 @@ const SubscriptionTab = () => {
                   total: "",
                 }
           }
-          onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              const totalOf =
-                +values?.qualifiedInstitutions +
-                +values?.nonInstitutionalBuyers +
-                +values?.bNII +
-                +values?.sNII +
-                +values?.retailInvestors +
-                +values?.employees +
-                +values?.others;
-              // const one = { ...values, ["total"]: totalOf };
-              // let data = { ...prefillData, ...one };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              const totalOf =
-                +values?.qualifiedInstitutions +
-                +values?.nonInstitutionalBuyers +
-                +values?.bNII +
-                +values?.sNII +
-                +values?.retailInvestors +
-                +values?.employees +
-                +values?.others;
-              // const one = { ...values, ["total"]: totalOf };
-              // const data = { ...formData, ...one };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
-          }}
+          // onSubmit={(values) => {
+          //   if (IpoType === "Edit") {
+          //     const totalOf =
+          //       +values?.qualifiedInstitutions +
+          //       +values?.nonInstitutionalBuyers +
+          //       +values?.bNII +
+          //       +values?.sNII +
+          //       +values?.retailInvestors +
+          //       +values?.employees +
+          //       +values?.others;
+          //     // const one = { ...values, ["total"]: totalOf };
+          //     // let data = { ...prefillData, ...one };
+          //     // setPrefillData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   } else {
+          //     const totalOf =
+          //       +values?.qualifiedInstitutions +
+          //       +values?.nonInstitutionalBuyers +
+          //       +values?.bNII +
+          //       +values?.sNII +
+          //       +values?.retailInvestors +
+          //       +values?.employees +
+          //       +values?.others;
+          //     // const one = { ...values, ["total"]: totalOf };
+          //     // const data = { ...formData, ...one };
+          //     // setFormData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   }
+          // }}
         >
           {({ values, setFieldValue }) => (
             <Form>
@@ -289,15 +292,7 @@ const SubscriptionTab = () => {
                         </tr>
                         <tr>
                           <td className="fw-bold">Total</td>
-                          <td>
-                            {+values?.qualifiedInstitutions +
-                              +values?.nonInstitutionalBuyers +
-                              +values?.bNII +
-                              +values?.sNII +
-                              +values?.retailInvestors +
-                              +values?.employees +
-                              +values?.others}
-                          </td>
+                          <td>{values.total}</td>
                         </tr>
                       </tbody>
                     </table>

@@ -1,23 +1,24 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { FormContext } from "../../App";
 
-const FinancialsTab = () => {
-  const IpoType = "EDit";
+const FinancialsTab = ({ ipoEdit }) => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   return (
     <>
       <div>
         <Formik
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
                   companyFinancials: [],
+                  earningPerShare: getIPODataById?.earningPerShare,
                   financialLotsize: [],
                   peersComparison: [],
-                  earningPerShare: "",
-                  earningPERatio: "",
-                  returnonNetWorth: "",
-                  netAssetValue: "",
+                  earningPERatio: getIPODataById?.earningPERatio,
+                  returnonNetWorth: getIPODataById?.returnonNetWorth,
+                  netAssetValue: getIPODataById?.netAssetValue,
                 }
               : {
                   // companyFinancials: formData?.companyFinancials || [
@@ -32,17 +33,17 @@ const FinancialsTab = () => {
                   netAssetValue: "",
                 }
           }
-          onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
-          }}
+          // onSubmit={(values) => {
+          //   if (IpoType === "Edit") {
+          //     // let data = { ...prefillData, ...values };
+          //     // setPrefillData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   } else {
+          //     // let data = { ...formData, ...values };
+          //     // setFormData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   }
+          // }}
         >
           {({ values }) => (
             <Form>

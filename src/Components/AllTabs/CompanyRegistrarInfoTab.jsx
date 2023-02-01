@@ -1,26 +1,29 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { FormContext } from "../../App";
 
-const RegistrarInfoTab = () => {
-  const IpoType = "Edit";
+const RegistrarInfoTab = ({ ipoEdit }) => {
+  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+
   return (
     <>
       <div>
         <Formik
+          enableReinitialize
           initialValues={
-            IpoType === "Edit"
+            ipoEdit
               ? {
-                  address: "",
-                  companyPhone: "",
-                  email: "",
-                  website: "",
-                  registerName: "",
-                  registerPhone: "",
-                  registerEmail: "",
-                  registerWebsite: "",
-                  allotmentLink: "",
+                  address: getIPODataById?.address,
+                  companyPhone: getIPODataById?.companyPhone,
+                  email: getIPODataById?.email,
+                  website: getIPODataById?.website,
+                  registerName: getIPODataById?.registerName,
+                  registerPhone: getIPODataById?.registerPhone,
+                  registerEmail: getIPODataById?.registerEmail,
+                  registerWebsite: getIPODataById?.registerWebsite,
+                  allotmentLink: getIPODataById?.allotmentLink,
                 }
               : {
                   address: "",
@@ -34,17 +37,17 @@ const RegistrarInfoTab = () => {
                   allotmentLink: "",
                 }
           }
-          onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              // let data = { ...prefillData, ...values };
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              // let data = { ...formData, ...values };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
-          }}
+          // onSubmit={(values) => {
+          //   if (ipoEdit) {
+          //     // let data = { ...prefillData, ...values };
+          //     // setPrefillData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   } else {
+          //     // let data = { ...formData, ...values };
+          //     // setFormData(data);
+          //     // setActiveStepIndex(activeStepIndex + 1);
+          //   }
+          // }}
         >
           {({ values }) => (
             <Form>

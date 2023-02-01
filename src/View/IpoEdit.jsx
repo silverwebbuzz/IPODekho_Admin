@@ -289,7 +289,7 @@ const EditIpo = () => {
             {/* <Tabs EditIpo="EditIpo" data={ipoPrefillData} /> */}
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
               <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                <Tabs ipoPrefillData={ipoPrefillData.type} />
+                <Tabs ipoEdit={ipoPrefillData.type} />
               </div>
               {/* <Steppers IpoType="Add" /> */}
               <div className="d-flex justify-content-end">
