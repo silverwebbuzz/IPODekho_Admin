@@ -16,15 +16,15 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
-      address: values?.address || "",
-      companyPhone: values?.companyPhone || "",
-      email: values?.email || "",
-      website: values?.website || "",
-      registerName: values?.registerName || "",
-      registerPhone: values?.registerPhone || "",
-      registerEmail: values?.registerEmail || "",
-      registerWebsite: values?.registerWebsite || "",
-      allotmentLink: values?.allotmentLink || "",
+      address: values?.address,
+      companyPhone: values?.companyPhone,
+      email: values?.email,
+      website: values?.website,
+      registerName: values?.registerName,
+      registerPhone: values?.registerPhone,
+      registerEmail: values?.registerEmail,
+      registerWebsite: values?.registerWebsite,
+      allotmentLink: values?.allotmentLink,
     };
     if (ID) {
       payload.id = ID;
@@ -54,15 +54,15 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
                   allotmentLink: getIPODataById?.allotmentLink,
                 }
               : {
-                  address: tabData?.address || "",
-                  companyPhone: tabData?.companyPhone || "",
-                  email: tabData?.email || "",
-                  website: tabData?.website || "",
-                  registerName: tabData?.registerName || "",
-                  registerPhone: tabData?.registerPhone || "",
-                  registerEmail: tabData?.registerEmail || "",
-                  registerWebsite: tabData?.registerWebsite || "",
-                  allotmentLink: tabData?.allotmentLink || "",
+                  address: tabData?.address,
+                  companyPhone: tabData?.companyPhone,
+                  email: tabData?.email,
+                  website: tabData?.website,
+                  registerName: tabData?.registerName,
+                  registerPhone: tabData?.registerPhone,
+                  registerEmail: tabData?.registerEmail,
+                  registerWebsite: tabData?.registerWebsite,
+                  allotmentLink: tabData?.allotmentLink,
                 }
           }
           onSubmit={(values) => {
