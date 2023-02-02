@@ -9,12 +9,17 @@ import { Formik, Form, Field, FieldArray } from "formik";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../../MultiSelect";
-import { useEffect } from "react";
 import { useContext } from "react";
-import { IDContext } from "../../../App";
+import { TabContext } from "../Tabs";
 
 const GeneralTab = ({ ipoEdit }) => {
+  const draftBtnStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "start",
+  };
   const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+  const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
 
   const handleSubmit = (values) => {
@@ -41,12 +46,17 @@ const GeneralTab = ({ ipoEdit }) => {
       postIssueShareHolding: values?.postIssueShareHolding || "",
       promotersName: values?.promotersName || [],
     };
-    if (ID) {
-      payload.id = ID;
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
       dispatch(createMainLineIpo({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
   // console.log(JSON.parse(localStorage.getItem("ID")));
@@ -78,49 +88,36 @@ const GeneralTab = ({ ipoEdit }) => {
                   RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  promotersName: [],
+                  promotersName: getIPODataById?.promotersName || [],
                 }
               : {
-                  companyName: "",
-                  companyDescription: "",
-                  ObjectOfIssue: "",
-                  faceValue: "",
-                  fromPrice: "",
-                  toPrice: "",
-                  lotSize: "",
-                  issueSize: "",
-                  freshIssue: "",
-                  OfferForSale: "",
-                  reatailQuota: "",
-                  qibQuota: "",
-                  nilQuota: "",
-                  issueType: "",
-                  listingAt: "",
-                  DRHPDraft: "",
-                  RHPDraft: "",
-                  promotersName: [],
-                  preIssueShareHolding: "",
-                  postIssueShareHolding: "",
+                  companyName: tabData?.companyName || "",
+                  companyDescription: tabData?.companyDescription || "",
+                  ObjectOfIssue: tabData?.ObjectOfIssue || "",
+                  faceValue: tabData?.faceValue || "",
+                  fromPrice: tabData?.fromPrice || "",
+                  toPrice: tabData?.toPrice || "",
+                  lotSize: tabData?.lotSize || "",
+                  issueSize: tabData?.issueSize || "",
+                  freshIssue: tabData?.freshIssue || "",
+                  offerForSale: tabData?.offerForSale || "",
+                  reatailQuota: tabData?.reatailQuota || "",
+                  qibQuota: tabData?.qibQuota || "",
+                  nilQuota: tabData?.nilQuota || "",
+                  issueType: tabData?.issueType || "",
+                  listingAt: tabData?.listingAt || "",
+                  DRHPDraft: tabData?.DRHPDraft || "",
+                  RHPDraft: tabData?.RHPDraft || "",
+                  preIssueShareHolding: tabData?.preIssueShareHolding || "",
+                  postIssueShareHolding: tabData?.postIssueShareHolding || "",
+                  promotersName: tabData?.promotersName || [],
                 }
           }
           onSubmit={(values) => {
-            // console.log(values);
+            let Data = { ...tabData, ...values };
+            console.log(Data);
+            setTabData(Data);
             handleSubmit(values);
-            // if (IpoType === "Edit") {
-            //   // let One = {
-            //   //   ...values,
-            //   //   ["promotersName"]: JSON.parse(prefillData?.promotersName),
-            //   // };
-            //   // let data = { ...prefillData, ...One };
-            //   // let data = { ...prefillData, ...values };
-            //   // setPrefillData(data);
-            //   // setActiveStepIndex(activeStepIndex + 1);
-            // } else {
-
-            //   // let data = { ...formData, ...values };
-            //   // setFormData(data);
-            //   // setActiveStepIndex(activeStepIndex + 1);
-            // }
           }}
         >
           {({ values }) => (
@@ -139,7 +136,7 @@ const GeneralTab = ({ ipoEdit }) => {
                       type="text"
                       name="companyName"
                       className="form-control mb-2"
-                      placeholder="Company Name"
+                      placeholder="Comapny Name"
                       required
                     />
                   </div>
@@ -159,7 +156,7 @@ const GeneralTab = ({ ipoEdit }) => {
                   </div>
                   <br />
                   <br />
-                  <div className="mt-4">
+                  <div className="mt-4 mb-6">
                     <label className="form-label ">Objects of the Issue</label>
                     <Field name="ObjectOfIssue">
                       {({ field }) => (
@@ -336,22 +333,34 @@ const GeneralTab = ({ ipoEdit }) => {
                     </div>
                   </div>
                   <div className="d-flex flex-wrap gap-5">
-                    <div className="w-100 fv-row flex-md-root">
+                    <div
+                      className="w-100 fv-row flex-md-root"
+                      // style={draftBtnStyle}
+                    >
                       <label className="form-label">DRHP Draft</label>
                       <Field
                         type="text"
                         name="DRHPDraft"
                         className="form-control"
                       />
+                      {/* <button className="btn btn-primary" type="button">
+                        DRHP Draft
+                      </button> */}
                     </div>
 
-                    <div className="w-100 fv-row flex-md-root">
+                    <div
+                      className="w-100 fv-row flex-md-root"
+                      // style={draftBtnStyle}
+                    >
                       <label className="form-label">RHP Draft</label>
                       <Field
                         type="text"
                         name="RHPDraft"
                         className="form-control"
                       />
+                      {/* <button className="btn btn-primary" type="button">
+                        RHP Draft
+                      </button> */}
                     </div>
                   </div>
                 </div>
@@ -406,7 +415,7 @@ const GeneralTab = ({ ipoEdit }) => {
                               {values?.promotersName?.map(
                                 (promotersName, index) => (
                                   <div key={index}>
-                                    {/** both these conventions do the same */}
+                                    {/* {/* both these conventions do the same /} */}
                                     <div className="col-md-8 d-flex">
                                       <Field
                                         className="form-control mt-2"

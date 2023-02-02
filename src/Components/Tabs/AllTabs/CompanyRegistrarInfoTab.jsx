@@ -4,10 +4,15 @@ import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import { TabContext } from "../Tabs";
 
 const RegistrarInfoTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  const { ID, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const { tabData, setTabData } = useContext(TabContext);
+
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -30,8 +35,6 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
     }
   };
 
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-
   return (
     <>
       <div>
@@ -51,28 +54,21 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
                   allotmentLink: getIPODataById?.allotmentLink,
                 }
               : {
-                  address: "",
-                  companyPhone: "",
-                  email: "",
-                  website: "",
-                  registerName: "",
-                  registerPhone: "",
-                  registerEmail: "",
-                  registerWebsite: "",
-                  allotmentLink: "",
+                  address: tabData?.address || "",
+                  companyPhone: tabData?.companyPhone || "",
+                  email: tabData?.email || "",
+                  website: tabData?.website || "",
+                  registerName: tabData?.registerName || "",
+                  registerPhone: tabData?.registerPhone || "",
+                  registerEmail: tabData?.registerEmail || "",
+                  registerWebsite: tabData?.registerWebsite || "",
+                  allotmentLink: tabData?.allotmentLink || "",
                 }
           }
           onSubmit={(values) => {
+            let Data = { ...tabData, ...values };
+            setTabData(Data);
             handleSubmit(values);
-            // if (IpoType === "Edit") {
-            //   // let data = { ...prefillData, ...values };
-            //   // setPrefillData(data);
-            //   // setActiveStepIndex(activeStepIndex + 1);
-            // } else {
-            //   // let data = { ...formData, ...values };
-            //   // setFormData(data);
-            //   // setActiveStepIndex(activeStepIndex + 1);
-            // }
           }}
         >
           {({ values }) => (

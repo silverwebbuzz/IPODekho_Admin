@@ -6,24 +6,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
+import { TabContext } from "../Tabs";
 const SubscriptionTab = ({ ipoEdit }) => {
   const { ID, getIPODataById } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+  const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
 
   const handleSubmit = (one) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
-      subscriptionDetails: one?.subscriptionDetails || [],
-      qualifiedInstitutions: one?.qualifiedInstitutions || "",
-      nonInstitutionalBuyers: one?.nonInstitutionalBuyers || "",
-      bNII: one?.bNII || "",
-      sNII: one?.sNII || "",
-      retailInvestors: one?.retailInvestors || "",
-      employees: one?.employees || "",
-      others: one?.others || "",
-      total: one?.total || "",
+      subscriptionDetails: one.subscriptionDetails || [],
+      qualifiedInstitutions: one.qualifiedInstitutions || "",
+      nonInstitutionalBuyers: one.nonInstitutionalBuyers || "",
+      bNII: one.bNII || "",
+      sNII: one.sNII || "",
+      retailInvestors: one.retailInvestors || "",
+      employees: one.employees || "",
+      others: one.others || "",
+      total: one.total || "",
     };
     if (ID) {
       payload.id = ID;
@@ -65,45 +67,47 @@ const SubscriptionTab = ({ ipoEdit }) => {
                   total: getIPODataById?.total,
                 }
               : {
-                  subscriptionDetails: [],
-                  qualifiedInstitutions: "",
-                  nonInstitutionalBuyers: "",
-                  bNII: "",
-                  sNII: "",
-                  retailInvestors: "",
-                  employees: "",
-                  others: "",
-                  total: "",
+                  subscriptionDetails: tabData.subscriptionDetails || [],
+                  qualifiedInstitutions: tabData.qualifiedInstitutions || "",
+                  nonInstitutionalBuyers: tabData.nonInstitutionalBuyers || "",
+                  bNII: tabData.bNII || "",
+                  sNII: tabData.sNII || "",
+                  retailInvestors: tabData.retailInvestors || "",
+                  employees: tabData.employees || "",
+                  others: tabData.others || "",
+                  total: tabData.total || "",
                 }
           }
           onSubmit={(values) => {
-            if (IpoType === "Edit") {
-              const totalOf =
-                +values?.qualifiedInstitutions +
-                +values?.nonInstitutionalBuyers +
-                +values?.bNII +
-                +values?.sNII +
-                +values?.retailInvestors +
-                +values?.employees +
-                +values?.others;
-              const one = { ...values, ["total"]: totalOf };
-              handleSubmit(one);
-              // setPrefillData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            } else {
-              const totalOf =
-                +values?.qualifiedInstitutions +
-                +values?.nonInstitutionalBuyers +
-                +values?.bNII +
-                +values?.sNII +
-                +values?.retailInvestors +
-                +values?.employees +
-                +values?.others;
-              // const one = { ...values, ["total"]: totalOf };
-              // const data = { ...formData, ...one };
-              // setFormData(data);
-              // setActiveStepIndex(activeStepIndex + 1);
-            }
+            // if (IpoType === "Edit") {
+            const totalOf =
+              +values?.qualifiedInstitutions +
+              +values?.nonInstitutionalBuyers +
+              +values?.bNII +
+              +values?.sNII +
+              +values?.retailInvestors +
+              +values?.employees +
+              +values?.others;
+            const one = { ...values, ["total"]: totalOf };
+            let Data = { ...tabData, ...one };
+            setTabData(Data);
+            handleSubmit(one);
+            // setPrefillData(data);
+            // setActiveStepIndex(activeStepIndex + 1);
+            // } else {
+            //   const totalOf =
+            //     +values?.qualifiedInstitutions +
+            //     +values?.nonInstitutionalBuyers +
+            //     +values?.bNII +
+            //     +values?.sNII +
+            //     +values?.retailInvestors +
+            //     +values?.employees +
+            //     +values?.others;
+            // const one = { ...values, ["total"]: totalOf };
+            // const data = { ...formData, ...one };
+            // setFormData(data);
+            // setActiveStepIndex(activeStepIndex + 1);
+            // }
           }}
         >
           {({ values, setFieldValue }) => (
@@ -318,7 +322,17 @@ const SubscriptionTab = ({ ipoEdit }) => {
                         </tr>
                         <tr>
                           <td className="fw-bold">Total</td>
-                          <td>{values.total}</td>
+                          <td>
+                            {values.total
+                              ? values.total
+                              : +values?.qualifiedInstitutions +
+                                +values?.nonInstitutionalBuyers +
+                                +values?.bNII +
+                                +values?.sNII +
+                                +values?.retailInvestors +
+                                +values?.employees +
+                                +values?.others}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
