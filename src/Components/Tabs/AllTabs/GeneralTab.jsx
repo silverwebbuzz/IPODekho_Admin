@@ -139,7 +139,7 @@ const GeneralTab = ({ ipoEdit }) => {
                       type="text"
                       name="companyName"
                       className="form-control mb-2"
-                      placeholder="Comapny Name"
+                      placeholder="Company Name"
                       required
                     />
                   </div>

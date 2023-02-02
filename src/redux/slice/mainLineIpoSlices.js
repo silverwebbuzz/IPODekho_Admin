@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { useContext } from "react";
-// import { IDContext } from "../../App";
+
 import {
   ADMIN_CREATE_MAIN_IPO,
   ADMIN_GET_ALL_MAIN_IPO,

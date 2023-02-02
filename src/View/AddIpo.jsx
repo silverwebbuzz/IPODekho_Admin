@@ -10,6 +10,7 @@ import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Tabs from "../Components/Tabs/Tabs";
+import FilePreview2 from "../Components/FilePreview2";
 const AddIpo = () => {
   const dispatch = useDispatch();
 
@@ -48,7 +49,8 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer addImage="addImage" />
+                    {/* <FilePreviewer addImage="addImage" /> */}
+                    <FilePreview2 addImage="addImage" />
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -127,7 +129,7 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
-                        {console.log(values?.IPOOpenDate)}
+                        {/* {console.log(values?.IPOOpenDate)} */}
                       </div>
 
                       <div className="w-100 fv-row mb-10">
