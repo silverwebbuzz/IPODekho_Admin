@@ -17,15 +17,15 @@ const SubscriptionTab = ({ ipoEdit }) => {
   const handleSubmit = (one) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
-      subscriptionDetails: one.subscriptionDetails || [],
-      qualifiedInstitutions: one.qualifiedInstitutions || "",
-      nonInstitutionalBuyers: one.nonInstitutionalBuyers || "",
-      bNII: one.bNII || "",
-      sNII: one.sNII || "",
-      retailInvestors: one.retailInvestors || "",
-      employees: one.employees || "",
-      others: one.others || "",
-      total: one.total || "",
+      subscriptionDetails: one.subscriptionDetails,
+      qualifiedInstitutions: one.qualifiedInstitutions,
+      nonInstitutionalBuyers: one.nonInstitutionalBuyers,
+      bNII: one.bNII,
+      sNII: one.sNII,
+      retailInvestors: one.retailInvestors,
+      employees: one.employees,
+      others: one.others,
+      total: one.total,
     };
     if (ID) {
       payload.id = ID;
@@ -67,15 +67,15 @@ const SubscriptionTab = ({ ipoEdit }) => {
                   total: getIPODataById?.total,
                 }
               : {
-                  subscriptionDetails: tabData.subscriptionDetails || [],
-                  qualifiedInstitutions: tabData.qualifiedInstitutions || "",
-                  nonInstitutionalBuyers: tabData.nonInstitutionalBuyers || "",
-                  bNII: tabData.bNII || "",
-                  sNII: tabData.sNII || "",
-                  retailInvestors: tabData.retailInvestors || "",
-                  employees: tabData.employees || "",
-                  others: tabData.others || "",
-                  total: tabData.total || "",
+                  subscriptionDetails: tabData.subscriptionDetails,
+                  qualifiedInstitutions: tabData.qualifiedInstitutions,
+                  nonInstitutionalBuyers: tabData.nonInstitutionalBuyers,
+                  bNII: tabData.bNII,
+                  sNII: tabData.sNII,
+                  retailInvestors: tabData.retailInvestors,
+                  employees: tabData.employees,
+                  others: tabData.others,
+                  total: tabData.total,
                 }
           }
           onSubmit={(values) => {

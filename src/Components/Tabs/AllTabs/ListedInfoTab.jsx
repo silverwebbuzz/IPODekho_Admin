@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createMainLineIpo,
@@ -23,25 +23,27 @@ const ListedInfoTab = ({ ipoEdit }) => {
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
-      listingDate: values?.listingDate || "",
-      listingPrice: values?.listingPrice || "",
-      listingPosition: values?.listingPosition || "",
-      listingDifferent: values?.listingDifferent || "",
-      NSECode: values?.NSECode || "",
-      BSEScript: values?.BSEScript || "",
-      closingDate: values?.closingDate || "",
-      closingPrice: values?.closingPrice || "",
-      scriptPosition: values?.scriptPosition || "",
-      closingDifferent: values?.closingDifferent || "",
-      weekHigh: values?.weekHigh || "",
-      weekLow: values?.weekLow || "",
+      listingDate: values?.listingDate,
+      listingPrice: values?.listingPrice,
+      listingPosition: values?.listingPosition,
+      listingDifferent: values?.listingDifferent,
+      NSECode: values?.NSECode,
+      BSEScript: values?.BSEScript,
+      closingDate: values?.closingDate,
+      closingPrice: values?.closingPrice,
+      scriptPosition: values?.scriptPosition,
+      closingDifferent: values?.closingDifferent,
+      weekHigh: values?.weekHigh,
+      weekLow: values?.weekLow,
     };
     if (ID) {
       payload.id = ID;
       dispatch(createMainLineIpo({ payload }));
+      navigate("/mainline_ipo");
     } else {
       payload.id = null;
       dispatch(createMainLineIpo({ payload }));
+      navigate("/mainline_ipo");
     }
   };
   const DatePickerField = ({ name, value, onChange }) => {
@@ -65,32 +67,32 @@ const ListedInfoTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  listingDate: getIPODataById?.listingDate || "",
-                  listingPrice: getIPODataById?.listingPrice || "",
-                  listingPosition: getIPODataById?.listingPosition || "",
-                  listingDifferent: getIPODataById?.listingDifferent || "",
-                  NSECode: getIPODataById?.NSECode || "",
-                  BSEScript: getIPODataById?.BSEScript || "",
-                  closingDate: getIPODataById?.closingDate || "",
-                  closingPrice: getIPODataById?.closingPrice || "",
-                  scriptPosition: getIPODataById?.scriptPosition || "",
-                  closingDifferent: getIPODataById?.closingDifferent || "",
-                  weekHigh: getIPODataById?.weekHigh || "",
-                  weekLow: getIPODataById?.weekLow || "",
+                  listingDate: getIPODataById?.listingDate,
+                  listingPrice: getIPODataById?.listingPrice,
+                  listingPosition: getIPODataById?.listingPosition,
+                  listingDifferent: getIPODataById?.listingDifferent,
+                  NSECode: getIPODataById?.NSECode,
+                  BSEScript: getIPODataById?.BSEScript,
+                  closingDate: getIPODataById?.closingDate,
+                  closingPrice: getIPODataById?.closingPrice,
+                  scriptPosition: getIPODataById?.scriptPosition,
+                  closingDifferent: getIPODataById?.closingDifferent,
+                  weekHigh: getIPODataById?.weekHigh,
+                  weekLow: getIPODataById?.weekLow,
                 }
               : {
                   // listingDate: getIPODataById?.listingDate,
-                  listingPrice: tabData?.listingPrice || "",
-                  listingPosition: tabData?.listingPosition || "",
-                  listingDifferent: tabData?.listingDifferent || "",
-                  NSECode: tabData?.NSECode || "",
-                  BSEScript: tabData?.BSEScript || "",
-                  closingDate: tabData?.closingDate || "",
-                  closingPrice: tabData?.closingPrice || "",
-                  scriptPosition: tabData?.scriptPosition || "",
-                  closingDifferent: tabData?.closingDifferent || "",
-                  weekHigh: tabData?.weekHigh || "",
-                  weekLow: tabData?.weekLow || "",
+                  listingPrice: tabData?.listingPrice,
+                  listingPosition: tabData?.listingPosition,
+                  listingDifferent: tabData?.listingDifferent,
+                  NSECode: tabData?.NSECode,
+                  BSEScript: tabData?.BSEScript,
+                  closingDate: tabData?.closingDate,
+                  closingPrice: tabData?.closingPrice,
+                  scriptPosition: tabData?.scriptPosition,
+                  closingDifferent: tabData?.closingDifferent,
+                  weekHigh: tabData?.weekHigh,
+                  weekLow: tabData?.weekLow,
                 }
           }
           onSubmit={(values) => {

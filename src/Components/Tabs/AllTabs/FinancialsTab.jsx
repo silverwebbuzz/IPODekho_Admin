@@ -12,13 +12,13 @@ const FinancialsTab = ({ ipoEdit }) => {
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
-      earningPerShare: values?.earningPerShare || "",
-      earningPERatio: values?.earningPERatio || "",
-      returnonNetWorth: values?.returnonNetWorth || "",
-      netAssetValue: values?.netAssetValue || "",
-      companyFinancials: values?.companyFinancials || [],
-      financialLotsize: values?.financialLotsize || [],
-      peersComparison: values?.peersComparison || [],
+      earningPerShare: values?.earningPerShare,
+      earningPERatio: values?.earningPERatio,
+      returnonNetWorth: values?.returnonNetWorth,
+      netAssetValue: values?.netAssetValue,
+      companyFinancials: values?.companyFinancials,
+      financialLotsize: values?.financialLotsize,
+      peersComparison: values?.peersComparison,
     };
     if (ID) {
       payload.id = ID;
@@ -45,13 +45,13 @@ const FinancialsTab = ({ ipoEdit }) => {
                   netAssetValue: getIPODataById?.netAssetValue,
                 }
               : {
-                  companyFinancials: tabData?.companyFinancials || [],
-                  earningPerShare: tabData?.earningPerShare || "",
-                  financialLotsize: tabData?.financialLotsize || [],
-                  peersComparison: tabData?.peersComparison || [],
-                  earningPERatio: tabData?.earningPERatio || "",
-                  returnonNetWorth: tabData?.returnonNetWorth || "",
-                  netAssetValue: tabData?.netAssetValue || "",
+                  companyFinancials: tabData?.companyFinancials,
+                  earningPerShare: tabData?.earningPerShare,
+                  financialLotsize: tabData?.financialLotsize,
+                  peersComparison: tabData?.peersComparison,
+                  earningPERatio: tabData?.earningPERatio,
+                  returnonNetWorth: tabData?.returnonNetWorth,
+                  netAssetValue: tabData?.netAssetValue,
                 }
           }
           onSubmit={(values) => {
