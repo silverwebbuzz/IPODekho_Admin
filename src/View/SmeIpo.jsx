@@ -12,6 +12,7 @@ import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import { Link, NavLink } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
+import companyImg from "../assets/media/ipo/Elin-Electronics-logo.jpeg";
 import { useState } from "react";
 const SmeIpo = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const SmeIpo = () => {
 
   useEffect(() => {
     let payload = {
-      CategoryForIPOS: "SmeIPO", //SmeIPO
+      CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
   }, [dispatch]);
@@ -107,10 +108,10 @@ const SmeIpo = () => {
                       >
                         <option></option>
                         <option value="Live">Live</option>
-                        <option value="Waiting Allotment">
+                        <option value="WaitingAllotment">
                           Waiting Allotment
                         </option>
-                        <option value="Allotment Out">Allotment Out</option>
+                        <option value="AllotmentOut">Allotment Out</option>
                         <option value="Upcoming">Upcoming</option>
                         <option value="Listed">Listed</option>
                       </select>
@@ -180,7 +181,7 @@ const SmeIpo = () => {
                           <a href="ipo-detail.html">
                             <div className="symbol-label">
                               <img
-                                src="assets/media/ipo/Elin-Electronics-logo.jpeg"
+                                src={Itm?.file || companyImg}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
@@ -220,49 +221,27 @@ const SmeIpo = () => {
                         />
                       </td>
                       <td>
-                        <div className={"badge badge-light-danger fw-bold"}>
-                          {Itm?.IPOStatus}
-                        </div>
-                        {() => {
-                          if (Itm?.IPOStatus === "live")
-                            return (
-                              <div
-                                className={"badge badge-light-danger fw-bold"}
-                              >
-                                Live
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "waitingAllotment")
-                            return (
-                              <div
-                                className={"badge badge-light-warning fw-bold"}
-                              >
-                                Waiting Allotment
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "allotmentOut")
-                            return (
-                              <div
-                                className={"badge badge-light-primary fw-bold"}
-                              >
-                                Allotment Out
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "upcoming")
-                            return (
-                              <div className={"badge badge-light-info fw-bold"}>
-                                Upcoming
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "listed")
-                            return (
-                              <div
-                                className={"badge badge-light-success fw-bold"}
-                              >
-                                Listed
-                              </div>
-                            );
-                        }}
+                        {Itm?.IPOStatus === "Live" ? (
+                          <div className="badge badge-light-danger fw-bold">
+                            Live
+                          </div>
+                        ) : Itm?.IPOStatus === "Upcoming" ? (
+                          <div className="badge badge-light-info fw-bold">
+                            Upcoming
+                          </div>
+                        ) : Itm?.IPOStatus === "Listed" ? (
+                          <div className="badge badge-light-primary fw-bold">
+                            Listed
+                          </div>
+                        ) : Itm?.IPOStatus === "AllotmentOut" ? (
+                          <div className="badge badge-light-primary fw-bold">
+                            Allotment Out
+                          </div>
+                        ) : Itm?.IPOStatus === "Waitingallotment" ? (
+                          <div className="badge badge-light-warning fw-bold">
+                            Waiting Allotment
+                          </div>
+                        ) : null}
                       </td>
                       <td className="text-end w-200px">
                         <div className="menu-item px-3">

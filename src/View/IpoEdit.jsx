@@ -22,6 +22,7 @@ const EditIpo = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const ipoPrefillData = location.state;
+  console.log("ipoPrefillData", ipoPrefillData);
 
   useEffect(() => {
     const payload = {

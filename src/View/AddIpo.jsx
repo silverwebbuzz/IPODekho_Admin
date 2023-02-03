@@ -30,7 +30,6 @@ const AddIpo = () => {
       />
     );
   };
-  console.log(ipoDates);
   const handleSubmit = (values) => {
     let payload = {
       IPOStatus: values?.IPOStatus,
@@ -122,7 +121,7 @@ const AddIpo = () => {
                         <option value="Live" selected="selected">
                           Live
                         </option>
-                        <option value="Waitingallotment">
+                        <option value="WaitingAllotment">
                           Waiting Allotment
                         </option>
                         <option value="AllotmentOut">Allotment Out</option>

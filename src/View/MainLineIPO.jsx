@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
-
+import companyImg from "../assets/media/ipo/Elin-Electronics-logo.jpeg";
 const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
@@ -172,7 +172,6 @@ const MainLineIPO = () => {
 
               <tbody className="text-gray-600 fw-semibold">
                 {getAllMainLineIpoData?.map((Itm) => {
-                  console.log(Itm.IPOStatus);
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -181,7 +180,7 @@ const MainLineIPO = () => {
                             <div className="symbol-label">
                               <img
                                 style={{ height: "100%" }}
-                                src={Itm?.file}
+                                src={Itm?.file || companyImg}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
