@@ -29,6 +29,9 @@ const GeneralTab = ({ ipoEdit }) => {
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAllMainLineIpo());
+  }, []);
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -99,8 +102,8 @@ const GeneralTab = ({ ipoEdit }) => {
                   RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  // promotersName: getIPODataById?.promotersName,
                   promotersName: [],
+                  // promotersName: getIPODataById?.promotersName || [],
                 }
               : {
                   companyName: tabData?.companyName,

@@ -18,20 +18,8 @@ const FilePreviewer = ({
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
 
   const previewFile = (e) => {
-    const reader = new FileReader();
-    const imageFile = e.target.files[0];
-    // reader.addEventListener("load", (e) => {
-    //   setImagePreview(e.target.result);
-    // });
-    if (imageFile) {
-      reader.readAsDataURL(imageFile);
-    }
-    reader.onload = (readerEvent) => {
-      if (imageFile.type.includes("image")) {
-        setImagePreview(readerEvent.target.result);
-      }
-    };
-
+    // let ID = null;
+    console.log(" e?.target?.files[0]", e?.target?.files[0]);
     let formData = new FormData();
     if (editImage) {
       formData.append("file", e?.target?.files[0]);
