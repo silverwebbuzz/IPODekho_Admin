@@ -125,7 +125,7 @@ export const createMainLineIpo = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.data?.id);
+      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);

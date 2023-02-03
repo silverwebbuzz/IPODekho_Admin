@@ -15,7 +15,7 @@ const FilePreviewer = ({ ipoImage, newsImage, offerModal }) => {
 
   const previewFile = (e) => {
     // let ID = null;
-    console.log(" e?.target?.files[0]", e?.target?.files[0]);
+    console.log("e?.target?.files[0]", e?.target?.files[0]);
     let formData = new FormData();
     if (ID) {
       // ID = JSON?.parse(localStorage.getItem("ID"));

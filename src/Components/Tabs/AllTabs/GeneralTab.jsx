@@ -6,17 +6,24 @@ import "../../../assets/css/style.bundle.css";
 import "../../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getAllMainLineIpo,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../../MultiSelect";
 import { useContext } from "react";
 import { TabContext } from "../Tabs";
+import { useEffect } from "react";
 
 const GeneralTab = ({ ipoEdit }) => {
   const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAllMainLineIpo());
+  }, []);
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -83,7 +90,8 @@ const GeneralTab = ({ ipoEdit }) => {
                   RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  promotersName: getIPODataById?.promotersName || [],
+                  promotersName: [],
+                  // promotersName: getIPODataById?.promotersName || [],
                 }
               : {
                   companyName: tabData?.companyName,

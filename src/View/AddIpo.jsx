@@ -28,12 +28,12 @@ const AddIpo = () => {
   };
   const handleSubmit = (values) => {
     let payload = {
-      IPOOpenDate: values?.IPOOpenDate || "",
-      IPOCloseDate: values?.IPOCloseDate || "",
-      IPOAllotmentDate: values?.IPOAllotmentDate || "",
-      IPORefundsInitiation: values?.IPORefundsInitiation || "",
-      IPODematTransfer: values?.IPODematTransfer || "",
-      IPOListingDate: values?.IPOListingDate || "",
+      IPOOpenDate: values?.IPOOpenDate,
+      IPOCloseDate: values?.IPOCloseDate,
+      IPOAllotmentDate: values?.IPOAllotmentDate,
+      IPORefundsInitiation: values?.IPORefundsInitiation,
+      IPODematTransfer: values?.IPODematTransfer,
+      IPOListingDate: values?.IPOListingDate,
     };
     if (ID) {
       payload.id = ID;

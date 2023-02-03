@@ -21,17 +21,22 @@ const MainLineIPO = () => {
     (state) => state?.mainLineIpoSlice
   );
 
-  const handleGMPNumber = (e, ID) => {
+  // const handleGMPNumber = (e, ID) => {
+  //   console.log(e);
+  //   setGMP(e?.target?.value);
+  //   let payload = {
+  //     id: ID,
+  //     GMP: e?.target?.value,
+  //   };
+  //   dispatch(updateIPO({ payload }));
+  // };
+
+  const handleGmp = (e, ID) => {
+    console.log(e);
     setGMP(e?.target?.value);
     let payload = {
       id: ID,
       GMP: e?.target?.value,
-    };
-    dispatch(updateIPO({ payload }));
-  };
-  const handleGmp = (e, ID) => {
-    let payload = {
-      id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
     dispatch(updateIPO({ payload }));
@@ -55,7 +60,6 @@ const MainLineIPO = () => {
                 <span className="svg-icon svg-icon-1 position-absolute ms-6">
                   <CommonSearchIcon />
                 </span>
-
                 <input
                   type="text"
                   data-kt-user-table-filter="search"
@@ -175,7 +179,8 @@ const MainLineIPO = () => {
                           <a href="ipo-detail.html">
                             <div className="symbol-label">
                               <img
-                                src="assets/media/ipo/Elin-Electronics-logo.jpeg"
+                                style={{ height: "100%" }}
+                                src={Itm?.file}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
@@ -215,7 +220,7 @@ const MainLineIPO = () => {
                           className="form-control w-70px mt-3"
                           defaultValue={Itm?.GMP}
                           // value={GMPV}
-                          onChange={(e) => handleGMPNumber(e, Itm?.id)}
+                          onChange={(e) => handleGmp(e, Itm?.id)}
                         />
                       </td>
                       <td>
