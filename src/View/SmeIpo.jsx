@@ -225,7 +225,7 @@ const SmeIpo = () => {
                             Upcoming
                           </div>
                         ) : Itm?.IPOStatus === "Listed" ? (
-                          <div className="badge badge-light-primary fw-bold">
+                          <div className="badge badge-light-success fw-bold">
                             Listed
                           </div>
                         ) : Itm?.IPOStatus === "AllotmentOut" ? (
