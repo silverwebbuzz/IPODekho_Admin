@@ -15,6 +15,10 @@ import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs/Tabs";
 
 const EditIpo = () => {
+  const { updatedIpo, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  console.log(getIPODataById);
   const dispatch = useDispatch();
   const location = useLocation();
   const ipoPrefillData = location.state;
@@ -25,7 +29,7 @@ const EditIpo = () => {
       CategoryForIPOS: ipoPrefillData?.data?.CategoryForIPOS,
     };
     dispatch(getIpoById({ payload }));
-  }, [dispatch]);
+  }, [dispatch, updatedIpo]);
 
   // const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   // const [IPOStatus, setIPOStatus] = useState("Live");
@@ -182,7 +186,7 @@ const EditIpo = () => {
                   <option value="Listed">Listed</option>
                 </select>
 
-                <div className="text-muted fs-7">Set the ipo status.</div>
+                <div className="text-muted fs-7">Set the ipo status. </div>
               </div>
             </div>
 
@@ -194,15 +198,27 @@ const EditIpo = () => {
               </div>
               <Formik
                 enableReinitialize
-                initialValues={{
-                  IPOOpenDate: "",
-                  IPOCloseDate: "",
-                  IPOAllotmentDate: "",
-                  IPORefundsInitiation: "",
-                  IPODematTransfer: "",
-                  IPOListingDate: "",
-                }}
-                onSubmit={(values) => console.log("values")}
+                initialValues={
+                  ipoPrefillData.type
+                    ? {
+                        IPOOpenDate: getIPODataById?.IPOOpenDate,
+                        IPOCloseDate: getIPODataById?.IPOCloseDate,
+                        IPOAllotmentDate: getIPODataById?.IPOAllotmentDate,
+                        IPORefundsInitiation:
+                          getIPODataById?.IPORefundsInitiation,
+                        IPODematTransfer: getIPODataById?.IPODematTransfer,
+                        IPOListingDate: getIPODataById?.IPOListingDate,
+                      }
+                    : {
+                        IPOOpenDate: "",
+                        IPOCloseDate: "",
+                        IPOAllotmentDate: "",
+                        IPORefundsInitiation: "",
+                        IPODematTransfer: "",
+                        IPOListingDate: "",
+                      }
+                }
+                onSubmit={(values) => console(values)}
               >
                 {({ values, setFieldValue }) => (
                   <Form>

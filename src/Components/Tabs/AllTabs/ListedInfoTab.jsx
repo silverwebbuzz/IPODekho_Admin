@@ -67,13 +67,13 @@ const ListedInfoTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  listingDate: getIPODataById?.listingDate,
+                  // listingDate: getIPODataById?.listingDate,
                   listingPrice: getIPODataById?.listingPrice,
                   listingPosition: getIPODataById?.listingPosition,
                   listingDifferent: getIPODataById?.listingDifferent,
                   NSECode: getIPODataById?.NSECode,
                   BSEScript: getIPODataById?.BSEScript,
-                  closingDate: getIPODataById?.closingDate,
+                  // closingDate: getIPODataById?.closingDate,
                   closingPrice: getIPODataById?.closingPrice,
                   scriptPosition: getIPODataById?.scriptPosition,
                   closingDifferent: getIPODataById?.closingDifferent,
@@ -81,7 +81,7 @@ const ListedInfoTab = ({ ipoEdit }) => {
                   weekLow: getIPODataById?.weekLow,
                 }
               : {
-                  // listingDate: getIPODataById?.listingDate,
+                  listingDate: getIPODataById?.listingDate,
                   listingPrice: tabData?.listingPrice,
                   listingPosition: tabData?.listingPosition,
                   listingDifferent: tabData?.listingDifferent,

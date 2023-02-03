@@ -168,6 +168,7 @@ const MainLineIPO = () => {
 
               <tbody className="text-gray-600 fw-semibold">
                 {getAllMainLineIpoData?.map((Itm) => {
+                  console.log(Itm.IPOStatus);
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -236,13 +237,11 @@ const MainLineIPO = () => {
                           <div className="badge badge-light-primary fw-bold">
                             Allotment Out
                           </div>
-                        ) : (
-                          Itm?.IPOStatus === "WaitingAllotment" && (
-                            <div className="badge badge-light-warning fw-bold">
-                              Waiting Allotment
-                            </div>
-                          )
-                        )}
+                        ) : Itm?.IPOStatus === "Waitingallotment" ? (
+                          <div className="badge badge-light-warning fw-bold">
+                            Waiting Allotment
+                          </div>
+                        ) : null}
                       </td>
                       <td className="text-end w-200px">
                         <div className="menu-item px-3">

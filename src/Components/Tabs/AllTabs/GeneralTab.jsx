@@ -6,11 +6,17 @@ import "../../../assets/css/style.bundle.css";
 import "../../../assets/plugins/global/plugins.bundle.css";
 import { modules } from "../../../Constants/commonConstants";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getAllMainLineIpo,
+  getIpoById,
+  updateIPO,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import MultiSelect from "../../MultiSelect";
 import { useContext } from "react";
 import { TabContext } from "../Tabs";
+import { useEffect } from "react";
 
 const GeneralTab = ({ ipoEdit }) => {
   const draftBtnStyle = {
@@ -19,6 +25,7 @@ const GeneralTab = ({ ipoEdit }) => {
     alignItems: "start",
   };
   const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+  // console.log(getIPODataById);
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
 
@@ -48,7 +55,11 @@ const GeneralTab = ({ ipoEdit }) => {
     };
     if (ipoEdit) {
       payload.id = getIPODataById?.id;
-      dispatch(createMainLineIpo({ payload }));
+      console.log(payload);
+      dispatch(updateIPO({ payload }));
+      // setTimeout(() => {
+      //   dispatch(getIpoById({ payload }));
+      // }, 100);
     } else {
       if (ID) {
         payload.id = ID;
@@ -88,7 +99,8 @@ const GeneralTab = ({ ipoEdit }) => {
                   RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  promotersName: getIPODataById?.promotersName || [],
+                  // promotersName: getIPODataById?.promotersName,
+                  promotersName: [],
                 }
               : {
                   companyName: tabData?.companyName,
@@ -156,7 +168,7 @@ const GeneralTab = ({ ipoEdit }) => {
                   </div>
                   <br />
                   <br />
-                  <div className="mt-4 mb-6">
+                  <div className="mt-4 mb-16">
                     <label className="form-label ">Objects of the Issue</label>
                     <Field name="ObjectOfIssue">
                       {({ field }) => (

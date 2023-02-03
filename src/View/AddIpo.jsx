@@ -11,6 +11,8 @@ import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
 const AddIpo = () => {
+  // const [ipoDates, setIpoDates] = useState("");
+
   const dispatch = useDispatch();
   const { ID, getIPODataById } = useSelector(
     (state) => state?.mainLineIpoSlice
@@ -23,18 +25,21 @@ const AddIpo = () => {
         dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
+          // setIpoDates(val);
         }}
       />
     );
   };
+  console.log(ipoDates);
   const handleSubmit = (values) => {
     let payload = {
-      IPOOpenDate: values?.IPOOpenDate || "",
-      IPOCloseDate: values?.IPOCloseDate || "",
-      IPOAllotmentDate: values?.IPOAllotmentDate || "",
-      IPORefundsInitiation: values?.IPORefundsInitiation || "",
-      IPODematTransfer: values?.IPODematTransfer || "",
-      IPOListingDate: values?.IPOListingDate || "",
+      IPOStatus: values?.IPOStatus,
+      IPOOpenDate: values?.IPOOpenDate,
+      IPOCloseDate: values?.IPOCloseDate,
+      IPOAllotmentDate: values?.IPOAllotmentDate,
+      IPORefundsInitiation: values?.IPORefundsInitiation,
+      IPODematTransfer: values?.IPODematTransfer,
+      IPOListingDate: values?.IPOListingDate,
     };
     if (ID) {
       payload.id = ID;
@@ -68,8 +73,8 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    {/* <FilePreviewer addImage="addImage" /> */}
-                    <FilePreview2 addImage="addImage" />
+                    <FilePreviewer addImage="addImage" />
+                    {/* <FilePreview2 addImage="addImage" /> */}
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -78,60 +83,64 @@ const AddIpo = () => {
                 </div>
               </div>
             </div>
+            <Formik
+              initialValues={{
+                IPOOpenDate: "",
+                IPOCloseDate: "",
+                IPOAllotmentDate: "",
+                IPORefundsInitiation: "",
+                IPODematTransfer: "",
+                IPOListingDate: "",
+                IPOStatus: "",
+              }}
+              onSubmit={(values) => {
+                handleSubmit(values);
+              }}
+            >
+              {({ values, setFieldValue }) => (
+                <Form>
+                  <div className="card card-flush py-4">
+                    <div className="card-header">
+                      <div className="card-title">
+                        <h2>Status</h2>
+                      </div>
 
-            <div className="card card-flush py-4">
-              <div className="card-header">
-                <div className="card-title">
-                  <h2>Status</h2>
-                </div>
+                      <div className="card-toolbar">
+                        <div className="rounded-circle bg-danger w-15px h-15px"></div>
+                      </div>
+                    </div>
 
-                <div className="card-toolbar">
-                  <div className="rounded-circle bg-danger w-15px h-15px"></div>
-                </div>
-              </div>
+                    <div className="card-body pt-0">
+                      <Field
+                        as="select"
+                        className="form-select mb-2"
+                        data-placeholder="Select an option"
+                        // onChange={(e) => console.log(e)}
+                        name="IPOStatus"
+                      >
+                        <option></option>
+                        <option value="Live" selected="selected">
+                          Live
+                        </option>
+                        <option value="Waitingallotment">
+                          Waiting Allotment
+                        </option>
+                        <option value="AllotmentOut">Allotment Out</option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Listed">Listed</option>
+                      </Field>
 
-              <div className="card-body pt-0">
-                <select
-                  className="form-select mb-2"
-                  data-placeholder="Select an option"
-                  onChange={(e) => console.log(e)}
-                  value=""
-                >
-                  <option></option>
-                  <option value="Live" selected="selected">
-                    Live
-                  </option>
-                  <option value="Waitingallotment">Waiting Allotment</option>
-                  <option value="Allotmentout">Allotment Out</option>
-                  <option value="Upcoming">Upcoming</option>
-                  <option value="Listed">Listed</option>
-                </select>
+                      <div className="text-muted fs-7">Set the ipo status.</div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="card card-flush py-4">
+                    <div className="card-header">
+                      <div className="card-title">
+                        <h2>Tentative Timetable</h2>
+                      </div>
+                    </div>
 
-                <div className="text-muted fs-7">Set the ipo status.</div>
-              </div>
-            </div>
-
-            <div className="card card-flush py-4">
-              <div className="card-header">
-                <div className="card-title">
-                  <h2>Tentative Timetable</h2>
-                </div>
-              </div>
-              <Formik
-                initialValues={{
-                  IPOOpenDate: "",
-                  IPOCloseDate: "",
-                  IPOAllotmentDate: "",
-                  IPORefundsInitiation: "",
-                  IPODematTransfer: "",
-                  IPOListingDate: "",
-                }}
-                onSubmit={(values) => {
-                  handleSubmit(values);
-                }}
-              >
-                {({ values, setFieldValue }) => (
-                  <Form>
                     <div className="card-body pt-0">
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">IPO Open Date</label>
@@ -197,10 +206,10 @@ const AddIpo = () => {
                         </button>
                       </div>
                     </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
