@@ -24,7 +24,9 @@ const GeneralTab = ({ ipoEdit }) => {
     flexDirection: "column",
     alignItems: "start",
   };
-  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+    (state) => state.mainLineIpoSlice
+  );
   // console.log(getIPODataById);
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
@@ -34,7 +36,10 @@ const GeneralTab = ({ ipoEdit }) => {
   }, []);
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS:
+        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
+          ? "MainlineIPO"
+          : "SmeIPO",
       companyName: values?.companyName,
       companyDescription: values?.companyDescription,
       ObjectOfIssue: values?.ObjectOfIssue,

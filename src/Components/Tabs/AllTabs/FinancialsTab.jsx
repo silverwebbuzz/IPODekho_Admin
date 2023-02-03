@@ -8,10 +8,15 @@ import { TabContext } from "../Tabs";
 const FinancialsTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
   const { tabData, setTabData } = useContext(TabContext);
-  const { ID, getIPODataById } = useSelector((state) => state.mainLineIpoSlice);
+  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+    (state) => state.mainLineIpoSlice
+  );
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS:
+        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
+          ? "MainlineIPO"
+          : "SmeIPO",
       earningPerShare: values?.earningPerShare,
       earningPERatio: values?.earningPERatio,
       returnonNetWorth: values?.returnonNetWorth,

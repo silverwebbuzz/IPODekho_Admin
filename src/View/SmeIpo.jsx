@@ -39,7 +39,7 @@ const SmeIpo = () => {
 
   useEffect(() => {
     let payload = {
-      CategoryForIPOS: "SmeIPO", //SmeIPO
+      CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
   }, [dispatch]);
@@ -138,11 +138,7 @@ const SmeIpo = () => {
                 </div>
 
                 <Link to="/sme_ipo/add_ipo">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => console.log("handleFormData")}
-                  >
+                  <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
                     </span>
@@ -220,49 +216,27 @@ const SmeIpo = () => {
                         />
                       </td>
                       <td>
-                        <div className={"badge badge-light-danger fw-bold"}>
-                          {Itm?.IPOStatus}
-                        </div>
-                        {() => {
-                          if (Itm?.IPOStatus === "live")
-                            return (
-                              <div
-                                className={"badge badge-light-danger fw-bold"}
-                              >
-                                Live
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "waitingAllotment")
-                            return (
-                              <div
-                                className={"badge badge-light-warning fw-bold"}
-                              >
-                                Waiting Allotment
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "allotmentOut")
-                            return (
-                              <div
-                                className={"badge badge-light-primary fw-bold"}
-                              >
-                                Allotment Out
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "upcoming")
-                            return (
-                              <div className={"badge badge-light-info fw-bold"}>
-                                Upcoming
-                              </div>
-                            );
-                          if (Itm?.IPOStatus === "listed")
-                            return (
-                              <div
-                                className={"badge badge-light-success fw-bold"}
-                              >
-                                Listed
-                              </div>
-                            );
-                        }}
+                        {Itm?.IPOStatus === "Live" ? (
+                          <div className="badge badge-light-danger fw-bold">
+                            Live
+                          </div>
+                        ) : Itm?.IPOStatus === "Upcoming" ? (
+                          <div className="badge badge-light-info fw-bold">
+                            Upcoming
+                          </div>
+                        ) : Itm?.IPOStatus === "Listed" ? (
+                          <div className="badge badge-light-primary fw-bold">
+                            Listed
+                          </div>
+                        ) : Itm?.IPOStatus === "AllotmentOut" ? (
+                          <div className="badge badge-light-primary fw-bold">
+                            Allotment Out
+                          </div>
+                        ) : Itm?.IPOStatus === "WaitingAllotment" ? (
+                          <div className="badge badge-light-warning fw-bold">
+                            Waiting Allotment
+                          </div>
+                        ) : null}
                       </td>
                       <td className="text-end w-200px">
                         <div className="menu-item px-3">

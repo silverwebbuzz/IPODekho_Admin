@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { useEffect } from "react";
 const AddIpo = () => {
   // const [ipoDates, setIpoDates] = useState("");
 
@@ -30,7 +31,6 @@ const AddIpo = () => {
       />
     );
   };
-  console.log(ipoDates);
   const handleSubmit = (values) => {
     let payload = {
       IPOStatus: values?.IPOStatus,
@@ -41,6 +41,7 @@ const AddIpo = () => {
       IPODematTransfer: values?.IPODematTransfer,
       IPOListingDate: values?.IPOListingDate,
     };
+
     if (ID) {
       payload.id = ID;
       dispatch(createMainLineIpo({ payload }));
@@ -122,7 +123,7 @@ const AddIpo = () => {
                         <option value="Live" selected="selected">
                           Live
                         </option>
-                        <option value="Waitingallotment">
+                        <option value="WaitingAllotment">
                           Waiting Allotment
                         </option>
                         <option value="AllotmentOut">Allotment Out</option>

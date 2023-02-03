@@ -13,7 +13,9 @@ import {
 import moment from "moment/moment";
 import { TabContext } from "../Tabs";
 const ListedInfoTab = ({ ipoEdit }) => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById, getAllMainLineIpoData } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
   const { tabData, setTabData } = useContext(TabContext);
 
   const navigate = useNavigate();
@@ -22,7 +24,10 @@ const ListedInfoTab = ({ ipoEdit }) => {
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS:
+        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
+          ? "MainlineIPO"
+          : "SmeIPO",
       listingDate: values?.listingDate,
       listingPrice: values?.listingPrice,
       listingPosition: values?.listingPosition,

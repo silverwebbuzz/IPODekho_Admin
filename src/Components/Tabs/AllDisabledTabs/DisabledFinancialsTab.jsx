@@ -10,10 +10,10 @@ const DisabledFinancialsTab = () => {
       <Formik
         enableReinitialize
         initialValues={{
-          companyFinancials: [],
+          companyFinancials: getIPODataById?.companyFinancials,
           earningPerShare: getIPODataById?.earningPerShare,
-          financialLotsize: [],
-          peersComparison: [],
+          financialLotsize: getIPODataById?.financialLotsize,
+          peersComparison: getIPODataById?.peersComparison,
           earningPERatio: getIPODataById?.earningPERatio,
           returnonNetWorth: getIPODataById?.returnonNetWorth,
           netAssetValue: getIPODataById?.netAssetValue,
@@ -47,7 +47,7 @@ const DisabledFinancialsTab = () => {
                     </div>
                     <div>
                       <FieldArray
-                        name="companyFinacials"
+                        name="companyFinancials"
                         render={(arrayHelpers) => (
                           <div>
                             {values.companyFinancials?.map(
