@@ -228,16 +228,7 @@ const DisabledSubscriptionTab = () => {
                         </tr>
                         <tr>
                           <td className="fw-bold">Total</td>
-                          <td>
-                            {+values?.subscriptionDetails +
-                              +values?.qualifiedInstitutions +
-                              +values?.nonInstitutionalBuyers +
-                              +values?.bNII +
-                              +values?.sNII +
-                              +values?.retailInvestors +
-                              +values?.employees +
-                              +values?.others}
-                          </td>
+                          <td>{values.total}</td>
                         </tr>
                       </tbody>
                     </table>
