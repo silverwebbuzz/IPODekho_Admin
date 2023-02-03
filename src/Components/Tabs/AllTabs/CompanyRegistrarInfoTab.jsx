@@ -8,14 +8,17 @@ import { TabContext } from "../Tabs";
 
 const RegistrarInfoTab = ({ ipoEdit }) => {
   const dispatch = useDispatch();
-  const { ID, getIPODataById } = useSelector(
+  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
   const { tabData, setTabData } = useContext(TabContext);
 
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS:
+        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
+          ? "MainlineIPO"
+          : "SmeIPO",
       address: values?.address,
       companyPhone: values?.companyPhone,
       email: values?.email,

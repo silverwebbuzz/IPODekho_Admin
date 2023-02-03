@@ -139,11 +139,7 @@ const SmeIpo = () => {
                 </div>
 
                 <Link to="/sme_ipo/add_ipo">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => console.log("handleFormData")}
-                  >
+                  <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
                     </span>
@@ -230,14 +226,14 @@ const SmeIpo = () => {
                             Upcoming
                           </div>
                         ) : Itm?.IPOStatus === "Listed" ? (
-                          <div className="badge badge-light-primary fw-bold">
+                          <div className="badge badge-light-success fw-bold">
                             Listed
                           </div>
                         ) : Itm?.IPOStatus === "AllotmentOut" ? (
                           <div className="badge badge-light-primary fw-bold">
                             Allotment Out
                           </div>
-                        ) : Itm?.IPOStatus === "Waitingallotment" ? (
+                        ) : Itm?.IPOStatus === "WaitingAllotment" ? (
                           <div className="badge badge-light-warning fw-bold">
                             Waiting Allotment
                           </div>

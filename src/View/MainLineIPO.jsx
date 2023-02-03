@@ -240,7 +240,7 @@ const MainLineIPO = () => {
                           <div className="badge badge-light-primary fw-bold">
                             Allotment Out
                           </div>
-                        ) : Itm?.IPOStatus === "Waitingallotment" ? (
+                        ) : Itm?.IPOStatus === "WaitingAllotment" ? (
                           <div className="badge badge-light-warning fw-bold">
                             Waiting Allotment
                           </div>

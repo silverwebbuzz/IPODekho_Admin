@@ -24,7 +24,7 @@ const DisabledSubscriptionTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            subscriptionDetails: [],
+            subscriptionDetails: getIPODataById?.subscriptionDetails,
             qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
             nonInstitutionalBuyers: getIPODataById?.nonInstitutionalBuyers,
             bNII: getIPODataById?.bNII,

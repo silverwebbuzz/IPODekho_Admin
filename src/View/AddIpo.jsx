@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { useEffect } from "react";
 const AddIpo = () => {
   // const [ipoDates, setIpoDates] = useState("");
 
@@ -40,6 +41,7 @@ const AddIpo = () => {
       IPODematTransfer: values?.IPODematTransfer,
       IPOListingDate: values?.IPOListingDate,
     };
+
     if (ID) {
       payload.id = ID;
       dispatch(createMainLineIpo({ payload }));

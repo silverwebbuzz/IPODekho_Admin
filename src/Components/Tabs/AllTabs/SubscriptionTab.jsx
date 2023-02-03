@@ -8,7 +8,7 @@ import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { TabContext } from "../Tabs";
 const SubscriptionTab = ({ ipoEdit }) => {
-  const { ID, getIPODataById } = useSelector(
+  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
   const { tabData, setTabData } = useContext(TabContext);
@@ -16,7 +16,10 @@ const SubscriptionTab = ({ ipoEdit }) => {
 
   const handleSubmit = (one) => {
     const payload = {
-      CategoryForIPOS: "MainlineIPO",
+      CategoryForIPOS:
+        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
+          ? "MainlineIPO"
+          : "SmeIPO",
       subscriptionDetails: one.subscriptionDetails,
       qualifiedInstitutions: one.qualifiedInstitutions,
       nonInstitutionalBuyers: one.nonInstitutionalBuyers,

@@ -37,7 +37,7 @@ const DisabledGeneralTab = () => {
           RHPDraft: getIPODataById?.RHPDraft,
           preIssueShareHolding: getIPODataById?.preIssueShareHolding,
           postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-          promotersName: [],
+          promotersName: getIPODataById?.promotersName,
         }}
       >
         {({ values }) => (
