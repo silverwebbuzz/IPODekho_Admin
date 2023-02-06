@@ -15,14 +15,23 @@ import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs/Tabs";
 
 const EditIpo = () => {
-  const { updatedIpo, getIPODataById } = useSelector(
-    (state) => state?.mainLineIpoSlice
-  );
-  console.log(getIPODataById);
   const dispatch = useDispatch();
   const location = useLocation();
   const ipoPrefillData = location.state;
-
+  const { updatedIpo, getIPODataById } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const [ipoStatus, setIpoStatus] = useState("");
+  console.log("getIPODataById", getIPODataById);
+  const handleIpoStatus = (e) => {
+    console.log(e.target?.value);
+    // setIpoStatus(e?.target?.value);
+    let payload = {
+      id: getIPODataById?.id,
+      IPOstatus: e?.target?.value,
+    };
+    dispatch(updateIPO({ payload }));
+  };
   useEffect(() => {
     const payload = {
       id: ipoPrefillData?.data?.id,
@@ -30,99 +39,10 @@ const EditIpo = () => {
     };
     dispatch(getIpoById({ payload }));
   }, [dispatch, updatedIpo]);
-
-  // const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-  // const [IPOStatus, setIPOStatus] = useState("Live");
-  // const handleIpoChange = (e) => {
-  //   setIPOStatus(e.target.value);
-  //   const one = { ...prefillData, ["IPOStatus"]: e.target.value };
-  //   // setPrefillData(one);
-  //   let payload = {
-  //     id: prefillData.id,
-  //     IPOStatus: e.target.value,
-  //   };
-  //   dispatch(updateIPO({ payload }));
-  // };
-
-  // const DatePickerField = ({ name, value, onChange }) => {
-  //   return (
-  //     <DatePicker
-  //       selected={(value && new Date(value)) || null}
-  //       className="form-control"
-  //       dateFormat="MMMM Do yyyy"
-  //       onChange={(val) => {
-  //         onChange(name, val);
-  //       }}
-  //     />
-  //   );
-  // };
-  // console.log(IPO);
   // useEffect(() => {
-  //   if (ipoPrefillData?.id) {
-  //     setActiveStepIndex(1);
-  //     let payload = {
-  //       id: ipoPrefillData?.id,
-  //       CategoryForIPOS: "MainlineIPO",
-  //     };
-  //     dispatch(getIpoById({ payload }));
-  //   }
-  // }, [ipoPrefillData?.id]);
-
-  // useEffect(() => {
-  //   if (getIPODataById) {
-  //     setIpoType("Edit");
-  //     let Data = { ...prefillData, ...getIPODataById };
-  //     setPrefillData(Data);
-  //   }
+  //   setIpoStatus(getIPODataById?.IPOStatus);
+  //   console.log("IPOStatus", getIPODataById);
   // }, [getIPODataById]);
-  // useEffect(() => {
-  //   console.log("getIPODataById", getIPODataById);
-  //   if (getIPODataById) {
-  //     let one = {};
-  //     const asArray = Object.entries(getIPODataById); // convert object into array
-  //     asArray?.filter(([key, value]) => {
-  //       if (key === "promotersName") {
-  //         let fvalue = value;
-  //         let jsonArray = JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //         );
-  //         one[key] = jsonArray || [];
-  //       }
-  //       if (key === "companyFinancials") {
-  //         let fvalue = value;
-  //         let jsonArray = JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //         );
-  //         one[key] = jsonArray;
-  //       }
-  //       if (key === "financialLotsize") {
-  //         let fvalue = value;
-  //         let jsonArray = JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //         );
-  //         one[key] = jsonArray;
-  //       }
-  //       if (key === "peersComparison") {
-  //         let fvalue = value;
-  //         let jsonArray = JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //         );
-  //         one[key] = jsonArray;
-  //       }
-  //       if (key === "subscriptionDetails") {
-  //         let fvalue = value;
-  //         let jsonArray = JSON.parse(
-  //           JSON.parse(JSON.stringify(fvalue).replace(/\//g, ""))
-  //         );
-  //         one[key] = jsonArray;
-  //       }
-  //     });
-  //     setPrefillData((preState) => {
-  //       return { ...preState, ...one };
-  //     });
-  //   }
-  // }, [getIPODataById]);
-  // console.log(prefillData?.IPOOpenDate);
   return (
     <>
       <PageHeading title={"IPO Edit"} />
@@ -168,26 +88,33 @@ const EditIpo = () => {
                   <div className="rounded-circle bg-danger w-15px h-15px"></div>
                 </div>
               </div>
-
-              <div className="card-body pt-0">
-                <select
-                  className="form-select mb-2"
-                  data-placeholder="Select an option"
-                  onChange={(e) => console.log(e)}
-                  value=""
-                >
-                  <option></option>
-                  <option value="Live" selected="selected">
-                    Live
-                  </option>
-                  <option value="Waitingallotment">Waiting Allotment</option>
-                  <option value="Allotmentout">Allotment Out</option>
-                  <option value="Upcoming">Upcoming</option>
-                  <option value="Listed">Listed</option>
-                </select>
-
-                <div className="text-muted fs-7">Set the ipo status. </div>
-              </div>
+              <Formik
+                enableReinitialize
+                initialValues={{ IPOstatus: getIPODataById?.IPOstatus }}
+              >
+                <Form onChange={handleIpoStatus}>
+                  <div className="card-body pt-0">
+                    <Field
+                      as="select"
+                      className="form-control mb-2"
+                      name="IPOstatus"
+                      // data-placeholder="Select an option"
+                      // onChange={(e) => handleIpoStatus(e)}
+                      // defaultValue={getIPODataById?.IPOStatus}
+                      // value={ipoStatus}
+                    >
+                      <option value="Live">Live</option>
+                      <option value="WaitingAllotment">
+                        Waiting Allotment
+                      </option>
+                      <option value="AllotmentOut">Allotment Out</option>
+                      <option value="Upcoming">Upcoming</option>
+                      <option value="Listed">Listed</option>
+                    </Field>
+                    <div className="text-muted fs-7">Set the ipo status. </div>
+                  </div>
+                </Form>
+              </Formik>
             </div>
 
             <div className="card card-flush py-4">

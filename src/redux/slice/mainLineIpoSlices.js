@@ -15,7 +15,7 @@ const initialState = {
   getIPODataById: [],
   ID: "",
   getAllMainLineIpoData: [],
-  // updatedIpo: [],
+  updatedIpo: [],
 };
 
 export const getAllMainLineIpo = createAsyncThunk(
@@ -72,9 +72,7 @@ export const updateIPO = createAsyncThunk(
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
-            "Content-Type": "multipart/form-data",
-
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -187,7 +185,7 @@ const mainLineIpoSlice = createSlice({
       })
       .addCase(updateIPO.fulfilled, (state, action) => {
         state.loading = false;
-        // state.updatedIpo = action.payload;
+        state.updatedIpo = action.payload;
       })
       .addCase(updateIPO.rejected, (state) => {
         state.loading = false;

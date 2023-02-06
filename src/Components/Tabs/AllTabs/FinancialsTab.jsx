@@ -2,7 +2,10 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import React from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  updateIPO,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
 const FinancialsTab = ({ ipoEdit }) => {
@@ -25,12 +28,17 @@ const FinancialsTab = ({ ipoEdit }) => {
       financialLotsize: values?.financialLotsize,
       peersComparison: values?.peersComparison,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
 
@@ -41,7 +49,7 @@ const FinancialsTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  companyFinancials: [],
+                  companyFinancials: getIPODataById?.companyFinancials,
                   earningPerShare: getIPODataById?.earningPerShare,
                   financialLotsize: [],
                   peersComparison: [],

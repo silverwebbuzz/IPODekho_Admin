@@ -1,9 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./Components/Layout";
-import { createContext } from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 
 const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));

@@ -31,7 +31,20 @@ const AddIpo = () => {
       />
     );
   };
-  console.log(ipoDates);
+
+  const handleIpoStatus = (e) => {
+    console.log(e.target?.value);
+    let payload = {
+      IPOstatus: e?.target?.value,
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
+  };
   const handleSubmit = (values) => {
     let payload = {
       IPOStatus: values?.IPOStatus,
@@ -50,7 +63,6 @@ const AddIpo = () => {
       payload.id = null;
       dispatch(createMainLineIpo({ payload }));
     }
-    // id: ID,
   };
 
   return (
@@ -85,6 +97,45 @@ const AddIpo = () => {
                 </div>
               </div>
             </div>
+
+            <div className="card card-flush py-4">
+              <div className="card-header">
+                <div className="card-title">
+                  <h2>Status</h2>
+                </div>
+
+                <div className="card-toolbar">
+                  <div className="rounded-circle bg-danger w-15px h-15px"></div>
+                </div>
+              </div>
+              <Formik
+                enableReinitialize
+                initialValues={{ IPOstatus: getIPODataById?.IPOstatus }}
+              >
+                <Form onChange={handleIpoStatus}>
+                  <div className="card-body pt-0">
+                    <Field
+                      as="select"
+                      className="form-control mb-2"
+                      name="IPOstatus"
+                      // data-placeholder="Select an option"
+                      // onChange={(e) => handleIpoStatus(e)}
+                      // defaultValue={getIPODataById?.IPOStatus}
+                      // value={ipoStatus}
+                    >
+                      <option value="Live">Live</option>
+                      <option value="WaitingAllotment">
+                        Waiting Allotment
+                      </option>
+                      <option value="AllotmentOut">Allotment Out</option>
+                      <option value="Upcoming">Upcoming</option>
+                      <option value="Listed">Listed</option>
+                    </Field>
+                    <div className="text-muted fs-7">Set the ipo status. </div>
+                  </div>
+                </Form>
+              </Formik>
+            </div>
             <Formik
               initialValues={{
                 IPOOpenDate: "",
@@ -104,41 +155,6 @@ const AddIpo = () => {
                   <div className="card card-flush py-4">
                     <div className="card-header">
                       <div className="card-title">
-                        <h2>Status</h2>
-                      </div>
-
-                      <div className="card-toolbar">
-                        <div className="rounded-circle bg-danger w-15px h-15px"></div>
-                      </div>
-                    </div>
-
-                    <div className="card-body pt-0">
-                      <Field
-                        as="select"
-                        className="form-select mb-2"
-                        data-placeholder="Select an option"
-                        // onChange={(e) => console.log(e)}
-                        name="IPOStatus"
-                      >
-                        <option></option>
-                        <option value="Live" selected="selected">
-                          Live
-                        </option>
-                        <option value="WaitingAllotment">
-                          Waiting Allotment
-                        </option>
-                        <option value="AllotmentOut">Allotment Out</option>
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Listed">Listed</option>
-                      </Field>
-
-                      <div className="text-muted fs-7">Set the ipo status.</div>
-                    </div>
-                  </div>
-                  <br />
-                  <div className="card card-flush py-4">
-                    <div className="card-header">
-                      <div className="card-title">
                         <h2>Tentative Timetable</h2>
                       </div>
                     </div>
@@ -152,7 +168,6 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
-                        {/* {console.log(values?.IPOOpenDate)} */}
                       </div>
 
                       <div className="w-100 fv-row mb-10">
@@ -218,23 +233,6 @@ const AddIpo = () => {
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
               <Tabs />
             </div>
-            {/* <Steppers IpoType="Add" /> */}
-            {/* <div className="d-flex justify-content-end">
-              <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link>
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button>
-            </div> */}
           </div>
         </div>
       </AppContentLayout>

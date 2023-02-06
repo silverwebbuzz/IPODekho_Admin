@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import "../../../assets/css/style.bundle.css";
@@ -9,7 +8,6 @@ import { Formik, Form, Field, FieldArray } from "formik";
 import {
   createMainLineIpo,
   getAllMainLineIpo,
-  getIpoById,
   updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,21 +17,18 @@ import { TabContext } from "../Tabs";
 import { useEffect } from "react";
 
 const GeneralTab = ({ ipoEdit }) => {
-  const draftBtnStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "start",
-  };
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
-    (state) => state.mainLineIpoSlice
-  );
-  // console.log(getIPODataById);
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
+  const { ID, getIPODataById, getAllMainLineIpoData, updatedIpo } = useSelector(
+    (state) => state.mainLineIpoSlice
+  );
 
   useEffect(() => {
     dispatch(getAllMainLineIpo());
   }, []);
+  useEffect(() => {
+    setTabData(getAllMainLineIpoData);
+  }, [updatedIpo]);
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS:
@@ -55,19 +50,15 @@ const GeneralTab = ({ ipoEdit }) => {
       nilQuota: values?.nilQuota,
       issueType: values?.issueType,
       listingAt: values?.listingAt,
-      DRHPDraft: values?.DRHPDraft,
-      RHPDraft: values?.RHPDraft,
+      // DRHPDraft: values?.DRHPDraft,
+      // RHPDraft: values?.RHPDraft,
       preIssueShareHolding: values?.preIssueShareHolding,
       postIssueShareHolding: values?.postIssueShareHolding,
       promotersName: values?.promotersName,
     };
     if (ipoEdit) {
       payload.id = getIPODataById?.id;
-      console.log(payload);
       dispatch(updateIPO({ payload }));
-      // setTimeout(() => {
-      //   dispatch(getIpoById({ payload }));
-      // }, 100);
     } else {
       if (ID) {
         payload.id = ID;
@@ -78,7 +69,6 @@ const GeneralTab = ({ ipoEdit }) => {
       }
     }
   };
-  // console.log(JSON.parse(localStorage.getItem("ID")));
 
   return (
     <>
@@ -103,11 +93,11 @@ const GeneralTab = ({ ipoEdit }) => {
                   nilQuota: getIPODataById?.nilQuota,
                   issueType: getIPODataById?.issueType,
                   listingAt: getIPODataById?.listingAt,
-                  DRHPDraft: getIPODataById?.DRHPDraft,
-                  RHPDraft: getIPODataById?.RHPDraft,
+                  // DRHPDraft: getIPODataById?.DRHPDraft,
+                  // RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  promotersName: [],
+                  promotersName: getIPODataById?.promotersName,
                   // promotersName: getIPODataById?.promotersName || [],
                 }
               : {
@@ -126,8 +116,8 @@ const GeneralTab = ({ ipoEdit }) => {
                   nilQuota: tabData?.nilQuota,
                   issueType: tabData?.issueType,
                   listingAt: tabData?.listingAt,
-                  DRHPDraft: tabData?.DRHPDraft,
-                  RHPDraft: tabData?.RHPDraft,
+                  // DRHPDraft: tabData?.DRHPDraft,
+                  // RHPDraft: tabData?.RHPDraft,
                   preIssueShareHolding: tabData?.preIssueShareHolding,
                   postIssueShareHolding: tabData?.postIssueShareHolding,
                   promotersName: tabData?.promotersName,
@@ -135,7 +125,6 @@ const GeneralTab = ({ ipoEdit }) => {
           }
           onSubmit={(values) => {
             let Data = { ...tabData, ...values };
-            console.log(Data);
             setTabData(Data);
             handleSubmit(values);
           }}
