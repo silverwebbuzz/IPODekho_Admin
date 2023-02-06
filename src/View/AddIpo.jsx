@@ -12,7 +12,7 @@ import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
 const AddIpo = () => {
-  // const [ipoDates, setIpoDates] = useState("");
+  const [ipoDates, setIpoDates] = useState("");
 
   const dispatch = useDispatch();
   const { ID, getIPODataById } = useSelector(
@@ -23,14 +23,15 @@ const AddIpo = () => {
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMM d, yyyy"
+        dateFormat="MMMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
-          // setIpoDates(val);
+          setIpoDates(name, val);
         }}
       />
     );
   };
+  console.log(ipoDates);
   const handleSubmit = (values) => {
     let payload = {
       IPOStatus: values?.IPOStatus,
