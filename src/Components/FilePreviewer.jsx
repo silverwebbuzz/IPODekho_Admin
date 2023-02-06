@@ -11,6 +11,7 @@ const FilePreviewer = ({
   offerModal,
   editImage,
   ipoPrefillData,
+  newsAdd,
 }) => {
   const [imagePreview, setImagePreview] = useState(ipoPrefillData);
   const dispatch = useDispatch();
@@ -99,7 +100,15 @@ const FilePreviewer = ({
             <img className="image_position" src={imagePreview} alt="" />
           )}
         </div>
-      ) : null}
+      ) : (
+        newsAdd && (
+          <div className="preview w-400px h-400px">
+            {imagePreview != null && (
+              <img className="image_position" src={imagePreview} alt="" />
+            )}
+          </div>
+        )
+      )}
     </>
   );
 };
