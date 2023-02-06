@@ -9,11 +9,13 @@ import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 import { Field, Form, Formik } from "formik";
 
 const IpoDetail = () => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById, getAllMainLineIpoData } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
   const location = useLocation();
   const IPOdata = location.state.data;
   const dispatch = useDispatch();
-
+  console.log(IPOdata);
   useEffect(() => {
     const payload = {
       id: IPOdata?.id,
@@ -117,10 +119,32 @@ const IpoDetail = () => {
                       </div>
 
                       <div className="card-toolbar">
-                        <div
-                          className="rounded-circle bg-danger w-15px h-15px"
-                          id="kt_ipo_status"
-                        ></div>
+                        {values.IPOstatus === "Live" ? (
+                          <div
+                            className="rounded-circle bg-danger w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "WaitingAllotment" ? (
+                          <div
+                            className="rounded-circle bg-warning w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "AllotmentOut" ? (
+                          <div
+                            className="rounded-circle bg-primary w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "Upcoming" ? (
+                          <div
+                            className="rounded-circle bg-info w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        )}
                       </div>
                     </div>
 

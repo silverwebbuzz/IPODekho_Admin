@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
-const FilePreview2 = () => {
+const FilePreview2 = ({ fileData }) => {
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(null);
 
@@ -49,16 +49,18 @@ const FilePreview2 = () => {
           <i class="bi bi-pencil-fill fs-7" />
         </label>
         <input
+          name="file"
           type="file"
           id="image"
           onChange={changeHandler}
           hidden
           accept=".png, .jpg, .jpeg"
+          value={fileData?.file}
         />
       </p>
 
       {fileDataURL ? (
-        <div className="preview w-150px h-150px">
+        <div className="preview w-400px h-400px">
           {<img src={fileDataURL} alt="preview" />}
         </div>
       ) : null}

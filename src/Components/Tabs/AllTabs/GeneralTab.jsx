@@ -34,6 +34,7 @@ const GeneralTab = ({ ipoEdit }) => {
   useEffect(() => {
     dispatch(getAllMainLineIpo());
   }, []);
+
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS:

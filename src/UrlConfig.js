@@ -9,3 +9,4 @@ export const ADMIN_IMG_UPLOAD = "uploadImage/";
 export const ADMIN_GET_ALL_NEWS = "news/GetAllNews";
 export const ADMIN_CREATE_NEWS = "news/createNews";
 export const ADMIN_UPDATE_NEWS = "news/UpdateNews/";
+export const ADMIN_UPDATE_NEWS_IMAGE = "news/updateNewsImage/";
