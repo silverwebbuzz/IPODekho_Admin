@@ -1,24 +1,24 @@
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getIpoById,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
-const RegistrarInfoTab = ({ ipoEdit }) => {
+const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
   const dispatch = useDispatch();
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+  const { ID, getIPODataById, updatedIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
   const { tabData, setTabData } = useContext(TabContext);
 
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       address: values?.address,
       companyPhone: values?.companyPhone,
       email: values?.email,
@@ -37,7 +37,22 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
       dispatch(createMainLineIpo({ payload }));
     }
   };
-
+  useEffect(() => {
+    if (ipoPrefillData?.data?.id) {
+      const payload = {
+        id: ipoPrefillData?.data?.id,
+        CategoryForIPOS: IPOTYPE,
+      };
+      dispatch(getIpoById({ payload }));
+    }
+  }, [updatedIpo]);
+  useEffect(() => {
+    if (ipoEdit) {
+      setTabData(getIPODataById);
+    } else {
+      setTabData({});
+    }
+  }, [updatedIpo]);
   return (
     <>
       <div>

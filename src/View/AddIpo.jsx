@@ -11,19 +11,22 @@ import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 const AddIpo = () => {
   const [ipoDates, setIpoDates] = useState("");
-
+  const location = useLocation();
+  const IPOTYPE = location.state;
   const dispatch = useDispatch();
   const { ID, getIPODataById } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM d, yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
           setIpoDates(name, val);
@@ -31,11 +34,10 @@ const AddIpo = () => {
       />
     );
   };
-
+  console.log(IPOTYPE);
   const handleIpoStatus = (e) => {
-    console.log(e.target?.value);
     let payload = {
-      IPOstatus: e?.target?.value,
+      IPOStatus: e?.target?.value,
     };
     if (ID) {
       payload.id = ID;
@@ -110,14 +112,14 @@ const AddIpo = () => {
               </div>
               <Formik
                 enableReinitialize
-                initialValues={{ IPOstatus: getIPODataById?.IPOstatus }}
+                initialValues={{ IPOStatus: getIPODataById?.IPOStatus }}
               >
                 <Form onChange={handleIpoStatus}>
                   <div className="card-body pt-0">
                     <Field
                       as="select"
                       className="form-control mb-2"
-                      name="IPOstatus"
+                      name="IPOStatus"
                       // data-placeholder="Select an option"
                       // onChange={(e) => handleIpoStatus(e)}
                       // defaultValue={getIPODataById?.IPOStatus}
@@ -231,7 +233,7 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-              <Tabs />
+              <Tabs IPOTYPE={IPOTYPE?.data} />
             </div>
           </div>
         </div>

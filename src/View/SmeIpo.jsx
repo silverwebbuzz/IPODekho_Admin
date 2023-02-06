@@ -15,9 +15,10 @@ import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 const SmeIpo = () => {
   const dispatch = useDispatch();
+  const [GMPStatus, setGMPStatus] = useState();
 
   const [GMP, setGMP] = useState("");
-  const { getAllMainLineIpoData } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -27,9 +28,11 @@ const SmeIpo = () => {
       id: ID,
       GMP: e?.target?.value,
     };
+    dispatch(updateIPO({ payload }));
   };
 
   const handleGmp = (e, ID) => {
+    setGMPStatus(e.target?.checked);
     let payload = {
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
@@ -42,7 +45,7 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch]);
+  }, [dispatch, updatedIpo]);
 
   return (
     <>
@@ -137,7 +140,7 @@ const SmeIpo = () => {
                   </div>
                 </div>
 
-                <Link to="/sme_ipo/add_ipo">
+                <Link to="/sme_ipo/add_ipo" state={{ data: "SmeIPO" }}>
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
@@ -202,8 +205,7 @@ const SmeIpo = () => {
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            value=""
-                            // checked
+                            checked={Itm?.GMPStatus === "ON" ? true : false}
                             onChange={(e) => handleGmp(e, Itm?.id)}
                           />
                         </div>

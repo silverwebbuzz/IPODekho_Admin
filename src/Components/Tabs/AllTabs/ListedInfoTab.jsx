@@ -12,7 +12,7 @@ import {
 } from "../../../redux/slice/mainLineIpoSlices";
 import moment from "moment/moment";
 import { TabContext } from "../Tabs";
-const ListedInfoTab = ({ ipoEdit }) => {
+const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
@@ -24,10 +24,7 @@ const ListedInfoTab = ({ ipoEdit }) => {
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       listingDate: values?.listingDate,
       listingPrice: values?.listingPrice,
       listingPosition: values?.listingPosition,
@@ -56,14 +53,14 @@ const ListedInfoTab = ({ ipoEdit }) => {
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}
       />
     );
   };
-  const IpoType = "Edit";
+  console.log(getIPODataById?.listingDate);
   return (
     <>
       <div>
@@ -72,13 +69,13 @@ const ListedInfoTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  // listingDate: getIPODataById?.listingDate,
+                  listingDate: getIPODataById?.listingDate,
                   listingPrice: getIPODataById?.listingPrice,
                   listingPosition: getIPODataById?.listingPosition,
                   listingDifferent: getIPODataById?.listingDifferent,
                   NSECode: getIPODataById?.NSECode,
                   BSEScript: getIPODataById?.BSEScript,
-                  // closingDate: getIPODataById?.closingDate,
+                  closingDate: getIPODataById?.closingDate,
                   closingPrice: getIPODataById?.closingPrice,
                   scriptPosition: getIPODataById?.scriptPosition,
                   closingDifferent: getIPODataById?.closingDifferent,

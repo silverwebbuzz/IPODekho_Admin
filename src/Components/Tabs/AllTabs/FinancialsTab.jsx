@@ -1,25 +1,24 @@
 import { Field, FieldArray, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createMainLineIpo,
+  getIpoById,
   updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
-const FinancialsTab = ({ ipoEdit }) => {
+const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
   const dispatch = useDispatch();
   const { tabData, setTabData } = useContext(TabContext);
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+
+  const { ID, getIPODataById, updatedIpo } = useSelector(
     (state) => state.mainLineIpoSlice
   );
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       earningPerShare: values?.earningPerShare,
       earningPERatio: values?.earningPERatio,
       returnonNetWorth: values?.returnonNetWorth,
@@ -41,7 +40,22 @@ const FinancialsTab = ({ ipoEdit }) => {
       }
     }
   };
-
+  useEffect(() => {
+    if (ipoPrefillData?.data?.id) {
+      const payload = {
+        id: ipoPrefillData?.data?.id,
+        CategoryForIPOS: IPOTYPE,
+      };
+      dispatch(getIpoById({ payload }));
+    }
+  }, [updatedIpo]);
+  useEffect(() => {
+    if (ipoEdit) {
+      setTabData(getIPODataById);
+    } else {
+      setTabData({});
+    }
+  }, [updatedIpo]);
   return (
     <>
       <div>
@@ -51,8 +65,8 @@ const FinancialsTab = ({ ipoEdit }) => {
               ? {
                   companyFinancials: getIPODataById?.companyFinancials,
                   earningPerShare: getIPODataById?.earningPerShare,
-                  financialLotsize: [],
-                  peersComparison: [],
+                  financialLotsize: getIPODataById?.financialLotsize,
+                  peersComparison: getIPODataById?.peersComparison,
                   earningPERatio: getIPODataById?.earningPERatio,
                   returnonNetWorth: getIPODataById?.returnonNetWorth,
                   netAssetValue: getIPODataById?.netAssetValue,
@@ -458,7 +472,7 @@ const FinancialsTab = ({ ipoEdit }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

@@ -16,7 +16,6 @@ const Notifications = lazy(() => import("./View/Notifications"));
 const AddIpo = lazy(() => import("./View/AddIpo"));
 const IpoEdit = lazy(() => import("./View/IpoEdit"));
 const IpoDetail = lazy(() => import("./View/IpoDetail"));
-
 const App = () => {
   return (
     <>

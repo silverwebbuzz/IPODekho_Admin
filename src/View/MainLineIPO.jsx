@@ -17,7 +17,8 @@ import { useState } from "react";
 const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
-  const { getAllMainLineIpoData } = useSelector(
+  const [GMPStatus, setGMPStatus] = useState();
+  const { getAllMainLineIpoData, updatedIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -31,12 +32,36 @@ const MainLineIPO = () => {
   //   dispatch(updateIPO({ payload }));
   // };
 
-  const handleGmp = (e, ID) => {
-    console.log(e);
+  // const handleGmp = (e, ID) => {
+  //   setGMP(e?.target?.value);
+  //   let payload = {
+  //     id: ID,
+  //     GMP: e?.target?.value,
+  //     GMPStatus: e.target?.checked === true ? "ON" : "OFF",
+  //   };
+  //   dispatch(updateIPO({ payload }));
+  // };
+
+  // useEffect(() => {
+  //   let payload = {
+  //     CategoryForIPOS: "MainlineIPO",
+  //   };
+  //   dispatch(getAllMainLineIpo({ payload }));
+  // }, [dispatch]);
+
+  const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
       id: ID,
       GMP: e?.target?.value,
+    };
+    dispatch(updateIPO({ payload }));
+  };
+
+  const handleGmp = (e, ID) => {
+    setGMPStatus(e.target?.checked);
+    let payload = {
+      id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
     dispatch(updateIPO({ payload }));
@@ -47,7 +72,7 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch]);
+  }, [dispatch, updatedIpo]);
 
   return (
     <>
@@ -141,7 +166,10 @@ const MainLineIPO = () => {
                   </div>
                 </div>
 
-                <Link to="/mainline_ipo/add_ipo">
+                <Link
+                  to="/mainline_ipo/add_ipo"
+                  state={{ data: "MainlineIPO" }}
+                >
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
@@ -172,7 +200,6 @@ const MainLineIPO = () => {
 
               <tbody className="text-gray-600 fw-semibold">
                 {getAllMainLineIpoData?.map((Itm) => {
-                  console.log(Itm.IPOStatus);
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -207,12 +234,7 @@ const MainLineIPO = () => {
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            // value=
-                            defaultChecked={
-                              Itm?.GMPStatus === "ON" ? true : false
-                            }
-                            //
-                            // checked
+                            checked={Itm?.GMPStatus === "ON" ? true : false}
                             onChange={(e) => handleGmp(e, Itm?.id)}
                           />
                         </div>
@@ -221,7 +243,7 @@ const MainLineIPO = () => {
                           className="form-control w-70px mt-3"
                           defaultValue={Itm?.GMP}
                           // value={GMPV}
-                          onChange={(e) => handleGmp(e, Itm?.id)}
+                          onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>
                       <td>
@@ -234,7 +256,7 @@ const MainLineIPO = () => {
                             Upcoming
                           </div>
                         ) : Itm?.IPOStatus === "Listed" ? (
-                          <div className="badge badge-light-primary fw-bold">
+                          <div className="badge badge-light-success fw-bold">
                             Listed
                           </div>
                         ) : Itm?.IPOStatus === "AllotmentOut" ? (

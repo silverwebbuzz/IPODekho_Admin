@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { TabContext } from "../Tabs";
-const SubscriptionTab = ({ ipoEdit }) => {
+const SubscriptionTab = ({ ipoEdit, IPOTYPE }) => {
   const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
@@ -16,10 +16,7 @@ const SubscriptionTab = ({ ipoEdit }) => {
 
   const handleSubmit = (one) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       subscriptionDetails: one.subscriptionDetails,
       qualifiedInstitutions: one.qualifiedInstitutions,
       nonInstitutionalBuyers: one.nonInstitutionalBuyers,
@@ -43,14 +40,13 @@ const SubscriptionTab = ({ ipoEdit }) => {
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}
       />
     );
   };
-  const IpoType = "Edit";
   return (
     <>
       <div>
@@ -58,7 +54,7 @@ const SubscriptionTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  subscriptionDetails: [],
+                  subscriptionDetails: getIPODataById?.subscriptionDetails,
                   qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
                   nonInstitutionalBuyers:
                     getIPODataById?.nonInstitutionalBuyers,
