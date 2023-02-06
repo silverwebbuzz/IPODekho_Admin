@@ -19,6 +19,8 @@ import { TabContext } from "../Tabs";
 import { useEffect } from "react";
 
 const GeneralTab = ({ ipoEdit }) => {
+  const { tabData, setTabData } = useContext(TabContext);
+  const dispatch = useDispatch();
   const draftBtnStyle = {
     display: "flex",
     flexDirection: "column",
@@ -27,9 +29,6 @@ const GeneralTab = ({ ipoEdit }) => {
   const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state.mainLineIpoSlice
   );
-  // console.log(getIPODataById);
-  const { tabData, setTabData } = useContext(TabContext);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllMainLineIpo());
