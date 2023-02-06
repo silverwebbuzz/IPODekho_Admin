@@ -18,6 +18,7 @@ const AddIpo = () => {
   const { ID, getIPODataById } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -75,7 +76,7 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer addImage="addImage" />
+                    {/* <FilePreviewer addImage="addImage" /> */}
                     {/* <FilePreview2 addImage="addImage" /> */}
                   </div>
                 </div>

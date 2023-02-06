@@ -5,8 +5,17 @@ import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import PageHeading from "../Components/PageHeading";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllOffers } from "../redux/slice/offersSlice";
 
 const Offers = () => {
+  const { getAllOffersData } = useSelector((state) => state.offersReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllOffers());
+  }, []);
+  console.log(getAllOffersData);
   return (
     <>
       <PageHeading title={"Offers"} />
@@ -49,7 +58,7 @@ const Offers = () => {
               <div
                 className="modal fade"
                 id="kt_modal_add_offer"
-                tabindex="-1"
+                tabIndex="-1"
                 aria-hidden="true"
               >
                 <div className="modal-dialog modal-dialog-centered mw-650px">
@@ -256,37 +265,47 @@ const Offers = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                <tr>
-                  <td>
-                    <img
-                      src="assets/media/offer/offer1.png"
-                      alt="offer"
-                      className="mh-75px"
-                    />
-                  </td>
-                  <td>Zerodha</td>
-                  <td className="mw-350px">
-                    Open a trading and Demat account online and start investing
-                    for free
-                  </td>
-                  <td>1</td>
-                  <td>
-                    <span className="badge badge-light-primary">Active</span>
-                  </td>
-                  <td className="text-end">
-                    <button
-                      type="button"
-                      className="btn btn-light btn-active-light-primary btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-target=".kt_modal_edit_offer"
-                    >
-                      <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                        <CommonEditIcon />
-                      </span>
-                      Edit
-                    </button>
-                  </td>
-                </tr>
+                {getAllOffersData?.map((offer) => {
+                  return (
+                    <tr>
+                      <td>
+                        <img
+                          src={offer?.file}
+                          alt="offer"
+                          className="mh-75px"
+                        />
+                      </td>
+                      <td>{offer?.offerTitle}</td>
+                      <td className="mw-350px">{offer.offerDescription}</td>
+                      <td>{offer?.offerSequence}</td>
+                      <td>
+                        <span
+                          className={`${
+                            offer?.offerStatus === "Deactive"
+                              ? "badge badge-light-danger"
+                              : "badge badge-light-primary"
+                          }`}
+                        >
+                          {offer?.offerStatus}
+                        </span>
+                      </td>
+                      <td className="text-end">
+                        <button
+                          // onClick={() => handleEdit(offer)}
+                          type="button"
+                          className="btn btn-light btn-active-light-primary btn-sm"
+                          data-bs-toggle="modal"
+                          data-bs-target=".kt_modal_edit_offer"
+                        >
+                          <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                            <CommonEditIcon />
+                          </span>
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
