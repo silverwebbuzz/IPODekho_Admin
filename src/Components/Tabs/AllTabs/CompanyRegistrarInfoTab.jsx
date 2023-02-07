@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -164,15 +164,6 @@ const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
 
                   <div className="d-flex flex-wrap gap-5 mb-10">
                     <div className="w-100 fv-row flex-md-root">
-                      <label className="form-label">Phone</label>
-                      <Field
-                        type="text"
-                        className="form-control"
-                        name="registerPhone"
-                      />
-                    </div>
-
-                    <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Email</label>
                       <Field
                         type="text"
@@ -199,11 +190,63 @@ const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
                       name="allotmentLink"
                     />
                   </div>
+                  <div className="w-100 fv-row flex-md-root">
+                    <label className="form-label mt-4">Phone</label>
+                    {/* <Field
+                        type="text"
+                        className="form-control"
+                        name="registerPhone"
+                      /> */}
+                    <FieldArray
+                      name="registerPhone"
+                      render={(arrayHelpers) => (
+                        <div>
+                          {values?.registerPhone?.map(
+                            (registerPhone, index) => (
+                              <div key={index}>
+                                <div className="col-md-8 d-flex">
+                                  <Field
+                                    type="phone"
+                                    className="form-control mt-2"
+                                    name={`registerPhone[${index}].phone`}
+                                  />
+                                  <div className="col-md-4">
+                                    <button
+                                      type="button"
+                                      data-repeater-delete
+                                      style={{
+                                        marginLeft: "20px",
+                                      }}
+                                      className="btn btn-sm btn-light-danger mb-2 mt-3 "
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <i className="la la-trash-o"></i>
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          )}
+                          <button
+                            type="button"
+                            className="btn btn-light-primary mt-2"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              arrayHelpers.push({ phone: "" });
+                            }}
+                          >
+                            <i className="la la-plus" /> Add
+                          </button>
+                        </div>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

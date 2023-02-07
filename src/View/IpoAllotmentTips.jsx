@@ -1,78 +1,84 @@
+import { Field, Form, Formik } from "formik";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import ReactQuill from "react-quill";
+import { useDispatch, useSelector } from "react-redux";
 import { modules } from "../Constants/commonConstants";
+import { getAllAllotmentTips } from "../redux/slice/allotmentSlice";
 
 const IpoAllotmentTips = () => {
-  const [companyDescription, setCompanyDescription] =
-    useState("<h1>HEllO</h1>");
+  const dispatch = useDispatch();
+  const { allotmentTipsSliceReducer } = useSelector(
+    (state) => state.allotmentTipsSliceReducer
+  );
+  console.log(allotmentTipsSliceReducer);
+  const handleSubmit = (values) => {};
+  useEffect(() => {
+    dispatch(getAllAllotmentTips());
+  }, []);
   return (
-    // <!--begin::Main-->
-    <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-      {/* <!--begin::Content wrapper--> */}
-      <div class="d-flex flex-column flex-column-fluid">
-        {/* <!--begin::Toolbar--> */}
-        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-          {/* <!--begin::Toolbar container--> */}
+    <div className="app-main flex-column flex-row-fluid" id="kt_app_main">
+      <div className="d-flex flex-column flex-column-fluid">
+        <div id="kt_app_toolbar" className="app-toolbar py-3 py-lg-6">
           <div
             id="kt_app_toolbar_container"
-            class="app-container container-xxl d-flex flex-stack"
+            className="app-container container-xxl d-flex flex-stack"
           >
-            {/* <!--begin::Page title--> */}
-            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-              {/* <!--begin::Title--> */}
-              <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+            <div className="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+              <h1 className="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
                 IPO Allotment Tips
               </h1>
-              {/* <!--end::Title--> */}
             </div>
-            {/* <!--end::Page title--> */}
           </div>
-          {/* <!--end::Toolbar container--> */}
         </div>
-        {/* <!--end::Toolbar--> */}
-        {/* <!--begin::Content--> */}
-        <div id="kt_app_content" class="app-content flex-column-fluid">
-          {/* <!--begin::Content container--> */}
+
+        <div id="kt_app_content" className="app-content flex-column-fluid">
           <div
             id="kt_app_content_container"
-            class="app-container container-xxl"
+            className="app-container container-xxl"
           >
-            {/* <!--begin::Card--> */}
-            <div class="card">
-              {/* <!--begin::Card body--> */}
-              <div class="card-body">
-                {/* <!--begin::Input group--> */}
-                <div>
-                  <div
-                    id="ipo_allotment_tips_content"
-                    name="ipo_allotment_tips_content"
-                    class="min-h-500px h-500px mb-2"
-                  >
-                    <ReactQuill
-                      className="min-h-200px h-200px "
-                      modules={modules}
-                      onChange={setCompanyDescription}
-                      value={companyDescription}
-                    />
-                  </div>
-                </div>
-                {/* <!--end::Input group--> */}
-                <div class="d-flex justify-content-end mt-15">
-                  {/* <!--begin::Button--> */}
-                  <a class="btn btn-primary">Save Changes</a>
-                  {/* <!--end::Button--> */}
-                </div>
+            <div className="card">
+              <div className="card-body">
+                <Formik
+                  initialValues={{
+                    AllotmentTips: "",
+                  }}
+                  onSubmit={handleSubmit}
+                >
+                  {({ values }) => (
+                    <Form>
+                      <div>
+                        <div
+                          id="ipo_allotment_tips_content"
+                          name="ipo_allotment_tips_content"
+                          className="min-h-500px h-500px mb-2"
+                        >
+                          <Field name="AllotmentTips">
+                            {({ field }) => (
+                              <ReactQuill
+                                className="min-h-200px h-200px "
+                                modules={modules}
+                                value={field.value}
+                                onChange={field.onChange(field.name)}
+                              />
+                            )}
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-end mt-15">
+                        <button className="btn btn-primary" type="submit">
+                          Save Changes
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
               </div>
-              {/* <!--end::Card body--> */}
             </div>
-            {/* <!--end::Card--> */}
           </div>
-          {/* <!--end::Content container--> */}
         </div>
-        {/* <!--end::Content--> */}
       </div>
-      {/* <!--end::Content wrapper--> */}
     </div>
   );
 };

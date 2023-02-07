@@ -330,7 +330,7 @@ const SubscriptionTab = ({ ipoEdit, IPOTYPE }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

@@ -5,7 +5,7 @@ import mainLineIpoSlices from "../slice/mainLineIpoSlices";
 import newsSlice from "../slice/newsSlice";
 import offersSlice from "../slice/offersSlice";
 import sidebarToggleSlice from "../slice/sidebarToggleSlice";
-
+import allotmentTipsSlice from "../slice/allotmentSlice";
 const reducer = combineReducers({
   //slice
   mainLineIpoSlice: mainLineIpoSlices,
@@ -14,5 +14,6 @@ const reducer = combineReducers({
   newsReducer: newsSlice,
   imagePreviewReducer: imagePreviewSlice,
   offersReducer: offersSlice,
+  allotmentTipsSliceReducer: allotmentTipsSlice,
 });
 export default reducer;

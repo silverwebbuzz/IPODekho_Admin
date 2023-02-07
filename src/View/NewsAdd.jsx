@@ -66,7 +66,7 @@ const NewsAdd = () => {
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM d, yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}
@@ -87,6 +87,7 @@ const NewsAdd = () => {
         Date: values?.newsDate,
       };
       formDataImg.append("file", file);
+      console.log("############", newsData?.data?.id);
       let payloadImage = {
         payload: formDataImg,
         payloadId: { id: newsData?.data?.id },
@@ -109,19 +110,18 @@ const NewsAdd = () => {
         <div className="card">
           <div className="card-body">
             <Formik
+              enableReinitialize
               initialValues={
                 newsData.type === "newsEdit"
                   ? {
                       Content: newsData?.data?.Content,
                       Title: newsData?.data?.Title,
                       newsDate: newsData?.data?.newsDate,
-                      file: newsData?.data?.file,
                     }
                   : {
                       Content: "",
                       Title: "",
                       newsDate: "",
-                      file: "",
                     }
               }
               onSubmit={(values) => handleSubmit(values)}

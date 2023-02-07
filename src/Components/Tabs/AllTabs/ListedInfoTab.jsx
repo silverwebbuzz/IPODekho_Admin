@@ -13,14 +13,13 @@ import {
 import moment from "moment/moment";
 import { TabContext } from "../Tabs";
 const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const { tabData, setTabData } = useContext(TabContext);
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = (values) => {
     const payload = {
@@ -41,6 +40,7 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
     if (ipoEdit) {
       payload.id = getIPODataById?.id;
       dispatch(updateIPO({ payload }));
+      navigate("/mainline_ipo");
     } else {
       if (ID) {
         payload.id = ID;
@@ -284,7 +284,7 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">Save All Data</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

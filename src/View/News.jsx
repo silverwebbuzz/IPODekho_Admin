@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getAllNews } from "../redux/slice/newsSlice";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { Link } from "react-router-dom";
+import moment from "moment/moment";
 
 const News = () => {
   const { newsData } = useSelector((state) => state.newsReducer);
@@ -102,7 +103,7 @@ const News = () => {
                         />
                       </td>
                       <td className="mw-350px">{news?.Title}</td>
-                      <td>{news?.Date}</td>
+                      <td>{moment(news?.Date).format("MMM d, yyyy")}</td>
                       <td className="text-end">
                         <Link
                           state={{ type: "newsEdit", data: news }}

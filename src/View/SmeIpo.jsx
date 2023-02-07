@@ -196,14 +196,50 @@ const SmeIpo = () => {
                           </a>
                         </div>
                       </td>
-                      <td className="w-150px mw-150px">
-                        {moment(Itm?.IPOOpenDate).format("MMM d, yyyy")} to
-                        <br />
-                        {moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
-                      </td>{" "}
-                      <td className="w-100px mw-100px">
-                        ₹{Itm?.offerPriceFrom} to ₹{Itm?.offerPriceTo}
-                      </td>
+                      {console.log(Itm?.IPOOpenDate)}
+                      {(Itm?.IPOOpenDate === undefined ||
+                        Itm?.IPOOpenDate === "" ||
+                        Itm?.IPOOpenDate === null) &&
+                      (Itm?.IPOCloseDate === undefined ||
+                        Itm?.IPOCloseDate === "" ||
+                        Itm?.IPOCloseDate === null) ? (
+                        <td className="w-150px mw-150px">N/A</td>
+                      ) : (
+                        <td className="w-150px mw-150px">
+                          {Itm?.IPOOpenDate === undefined
+                            ? "N/A"
+                            : moment(Itm?.IPOOpenDate).format(
+                                "MMM d, yyyy"
+                              )}{" "}
+                          to{" "}
+                          {Itm?.IPOCloseDate === undefined
+                            ? "N/A"
+                            : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                        </td>
+                      )}
+                      {(Itm?.toPrice === "" ||
+                        Itm?.toPrice === undefined ||
+                        Itm?.toPrice === null) &&
+                      (Itm?.fromPrice === "" ||
+                        Itm?.fromPrice === undefined ||
+                        Itm?.fromPrice === null) ? (
+                        <td className="w-100px mw-100px">N/A</td>
+                      ) : (
+                        <td className="w-100px mw-100px">
+                          ₹
+                          {Itm?.fromPrice === "" ||
+                          Itm?.fromPrice === undefined ||
+                          Itm?.fromPrice === null
+                            ? "N/A"
+                            : Itm?.fromPrice}{" "}
+                          to ₹
+                          {Itm?.toPrice === "" ||
+                          Itm?.toPrice === undefined ||
+                          Itm?.toPrice === null
+                            ? "N/A"
+                            : Itm?.toPrice}
+                        </td>
+                      )}
                       <td>{Itm?.lotSize} Shares</td>
                       <td className="text-center">
                         <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
