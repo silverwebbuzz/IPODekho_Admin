@@ -12,7 +12,7 @@ const IpoAllotmentTips = () => {
   const { allotmentTipsSliceReducer } = useSelector(
     (state) => state.allotmentTipsSliceReducer
   );
-  console.log(allotmentTipsSliceReducer);
+  // console.log(allotmentTipsSliceReducer);
   const handleSubmit = (values) => {};
   useEffect(() => {
     dispatch(getAllAllotmentTips());
