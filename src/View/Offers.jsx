@@ -7,14 +7,37 @@ import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllOffers } from "../redux/slice/offersSlice";
+import {
+  getAllOffers,
+  setModalIsOpen,
+  setModalType,
+  setOfferData,
+} from "../redux/slice/offersSlice";
+import OffersModal from "../Components/OffersModal";
+import { useState } from "react";
+import ReactModal from "react-modal";
 
 const Offers = () => {
-  const { getAllOffersData } = useSelector((state) => state.offersReducer);
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "50%",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: "200",
+      maxWidth: "650px",
+    },
+  };
+  const { getAllOffersData, modalIsOpen, addOfferData, editOfferData } =
+    useSelector((state) => state.offersReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getAllOffers());
-  }, []);
+  }, [addOfferData, editOfferData]);
+
   console.log(getAllOffersData);
   return (
     <>
@@ -47,6 +70,10 @@ const Offers = () => {
                   className="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#kt_modal_add_offer"
+                  onClick={() => {
+                    dispatch(setModalIsOpen(true));
+                    dispatch(setModalType("addOffer"));
+                  }}
                 >
                   <span className="svg-icon svg-icon-2">
                     <CommonAddIcon />
@@ -55,196 +82,20 @@ const Offers = () => {
                 </button>
               </div>
 
-              <div
-                className="modal fade"
-                id="kt_modal_add_offer"
-                tabIndex="-1"
-                aria-hidden="true"
+              {/* <OffersModal /> */}
+
+              <ReactModal
+                isOpen={modalIsOpen}
+                // onAfterOpen={() => subtitle.style.color = "#f00"}
+                onRequestClose={() => {
+                  dispatch(setModalIsOpen(false));
+                  dispatch(setModalType(""));
+                }}
+                style={customStyles}
+                contentLabel="Example Modal"
               >
-                <div className="modal-dialog modal-dialog-centered mw-650px">
-                  <div className="modal-content">
-                    <div
-                      className="modal-header"
-                      id="kt_modal_add_offer_header"
-                    >
-                      <h2 className="fw-bold">Add Offer</h2>
-
-                      <div
-                        className="btn btn-icon btn-sm btn-active-icon-primary"
-                        data-bs-dismiss="modal"
-                      >
-                        <CommonMultiplyIcon />
-                      </div>
-                    </div>
-
-                    <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                      <form
-                        id="kt_modal_add_offer_form"
-                        className="form"
-                        action="#"
-                      >
-                        <div
-                          className="d-flex flex-column scroll-y me-n7 pe-7"
-                          id="kt_modal_add_offer_scroll"
-                          data-kt-scroll="true"
-                          data-kt-scroll-activate="{default: false, lg: true}"
-                          data-kt-scroll-max-height="auto"
-                          data-kt-scroll-dependencies="#kt_modal_add_offer_header"
-                          data-kt-scroll-wrappers="#kt_modal_add_offer_scroll"
-                          data-kt-scroll-offset="300px"
-                        >
-                          <div className="fv-row mb-7">
-                            <label className="d-block fw-semibold fs-6 mb-5">
-                              Image
-                            </label>
-
-                            {/* <style>
-                                             .image-input-placeholder {
-                                               background-image: url("assets/media/news/blank-image.svg");
-                                             }
-                                             [data-theme="dark"]
-                                               .image-input-placeholder {
-                                               background-image: url("assets/media/news/blank-image-dark.svg");
-                                             }
-                                           </style> */}
-
-                            <div
-                              className="image-input image-input-outline image-input-placeholder"
-                              data-kt-image-input="true"
-                            >
-                              <div className="image-input-wrapper image-input-placeholder w-125px h-125px"></div>
-
-                              <label
-                                className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                data-kt-image-input-action="change"
-                                data-bs-toggle="tooltip"
-                                title="Change avatar"
-                              >
-                                <i className="bi bi-pencil-fill fs-7"></i>
-
-                                <input
-                                  type="file"
-                                  name="avatar"
-                                  accept=".png, .jpg, .jpeg"
-                                />
-                                <input type="hidden" name="avatar_remove" />
-                              </label>
-
-                              <span
-                                className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                data-kt-image-input-action="cancel"
-                                data-bs-toggle="tooltip"
-                                title="Cancel avatar"
-                              >
-                                <i className="bi bi-x fs-2"></i>
-                              </span>
-
-                              <span
-                                className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                data-kt-image-input-action="remove"
-                                data-bs-toggle="tooltip"
-                                title="Remove avatar"
-                              >
-                                <i className="bi bi-x fs-2"></i>
-                              </span>
-                            </div>
-
-                            <div className="form-text">
-                              Allowed file types: png, jpg, jpeg.
-                            </div>
-                          </div>
-
-                          <div className="fv-row mb-7">
-                            <label className="fw-semibold fs-6 mb-2">
-                              Offer Title
-                            </label>
-
-                            <input
-                              type="text"
-                              className="form-control form-control-solid mb-3 mb-lg-0"
-                              placeholder="Offer Title"
-                            />
-                          </div>
-
-                          <div className="fv-row mb-7">
-                            <label className="fw-semibold fs-6 mb-2">
-                              Offer Description
-                            </label>
-
-                            <textarea className="form-control form-control-solid mb-3 mb-lg-0"></textarea>
-                          </div>
-
-                          <div className="fv-row mb-7">
-                            <label className="fw-semibold fs-6 mb-2">
-                              Offer Sequence
-                            </label>
-
-                            <input
-                              type="text"
-                              className="form-control form-control-solid mb-3 mb-lg-0"
-                              placeholder="Offer Sequence"
-                            />
-                          </div>
-
-                          <div className="fv-row mb-7">
-                            <label className="fw-semibold fs-6 mb-2">
-                              Status
-                            </label>
-
-                            <div className="d-flex">
-                              <div className="form-check form-check-custom form-check-success form-check-solid me-10">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  value="Positive"
-                                  name="offer_status"
-                                  id="offer_active"
-                                />
-                                <label
-                                  className="form-check-label"
-                                  for="offer_active"
-                                >
-                                  Active
-                                </label>
-                              </div>
-
-                              <div className="form-check form-check-custom form-check-danger form-check-solid">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  value="Negative"
-                                  name="offer_status"
-                                  checked=""
-                                  id="offer_deactive"
-                                />
-                                <label
-                                  className="form-check-label"
-                                  for="offer_deactive"
-                                >
-                                  Deactive
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="text-center pt-15">
-                          <button
-                            type="reset"
-                            className="btn btn-light me-3"
-                            data-bs-dismiss="modal"
-                          >
-                            Discard
-                          </button>
-                          <button type="submit" className="btn btn-primary">
-                            Submit
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <OffersModal />
+              </ReactModal>
             </div>
           </div>
 
@@ -291,7 +142,11 @@ const Offers = () => {
                       </td>
                       <td className="text-end">
                         <button
-                          // onClick={() => handleEdit(offer)}
+                          onClick={() => {
+                            dispatch(setModalIsOpen(true));
+                            dispatch(setModalType("editOffer"));
+                            dispatch(setOfferData(offer));
+                          }}
                           type="button"
                           className="btn btn-light btn-active-light-primary btn-sm"
                           data-bs-toggle="modal"
