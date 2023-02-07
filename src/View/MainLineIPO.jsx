@@ -170,7 +170,7 @@ const MainLineIPO = () => {
 
                 <Link
                   to="/mainline_ipo/add_ipo"
-                  state={{ data: "MainlineIPO" }}
+                  state={{ data: "MainlineIPO", type: "ipoAdd" }}
                 >
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
@@ -206,7 +206,10 @@ const MainLineIPO = () => {
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
                         <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                          <a href="ipo-detail.html">
+                          <Link
+                            to="/mainline_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
+                          >
                             <div className="symbol-label">
                               <img
                                 style={{ height: "100%" }}
@@ -215,15 +218,16 @@ const MainLineIPO = () => {
                                 className="w-100"
                               />
                             </div>
-                          </a>
+                          </Link>
                         </div>
                         <div className="d-flex flex-column">
-                          <a
-                            href="ipo-detail.html"
+                          <Link
+                            state={{ data: Itm, type: "ipoEdit" }}
+                            to="/mainline_ipo/ipo_edit"
                             className="text-gray-800 text-hover-primary mb-1"
                           >
                             {Itm?.companyName}
-                          </a>
+                          </Link>
                         </div>
                       </td>
                       <td className="w-150px mw-150px">

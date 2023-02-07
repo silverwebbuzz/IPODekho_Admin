@@ -5,14 +5,13 @@ import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-
 import AppContentLayout from "../Components/AppContentLayout";
 import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
-
 import { getIpoById, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs/Tabs";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const EditIpo = () => {
   const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const EditIpo = () => {
   const { updatedIpo, getIPODataById } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-  console.log("getIPODataById", ipoPrefillData?.data?.CategoryForIPOS);
+
   const handleIpoStatus = (e) => {
     console.log(e.target?.value);
     // setIpoStatus(e?.target?.value);
@@ -65,6 +64,46 @@ const EditIpo = () => {
     dispatch(getIpoById({ payload }));
   }, [dispatch, updatedIpo]);
 
+  const formData = new FormData();
+  const formDataImg = new FormData();
+
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+  const [file, setFile] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState(
+    ipoPrefillData?.data?.file ? ipoPrefillData?.data?.file : blankImage
+  );
+  console.log(ipoPrefillData.type);
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.match(imageMimeType)) {
+      alert("Image mime type is not valid");
+      return;
+    }
+    setFile(file);
+  };
+
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+
+    if (file) {
+      fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const { result } = e.target;
+        if (result && !isCancel) {
+          setFileDataURL(result);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [file]);
+
   return (
     <>
       <PageHeading title={"IPO Edit"} />
@@ -87,10 +126,31 @@ const EditIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer
+                    {/* <FilePreviewer
                       editImage="editImage"
                       ipoPrefillData={ipoPrefillData?.data?.file}
-                    />
+                    /> */}
+                    <p>
+                      <label
+                        htmlFor="image"
+                        className="btn position-absolute edit_btn btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i className="bi bi-pencil-fill fs-7" />
+                      </label>
+                      <input
+                        name="file"
+                        type="file"
+                        id="image"
+                        onChange={changeHandler}
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        //   value={values?.file}
+                      />
+                    </p>
+
+                    <div className="preview w-150px h-150px">
+                      <img src={fileDataURL} alt="preview" />
+                    </div>
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -107,7 +167,32 @@ const EditIpo = () => {
                 </div>
 
                 <div className="card-toolbar">
-                  <div className="rounded-circle bg-danger w-15px h-15px"></div>
+                  {values.IPOstatus === "Live" ? (
+                    <div
+                      className="rounded-circle bg-danger w-15px h-15px"
+                      id="kt_ipo_status"
+                    ></div>
+                  ) : values.IPOstatus === "WaitingAllotment" ? (
+                    <div
+                      className="rounded-circle bg-warning w-15px h-15px"
+                      id="kt_ipo_status"
+                    ></div>
+                  ) : values.IPOstatus === "AllotmentOut" ? (
+                    <div
+                      className="rounded-circle bg-primary w-15px h-15px"
+                      id="kt_ipo_status"
+                    ></div>
+                  ) : values.IPOstatus === "Upcoming" ? (
+                    <div
+                      className="rounded-circle bg-info w-15px h-15px"
+                      id="kt_ipo_status"
+                    ></div>
+                  ) : (
+                    <div
+                      className="rounded-circle bg-success w-15px h-15px"
+                      id="kt_ipo_status"
+                    ></div>
+                  )}
                 </div>
               </div>
               <Formik
