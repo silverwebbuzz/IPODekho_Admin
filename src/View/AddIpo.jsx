@@ -12,6 +12,7 @@ import FilePreview2 from "../Components/FilePreview2";
 import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import blankImage from "../assets/media/offer/blank-image.svg";
 const AddIpo = () => {
   const [ipoDates, setIpoDates] = useState("");
   const location = useLocation();
@@ -72,7 +73,9 @@ const AddIpo = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(IPOTYPE?.data?.file);
+  const [fileDataURL, setFileDataURL] = useState(
+    IPOTYPE?.data?.file ? IPOTYPE?.data?.file : blankImage
+  );
   console.log(IPOTYPE.type);
   const changeHandler = (e) => {
     const file = e.target.files[0];

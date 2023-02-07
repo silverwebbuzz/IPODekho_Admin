@@ -134,6 +134,15 @@ const newsSlice = createSlice({
       })
       .addCase(updateNews.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(updateNewsImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateNewsImage.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateNewsImage.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });

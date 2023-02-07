@@ -29,9 +29,11 @@ const NewsAdd = () => {
   const [fileDataURL, setFileDataURL] = useState(
     newsData?.data?.file ? newsData?.data?.file : blankImage
   );
+  // const [removeImage, setRemoveImage] = useState(false);
   console.log(newsData.type);
   const changeHandler = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (!file.type.match(imageMimeType)) {
       alert("Image mime type is not valid");
       return;
@@ -61,6 +63,11 @@ const NewsAdd = () => {
     };
   }, [file]);
 
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
+  };
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -73,6 +80,7 @@ const NewsAdd = () => {
       />
     );
   };
+
   const handleSubmit = (values) => {
     formData.append("Content", values?.Content);
     formData.append("Title", values?.Title);
@@ -91,7 +99,7 @@ const NewsAdd = () => {
         payload: formDataImg,
         payloadId: { id: newsData?.data?.id },
       };
-      console.log(payloadImage);
+
       dispatch(updateNewsImage({ payloadImage }));
       dispatch(updateNews({ payload }));
     } else {
@@ -154,7 +162,17 @@ const NewsAdd = () => {
                       </p>
 
                       <div className="preview w-400px h-400px">
-                        <img src={fileDataURL} alt="preview" />
+                        <img
+                          // src={fileDataURL}
+                          src={fileDataURL === "" ? blankImage : fileDataURL}
+                          alt="preview"
+                        />
+                      </div>
+                      <div
+                        onClick={() => handleRemoveImage()}
+                        className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i class="bi bi-x fs-2"></i>
                       </div>
                     </div>
                   </div>
