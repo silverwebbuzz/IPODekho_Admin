@@ -6,6 +6,7 @@ import { FormContext } from "../../../App";
 import {
   createMainLineIpo,
   getIpoById,
+  updateIPO,
 } from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
@@ -29,12 +30,17 @@ const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
       registerWebsite: values?.registerWebsite,
       allotmentLink: values?.allotmentLink,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
   useEffect(() => {

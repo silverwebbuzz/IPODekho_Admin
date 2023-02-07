@@ -13,6 +13,7 @@ import { Link, NavLink } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
+import moment from "moment/moment";
 const SmeIpo = () => {
   const dispatch = useDispatch();
   const [GMPStatus, setGMPStatus] = useState();
@@ -195,7 +196,11 @@ const SmeIpo = () => {
                           </a>
                         </div>
                       </td>
-                      <td className="w-150px mw-150px">{Itm?.offerDate}</td>
+                      <td className="w-150px mw-150px">
+                        {moment(Itm?.IPOOpenDate).format("MMM d, yyyy")} to
+                        <br />
+                        {moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                      </td>{" "}
                       <td className="w-100px mw-100px">
                         ₹{Itm?.offerPriceFrom} to ₹{Itm?.offerPriceTo}
                       </td>

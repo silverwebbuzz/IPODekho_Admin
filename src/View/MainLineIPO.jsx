@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
+import moment from "moment/moment";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
@@ -208,7 +210,7 @@ const MainLineIPO = () => {
                             <div className="symbol-label">
                               <img
                                 style={{ height: "100%" }}
-                                src={Itm?.file}
+                                src={Itm?.file ? Itm?.file : blankImage}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
@@ -224,7 +226,11 @@ const MainLineIPO = () => {
                           </a>
                         </div>
                       </td>
-                      <td className="w-150px mw-150px">{Itm?.offerDate}</td>
+                      <td className="w-150px mw-150px">
+                        {moment(Itm?.IPOOpenDate).format("MMM d, yyyy")} to
+                        <br />
+                        {moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                      </td>
                       <td className="w-100px mw-100px">
                         ₹{Itm?.fromPrice} to ₹{Itm?.toPrice}
                       </td>

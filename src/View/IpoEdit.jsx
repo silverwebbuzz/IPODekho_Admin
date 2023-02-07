@@ -120,11 +120,8 @@ const EditIpo = () => {
                       as="select"
                       className="form-control mb-2"
                       name="IPOStatus"
-                      // data-placeholder="Select an option"
-                      // onChange={(e) => handleIpoStatus(e)}
-                      // defaultValue={getIPODataById?.IPOStatus}
-                      // value={ipoStatus}
                     >
+                      <option></option>
                       <option value="Live">Live</option>
                       <option value="WaitingAllotment">
                         Waiting Allotment

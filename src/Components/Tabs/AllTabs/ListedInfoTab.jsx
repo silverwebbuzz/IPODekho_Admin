@@ -13,15 +13,15 @@ import {
 import moment from "moment/moment";
 import { TabContext } from "../Tabs";
 const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
+  const { ID } = useSelector((state) => state.mainLineIpoSlice);
+  const { tabData, setTabData } = useContext(TabContext);
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-  const { tabData, setTabData } = useContext(TabContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { ID } = useSelector((state) => state.mainLineIpoSlice);
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: IPOTYPE,
@@ -38,14 +38,19 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
       weekHigh: values?.weekHigh,
       weekLow: values?.weekLow,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
-      navigate("/mainline_ipo");
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
-      navigate("/mainline_ipo");
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+        navigate("/mainline_ipo");
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+        navigate("/mainline_ipo");
+      }
     }
   };
   const DatePickerField = ({ name, value, onChange }) => {
@@ -83,7 +88,7 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
                   weekLow: getIPODataById?.weekLow,
                 }
               : {
-                  listingDate: getIPODataById?.listingDate,
+                  listingDate: tabData?.listingDate,
                   listingPrice: tabData?.listingPrice,
                   listingPosition: tabData?.listingPosition,
                   listingDifferent: tabData?.listingDifferent,
@@ -285,14 +290,6 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
             </Form>
           )}
         </Formik>
-        {/* <div className="d-flex justify-content-end mt-4">
-          <button
-            className="btn btn btn-primary"
-            onClick={() => handleAllDataSubmit()}
-          >
-            Submit
-          </button>
-        </div> */}
       </div>
     </>
   );
