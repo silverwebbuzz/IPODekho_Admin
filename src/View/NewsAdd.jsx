@@ -14,6 +14,7 @@ import {
 import FilePreview2 from "../Components/FilePreview2";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const NewsAdd = () => {
   const location = useLocation();
@@ -25,7 +26,9 @@ const NewsAdd = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(newsData?.data?.file);
+  const [fileDataURL, setFileDataURL] = useState(
+    newsData?.data?.file ? newsData?.data?.file : blankImage
+  );
   console.log(newsData.type);
   const changeHandler = (e) => {
     const file = e.target.files[0];

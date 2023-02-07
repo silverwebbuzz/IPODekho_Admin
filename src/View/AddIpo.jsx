@@ -67,6 +67,43 @@ const AddIpo = () => {
     }
   };
 
+  const formData = new FormData();
+  const formDataImg = new FormData();
+
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+  const [file, setFile] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState(IPOTYPE?.data?.file);
+  console.log(IPOTYPE.type);
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.match(imageMimeType)) {
+      alert("Image mime type is not valid");
+      return;
+    }
+    setFile(file);
+  };
+
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+
+    if (file) {
+      fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const { result } = e.target;
+        if (result && !isCancel) {
+          setFileDataURL(result);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [file]);
   return (
     <>
       <PageHeading title={"IPO Add"} />
@@ -89,8 +126,27 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    {/* <FilePreviewer addImage="addImage" /> */}
-                    {/* <FilePreview2 addImage="addImage" /> */}
+                    <p>
+                      <label
+                        htmlFor="image"
+                        className="btn position-absolute edit_btn btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i className="bi bi-pencil-fill fs-7" />
+                      </label>
+                      <input
+                        name="file"
+                        type="file"
+                        id="image"
+                        onChange={changeHandler}
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        //   value={values?.file}
+                      />
+                    </p>
+
+                    <div className="preview w-150px h-150px">
+                      <img src={fileDataURL} alt="preview" />
+                    </div>
                   </div>
                 </div>
                 <div className="text-muted fs-7">

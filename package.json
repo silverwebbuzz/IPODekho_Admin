@@ -2,11 +2,7 @@
   "name": "ipo-dekho",
   "version": "0.1.0",
   "private": true,
-<<<<<<< HEAD
   "proxy": "http://localhost:5000/",
-=======
-  "proxy":"http://localhost:5000/",
->>>>>>> 9381f5a229e9751fec5369465db5b9aaa819f5aa
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",

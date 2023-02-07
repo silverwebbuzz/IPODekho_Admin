@@ -7,6 +7,7 @@ import PageHeading from "../Components/PageHeading";
 import Tabs from "../../src/Components/Tabs/Tabs";
 import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 import { Field, Form, Formik } from "formik";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const IpoDetail = () => {
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
@@ -60,54 +61,14 @@ const IpoDetail = () => {
                         className="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                         // data-kt-image-input="true"
                       >
-                        <div
-                          className="image-input-wrapper w-150px h-150px"
-                          style={{
-                            backgroundImage:
-                              "url(assets/media/ipo/Elin-Electronics-logo.jpeg)",
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                          }}
-                        ></div>
-
-                        <label
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="change"
-                          data-bs-toggle="tooltip"
-                          title="Change logo"
-                        >
-                          <i className="bi bi-pencil-fill fs-7"></i>
-
-                          <input
-                            type="file"
-                            name="avatar"
-                            accept=".png, .jpg, .jpeg"
-                          />
-                          <input type="hidden" name="avatar_remove" />
-                        </label>
-
-                        <span
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="cancel"
-                          data-bs-toggle="tooltip"
-                          title="Cancel avatar"
-                        >
-                          <i className="bi bi-x fs-2"></i>
-                        </span>
-
-                        <span
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="remove"
-                          data-bs-toggle="tooltip"
-                          title="Remove avatar"
-                        >
-                          <i className="bi bi-x fs-2"></i>
-                        </span>
-                      </div>
-
-                      <div className="text-muted fs-7">
-                        Set the product thumbnail image. Only .png, .jpg and
-                        *.jpeg image files are accepted
+                        <div className="image-input-wrapper w-150px h-150px file_preview_wrapper">
+                          <div className="preview w-150px h-150px">
+                            <img
+                              src={IPOdata?.file ? IPOdata?.file : blankImage}
+                              alt="preview"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
