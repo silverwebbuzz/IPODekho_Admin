@@ -16,6 +16,7 @@ import MultiSelect from "../../MultiSelect";
 import { useContext } from "react";
 import { TabContext } from "../Tabs";
 import { useEffect } from "react";
+import FileAttachmentIcon from "../../../assets/media/Icons/FileAttachmentIcon";
 
 const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const { tabData, setTabData } = useContext(TabContext);
@@ -98,6 +99,7 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                   qibQuota: getIPODataById?.qibQuota,
                   nilQuota: getIPODataById?.nilQuota,
                   issueType: getIPODataById?.issueType,
+                  shortText: getIPODataById?.shortText,
                   listingAt: getIPODataById?.listingAt,
                   // DRHPDraft: getIPODataById?.DRHPDraft,
                   // RHPDraft: getIPODataById?.RHPDraft,
@@ -121,6 +123,7 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                   qibQuota: tabData?.qibQuota,
                   nilQuota: tabData?.nilQuota,
                   issueType: tabData?.issueType,
+                  shortText: tabData?.shortText,
                   listingAt: tabData?.listingAt,
                   // DRHPDraft: tabData?.DRHPDraft,
                   // RHPDraft: tabData?.RHPDraft,
@@ -332,6 +335,14 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                         className="form-control"
                       />
                     </div>
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Short Text</label>
+                      <Field
+                        type="text"
+                        name="shortText"
+                        className="form-control"
+                      />
+                    </div>
 
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Listing At</label>
@@ -359,9 +370,10 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                         className="form-control"
                       />
                       {/* <button className="btn btn-primary" type="button">
-                        DRHP Draft
+                        DRHP
                       </button> */}
                     </div>
+                    {/* DRHP <FileAttachmentIcon /> */}
 
                     <div
                       className="w-100 fv-row flex-md-root"
@@ -374,8 +386,9 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                         className="form-control"
                       />
                       {/* <button className="btn btn-primary" type="button">
-                        RHP Draft
+                        RHP
                       </button> */}
+                      {/* RHP <FileAttachmentIcon /> */}
                     </div>
                   </div>
                 </div>
