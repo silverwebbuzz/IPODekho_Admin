@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 import React from "react";
 import { useSelector } from "react-redux";
 
@@ -96,11 +96,20 @@ const DisabledRegistrarInfoTab = () => {
                   <div className="d-flex flex-wrap gap-5 mb-10">
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Phone</label>
-                      <Field
+                      <FieldArray
                         disabled
                         type="text"
                         className="form-control"
                         name="registerPhone"
+                        render={(arrayHelpers) => (
+                          <div>
+                            {values?.registerPhone?.map((phone, index) => (
+                              <div key={index}>
+                                <Field name={`registerPhone[${index}].phone`} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       />
                     </div>
 

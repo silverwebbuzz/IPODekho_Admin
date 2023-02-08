@@ -62,8 +62,9 @@ const IpoDetail = () => {
                         // data-kt-image-input="true"
                       >
                         <div className="image-input-wrapper w-150px h-150px file_preview_wrapper">
-                          <div className="preview w-150px h-150px">
+                          <div className="preview">
                             <img
+                              className=" w-150px h-150px"
                               src={IPOdata?.file ? IPOdata?.file : blankImage}
                               alt="preview"
                             />

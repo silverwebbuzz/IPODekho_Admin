@@ -30,13 +30,18 @@ const Offers = () => {
       maxWidth: "650px",
     },
   };
-  const { getAllOffersData, modalIsOpen, addOfferData, editOfferData } =
-    useSelector((state) => state.offersReducer);
+  const {
+    getAllOffersData,
+    modalIsOpen,
+    addOfferData,
+    editOfferData,
+    offerImage,
+  } = useSelector((state) => state.offersReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllOffers());
-  }, [addOfferData, editOfferData]);
+  }, [addOfferData, editOfferData, offerImage]);
 
   console.log(getAllOffersData);
   return (

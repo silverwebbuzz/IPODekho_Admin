@@ -17,6 +17,7 @@ const initialState = {
   offerData: null,
   addOfferData: [],
   editOfferData: [],
+  offerImage: null,
 };
 
 export const getAllOffers = createAsyncThunk(
@@ -157,8 +158,9 @@ const offersSlice = createSlice({
       .addCase(updateOfferImage.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateOfferImage.fulfilled, (state) => {
+      .addCase(updateOfferImage.fulfilled, (state, action) => {
         state.loading = false;
+        state.offerImage = action.payload;
       })
       .addCase(updateOfferImage.rejected, (state) => {
         state.loading = false;
