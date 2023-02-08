@@ -97,15 +97,16 @@ const DisabledRegistrarInfoTab = () => {
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Phone</label>
                       <FieldArray
-                        disabled
-                        type="text"
-                        className="form-control"
                         name="registerPhone"
                         render={(arrayHelpers) => (
                           <div>
                             {values?.registerPhone?.map((phone, index) => (
                               <div key={index}>
-                                <Field name={`registerPhone[${index}].phone`} />
+                                <Field
+                                  disabled
+                                  className="form-control mt-2"
+                                  name={`registerPhone[${index}].phone`}
+                                />
                               </div>
                             ))}
                           </div>

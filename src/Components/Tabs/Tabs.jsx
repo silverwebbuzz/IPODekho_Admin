@@ -19,7 +19,6 @@ const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
   const { ID } = useSelector((state) => state?.mainLineIpoSlice);
-  console.log("IPOTYPE", IPOTYPE);
   const [tabData, setTabData] = useState({});
   return (
     <>

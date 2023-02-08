@@ -16,6 +16,7 @@ const initialState = {
   ID: "",
   getAllMainLineIpoData: [],
   updatedIpo: [],
+  createIpo: [],
 };
 
 export const getAllMainLineIpo = createAsyncThunk(
@@ -89,10 +90,8 @@ export const uploadIMG = createAsyncThunk(
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${
-          payload.id?.id ? payload.id?.id : null
-        }`,
-        payload.payload,
+        `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${payload?.id?.id}`,
+        payload?.payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -175,6 +174,7 @@ const mainLineIpoSlice = createSlice({
       .addCase(createMainLineIpo.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
+        state.createIpo = action.payload;
         state.loading = false;
       })
       .addCase(createMainLineIpo.rejected, (state) => {

@@ -8,14 +8,18 @@ import { useEffect } from "react";
 import { getAllNews } from "../redux/slice/newsSlice";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { Link } from "react-router-dom";
+import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 
 const News = () => {
-  const { newsData } = useSelector((state) => state.newsReducer);
+  const { newsData, addNews, editNews, editNewsImage } = useSelector(
+    (state) => state.newsReducer
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNews());
-  }, []);
+  }, [addNews, editNews, editNewsImage]);
+
   return (
     <>
       <PageHeading title={"News"} />
@@ -97,7 +101,7 @@ const News = () => {
                     <tr>
                       <td>
                         <img
-                          src={news?.file}
+                          src={news?.file ? news?.file : blankImage}
                           alt="news-image"
                           className="mh-75px"
                         />

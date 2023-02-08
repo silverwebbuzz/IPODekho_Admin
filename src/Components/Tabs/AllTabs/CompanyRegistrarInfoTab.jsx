@@ -217,7 +217,7 @@ const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
                                       style={{
                                         marginLeft: "20px",
                                       }}
-                                      className="btn btn-sm btn-light-danger mb-2 mt-3 "
+                                      className="btn btn-sm btn-light-danger mb-2 mt-3"
                                       onClick={() => arrayHelpers.remove(index)}
                                     >
                                       <i className="la la-trash-o"></i>

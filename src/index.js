@@ -7,9 +7,11 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store/store";
 import "./assets/css/style.bundle.css";
 import "./assets/plugins/global/plugins.bundle.css";
+import ReactModal from "react-modal";
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 // let persistor = persistStore(store);
+ReactModal.setAppElement("#root");
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>

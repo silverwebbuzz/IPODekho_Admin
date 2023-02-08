@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import PageHeading from "../Components/PageHeading";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
@@ -9,9 +9,10 @@ import "../assets/css/style.bundle.css";
 import "../assets/plugins/global/plugins.bundle.css";
 import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
+import blankImage from "../assets/media/offer/blank-image.svg";
 import { useState } from "react";
 import moment from "moment/moment";
 const SmeIpo = () => {
@@ -19,7 +20,7 @@ const SmeIpo = () => {
   const [GMPStatus, setGMPStatus] = useState();
 
   const [GMP, setGMP] = useState("");
-  const { getAllMainLineIpoData, updatedIpo } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -46,7 +47,7 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch, updatedIpo]);
+  }, [dispatch, updatedIpo, createIpo]);
 
   return (
     <>
@@ -141,7 +142,10 @@ const SmeIpo = () => {
                   </div>
                 </div>
 
-                <Link to="/sme_ipo/add_ipo" state={{ data: "SmeIPO" }}>
+                <Link
+                  to="/sme_ipo/add_ipo"
+                  state={{ data: "SmeIPO", type: "ipoAdd" }}
+                >
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
@@ -177,23 +181,27 @@ const SmeIpo = () => {
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
                         <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                          <a href="ipo-detail.html">
+                          <Link
+                            to="/sme_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
+                          >
                             <div className="symbol-label">
                               <img
-                                src="assets/media/ipo/Elin-Electronics-logo.jpeg"
+                                src={Itm?.file ? Itm?.file : blankImage}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
                             </div>
-                          </a>
+                          </Link>
                         </div>
                         <div className="d-flex flex-column">
-                          <a
-                            href="ipo-detail.html"
+                          <Link
+                            to="/sme_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
                             className="text-gray-800 text-hover-primary mb-1"
                           >
                             {Itm?.companyName}
-                          </a>
+                          </Link>
                         </div>
                       </td>
                       {console.log(Itm?.IPOOpenDate)}

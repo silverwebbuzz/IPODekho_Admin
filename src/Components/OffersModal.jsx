@@ -16,15 +16,14 @@ const OffersModal = () => {
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
-  const { getAllOffersData, modalType, offerData } = useSelector(
-    (state) => state.offersReducer
-  );
+  const { modalType, offerData } = useSelector((state) => state.offersReducer);
 
   console.log(modalType);
+  console.log("offerData", offerData);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(
-    getAllOffersData?.file ? getAllOffersData.file : blankImage
+    offerData?.file && modalType === "editOffer" ? offerData?.file : blankImage
   );
 
   const changeHandler = (e) => {

@@ -24,7 +24,6 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const { ID, getIPODataById, getAllMainLineIpoData, updatedIpo } = useSelector(
     (state) => state.mainLineIpoSlice
   );
-  console.log("IPOTYPE", IPOTYPE);
   useEffect(() => {
     if (ipoPrefillData?.data?.id) {
       const payload = {

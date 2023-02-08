@@ -4,7 +4,6 @@ import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import PageHeading from "../Components/PageHeading";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
-import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
@@ -14,7 +13,6 @@ import {
   setOfferData,
 } from "../redux/slice/offersSlice";
 import OffersModal from "../Components/OffersModal";
-import { useState } from "react";
 import ReactModal from "react-modal";
 
 const Offers = () => {
