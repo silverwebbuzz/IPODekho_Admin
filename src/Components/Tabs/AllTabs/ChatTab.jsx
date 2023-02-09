@@ -1,10 +1,17 @@
 import { Field, Form, Formik } from "formik";
 import { auth, db } from "../../../FirebaseConfig";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { query, orderBy, onSnapshot, limit } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 // import { useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import moment from "moment/moment";
 
 const ChatTab = () => {
   const [message, setMessage] = useState();
@@ -25,14 +32,43 @@ const ChatTab = () => {
           console.log(errorCode, errorMessage);
         });
       const { uid } = auth.currentUser;
-      await addDoc(collection(db, "messages"), {
+      // await addDoc(collection(db, "messages"), {
+      //   msg: values.msg,
+      //   name: "sahil",
+      //   avatar: "",
+      //   createdAt: serverTimestamp(),
+      //   date: Timestamp.now(),
+      //   uid,
+      // });
+      const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
+      await addDoc(ChatCollection, {
         msg: values.msg,
         name: "sahil",
         avatar: "",
         createdAt: serverTimestamp(),
+        date: Timestamp.now(),
         uid,
       });
+      // await addDoc(
+      //   collection(db,"Chat").doc("LH9ihxv72vAPT1XJwXoL").set({
+      //     msg: values.msg,
+      //     name: "sahil",
+      //     avatar: "",
+      //     createdAt: serverTimestamp(),
+      //     date: Timestamp.now(),
+      //     uid,
+      //   })
+      // );
     }
+  };
+
+  const timeFormat = (secs) => {
+    // let seconds = moment(secs);
+    let output = new Date(secs * 1000);
+    let formatTime = moment(output).format("d MMM LT");
+
+    // console.log("formatTime", output);
+    return formatTime;
   };
 
   useEffect(() => {
@@ -41,6 +77,8 @@ const ChatTab = () => {
       orderBy("createdAt"),
       limit(50)
     );
+    const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
+    console.log("ChatCollection", ChatCollection);
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       let messages = [];
       QuerySnapshot.forEach((doc) => {
@@ -94,7 +132,7 @@ const ChatTab = () => {
                             className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
                           >
                             {"user name"}
-                            {console.log("MSGS", msg, i)}{" "}
+                            {/* {console.log("MSGS", msg)}{" "} */}
                           </a>
                           <span className="text-muted fs-7 mb-1">2 mins</span>
                         </div>
@@ -113,7 +151,9 @@ const ChatTab = () => {
                     <div className="d-flex flex-column align-items-end">
                       <div className="d-flex align-items-center mb-2">
                         <div className="me-3">
-                          <span className="text-muted fs-7 mb-1">5 mins</span>
+                          <span className="text-muted fs-7 mb-1">
+                            {timeFormat(msg?.createdAt?.seconds).toString()}
+                          </span>
                           <a
                             href="#"
                             className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
