@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import "../assets/css/FilePreviewer.css";
 import {
   createOffer,
   setModalIsOpen,
@@ -13,6 +14,7 @@ import {
 } from "../redux/slice/offersSlice";
 
 const OffersModal = () => {
+  const [clearImage, setClearImage] = useState(false);
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
@@ -49,6 +51,7 @@ const OffersModal = () => {
         }
       };
       fileReader.readAsDataURL(file);
+      setClearImage(true);
     }
     return () => {
       isCancel = true;
@@ -57,6 +60,21 @@ const OffersModal = () => {
       }
     };
   }, [file]);
+
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
+    setClearImage(false);
+    // const file = "";
+    // formDataImg.append("file", file);
+    // if (modalType === "editOffer") {
+    //   let payloadImage = {
+    //     payload: formDataImg,
+    //     payloadId: { id: offerData?.id },
+    //   };
+    //   dispatch(updateOfferImage({ payloadImage }));
+    // }
+  };
 
   const handleSubmit = (values) => {
     formData.append("offerTitle", values.offerTitle);
@@ -89,9 +107,11 @@ const OffersModal = () => {
   };
   return (
     <div
-      // style={{ display: "block", paddingLeft: "0px" }}
+      className="fade show"
+      style={{ display: "block", paddingLeft: "0px" }}
       tabIndex="-1"
       aria-modal="true"
+      role="dialog"
     >
       <div className="modal-dialog modal-dialog-centered mw-650px">
         <div className="modal-content">
@@ -136,7 +156,7 @@ const OffersModal = () => {
                 <Form>
                   <div id="kt_modal_add_offer_form" className="form">
                     <div
-                      className="d-flex flex-column scroll-y me-n7 pe-7"
+                      className="d-flex flex-column scroll-y "
                       id="kt_modal_add_offer_scroll"
                       data-kt-scroll="true"
                       data-kt-scroll-activate="{default: false, lg: true}"
@@ -144,6 +164,7 @@ const OffersModal = () => {
                       data-kt-scroll-dependencies="#kt_modal_add_offer_header"
                       data-kt-scroll-wrappers="#kt_modal_add_offer_scroll"
                       data-kt-scroll-offset="300px"
+                      style={{ maxHeight: "494px" }}
                     >
                       <div className="fv-row mb-7">
                         <label className="d-block fw-semibold fs-6 mb-5">
@@ -154,8 +175,8 @@ const OffersModal = () => {
                           className="image-input image-input-outline image-input-placeholder"
                           data-kt-image-input="true"
                         >
-                          <div className="file_preview_wrapper image-input-wrapper image-input-placeholder w-125px h-125px btn-container m-auto position-relative">
-                            <p>
+                          <div className="file_preview_wrapper w-125px h-125px btn-container m-auto position-relative">
+                            <div>
                               <label
                                 htmlFor="image"
                                 className="btn position-absolute edit_btn btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
@@ -170,7 +191,7 @@ const OffersModal = () => {
                                 hidden
                                 accept=".png, .jpg, .jpeg"
                               />
-                            </p>
+                            </div>
 
                             <div className="preview w-125px h-125px">
                               <img
@@ -179,10 +200,21 @@ const OffersModal = () => {
                                 alt="preview"
                               />
                             </div>
+                            {clearImage && offerData?.file ? (
+                              <div
+                                onClick={handleRemoveImage}
+                                className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                              >
+                                <i className="bi bi-x fs-2"></i>
+                              </div>
+                            ) : null}
                           </div>
                         </div>
 
-                        <div className="form-text">
+                        <div
+                          className="form-text"
+                          style={{ marginTop: "3rem" }}
+                        >
                           Allowed file types: png, jpg, jpeg.
                         </div>
                       </div>

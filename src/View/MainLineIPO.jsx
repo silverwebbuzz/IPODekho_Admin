@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-import "../assets/css/style.bundle.css";
-import "../assets/plugins/global/plugins.bundle.css";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";

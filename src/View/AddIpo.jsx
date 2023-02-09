@@ -14,11 +14,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 const AddIpo = () => {
+  const [clearImage, setClearImage] = useState(false);
   const [ipoDates, setIpoDates] = useState("");
   const location = useLocation();
   const IPOTYPE = location.state;
   const dispatch = useDispatch();
-  const { ID, getIPODataById } = useSelector(
+  const { ID, getIPODataById, uploadImage } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -40,6 +41,7 @@ const AddIpo = () => {
     let payload = {
       IPOStatus: e?.target?.value,
     };
+    console.log(payload);
     if (ID) {
       payload.id = ID;
       dispatch(createMainLineIpo({ payload }));
@@ -77,6 +79,22 @@ const AddIpo = () => {
     IPOTYPE?.data?.file ? IPOTYPE?.data?.file : blankImage
   );
 
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
+    setClearImage(false);
+    const file = "";
+    formDataImg.append("file", file);
+
+    if (ID) {
+      let payload = { payload: formDataImg, id: { id: ID } };
+      dispatch(uploadIMG({ payload }));
+    } else {
+      let payload = { payload: formDataImg, id: { id: null } };
+      dispatch(uploadIMG({ payload }));
+    }
+  };
+
   const changeHandler = (e) => {
     const file = e.target.files[0];
     if (!file.type.match(imageMimeType)) {
@@ -93,7 +111,7 @@ const AddIpo = () => {
       let payload = { payload: formData, id: { id: null } };
       dispatch(uploadIMG({ payload }));
     }
-
+    setClearImage(true);
     // dispatch(createMainLineIpo({ payload }));
   };
 
@@ -161,12 +179,14 @@ const AddIpo = () => {
                     <div className="preview w-150px h-150px">
                       <img src={fileDataURL} alt="preview" />
                     </div>
-                    <div
-                      // onClick={handleRemoveImage}
-                      className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    >
-                      <i class="bi bi-x fs-2"></i>
-                    </div>
+                    {clearImage ? (
+                      <div
+                        onClick={handleRemoveImage}
+                        className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i class="bi bi-x fs-2"></i>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -189,27 +209,27 @@ const AddIpo = () => {
                       </div>
 
                       <div className="card-toolbar">
-                        {values.IPOStatus === "Live" ? (
+                        {values?.IPOStatus === "Live" ? (
                           <div
                             className="rounded-circle bg-danger w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "WaitingAllotment" ? (
+                        ) : values?.IPOStatus === "WaitingAllotment" ? (
                           <div
                             className="rounded-circle bg-warning w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "AllotmentOut" ? (
+                        ) : values?.IPOStatus === "AllotmentOut" ? (
                           <div
                             className="rounded-circle bg-primary w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "Upcoming" ? (
+                        ) : values?.IPOStatus === "Upcoming" ? (
                           <div
                             className="rounded-circle bg-info w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "Listed" ? (
+                        ) : values?.IPOStatus === "Listed" ? (
                           <div
                             className="rounded-circle bg-success w-15px h-15px"
                             id="kt_ipo_status"
