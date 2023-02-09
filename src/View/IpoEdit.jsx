@@ -19,6 +19,7 @@ import Tabs from "../Components/Tabs/Tabs";
 import blankImage from "../assets/media/offer/blank-image.svg";
 
 const EditIpo = () => {
+  const [clearImage, setClearImage] = useState(true);
   const dispatch = useDispatch();
   const location = useLocation();
   const ipoPrefillData = location.state;
@@ -48,6 +49,7 @@ const EditIpo = () => {
       />
     );
   };
+
   const handleSubmit = (values) => {
     let payload = {
       id: ipoPrefillData?.data?.id,
@@ -60,6 +62,7 @@ const EditIpo = () => {
     };
     dispatch(updateIPO({ payload }));
   };
+
   useEffect(() => {
     const payload = {
       id: ipoPrefillData?.data?.id,
@@ -75,6 +78,20 @@ const EditIpo = () => {
   const [fileDataURL, setFileDataURL] = useState(
     ipoPrefillData?.data?.file ? ipoPrefillData?.data?.file : blankImage
   );
+
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
+    setClearImage(false);
+    const file = "";
+    formDataImg.append("file", file);
+    let payload = {
+      payload: formDataImg,
+      id: { id: ipoPrefillData?.data?.id },
+    };
+
+    dispatch(uploadIMG({ payload }));
+  };
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
@@ -115,6 +132,8 @@ const EditIpo = () => {
       }
     };
   }, [file]);
+
+  // console.log(ipoPrefillData?.data?.file);
 
   return (
     <>
@@ -159,12 +178,14 @@ const EditIpo = () => {
                     <div className="preview w-150px h-150px">
                       <img src={fileDataURL} alt="preview" />
                     </div>
-                    <div
-                      // onClick={handleRemoveImage}
-                      className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    >
-                      <i class="bi bi-x fs-2"></i>
-                    </div>
+                    {ipoPrefillData?.data?.file && clearImage ? (
+                      <div
+                        onClick={handleRemoveImage}
+                        className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i className="bi bi-x fs-2"></i>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -186,27 +207,27 @@ const EditIpo = () => {
                       </div>
 
                       <div className="card-toolbar">
-                        {values.IPOStatus === "Live" ? (
+                        {values?.IPOStatus === "Live" ? (
                           <div
                             className="rounded-circle bg-danger w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "WaitingAllotment" ? (
+                        ) : values?.IPOStatus === "WaitingAllotment" ? (
                           <div
                             className="rounded-circle bg-warning w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "AllotmentOut" ? (
+                        ) : values?.IPOStatus === "AllotmentOut" ? (
                           <div
                             className="rounded-circle bg-primary w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "Upcoming" ? (
+                        ) : values?.IPOStatus === "Upcoming" ? (
                           <div
-                            className="rounded-circle bg-success w-15px h-15px"
+                            className="rounded-circle bg-info w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "Listed" ? (
+                        ) : values?.IPOStatus === "Listed" ? (
                           <div
                             className="rounded-circle bg-success w-15px h-15px"
                             id="kt_ipo_status"

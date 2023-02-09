@@ -17,6 +17,7 @@ const initialState = {
   getAllMainLineIpoData: [],
   updatedIpo: [],
   createIpo: [],
+  uploadImage: "",
 };
 
 export const getAllMainLineIpo = createAsyncThunk(
@@ -100,7 +101,7 @@ export const uploadIMG = createAsyncThunk(
         }
       );
 
-      console.log(response?.data);
+      console.log("response", response);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -163,6 +164,7 @@ const mainLineIpoSlice = createSlice({
       .addCase(uploadIMG.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
+        state.uploadImage = action.payload;
         state.loading = false;
       })
       .addCase(uploadIMG.rejected, (state) => {
