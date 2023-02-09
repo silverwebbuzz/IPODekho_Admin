@@ -18,27 +18,12 @@ import { TabContext } from "../Tabs";
 import { useEffect } from "react";
 import FileAttachmentIcon from "../../../assets/media/Icons/FileAttachmentIcon";
 
-<<<<<<< HEAD
-const GeneralTab = ({ ipoEdit }) => {
-  const { tabData, setTabData } = useContext(TabContext);
-  const dispatch = useDispatch();
-  const draftBtnStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "start",
-  };
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
-    (state) => state.mainLineIpoSlice
-  );
-
-=======
 const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
   const { ID, getIPODataById, getAllMainLineIpoData, updatedIpo } = useSelector(
     (state) => state.mainLineIpoSlice
   );
->>>>>>> 781b9c791c07721039bce48f9a65344bb50fa6de
   useEffect(() => {
     if (ipoPrefillData?.data?.id) {
       const payload = {
