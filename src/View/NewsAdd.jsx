@@ -29,16 +29,17 @@ const NewsAdd = () => {
   const [fileDataURL, setFileDataURL] = useState(
     newsData?.data?.file ? newsData?.data?.file : blankImage
   );
-  // const [removeImage, setRemoveImage] = useState(false);
+  const [removeImage, setRemoveImage] = useState(false);
   console.log(newsData.type);
+
   const changeHandler = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (!file.type.match(imageMimeType)) {
+    const imageFile = e.target.files[0];
+
+    if (!imageFile.type.match(imageMimeType)) {
       alert("Image mime type is not valid");
       return;
     }
-    setFile(file);
+    setFile(imageFile);
   };
 
   useEffect(() => {
@@ -63,11 +64,6 @@ const NewsAdd = () => {
     };
   }, [file]);
 
-  const handleRemoveImage = () => {
-    setFile("");
-    setFileDataURL("");
-  };
-
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -79,6 +75,11 @@ const NewsAdd = () => {
         }}
       />
     );
+  };
+  const handleRemoveImage = () => {
+    setRemoveImage(true);
+    setFile("");
+    setFileDataURL("");
   };
 
   const handleSubmit = (values) => {
@@ -94,8 +95,7 @@ const NewsAdd = () => {
         Title: values?.Title,
         Date: values?.newsDate,
       };
-      formDataImg.append("file", file);
-      console.log("############", newsData?.data?.id);
+      formDataImg.append("file", removeImage ? blankImage : file);
       let payloadImage = {
         payload: formDataImg,
         payloadId: { id: newsData?.data?.id },
@@ -164,12 +164,12 @@ const NewsAdd = () => {
                       <div className="preview w-400px h-400px">
                         <img
                           // src={fileDataURL}
-                          src={fileDataURL === "" ? blankImage : fileDataURL}
+                          src={fileDataURL}
                           alt="preview"
                         />
                       </div>
                       <div
-                        onClick={() => handleRemoveImage()}
+                        onClick={handleRemoveImage}
                         className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                       >
                         <i class="bi bi-x fs-2"></i>

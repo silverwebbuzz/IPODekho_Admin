@@ -16,15 +16,14 @@ const OffersModal = () => {
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
-  const { getAllOffersData, modalType, offerData } = useSelector(
-    (state) => state.offersReducer
-  );
+  const { modalType, offerData } = useSelector((state) => state.offersReducer);
 
   console.log(modalType);
+  console.log("offerData", offerData);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(
-    getAllOffersData?.file ? getAllOffersData.file : blankImage
+    offerData?.file && modalType === "editOffer" ? offerData?.file : blankImage
   );
 
   const changeHandler = (e) => {
@@ -113,6 +112,7 @@ const OffersModal = () => {
 
           <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
             <Formik
+              enableReinitialize
               initialValues={
                 modalType === "editOffer"
                   ? {
@@ -145,7 +145,7 @@ const OffersModal = () => {
                       data-kt-scroll-wrappers="#kt_modal_add_offer_scroll"
                       data-kt-scroll-offset="300px"
                     >
-                      {/* <div className="fv-row mb-7">
+                      <div className="fv-row mb-7">
                         <label className="d-block fw-semibold fs-6 mb-5">
                           Image
                         </label>
@@ -165,6 +165,7 @@ const OffersModal = () => {
                               <input
                                 name="file"
                                 type="file"
+                                id="image"
                                 onChange={changeHandler}
                                 hidden
                                 accept=".png, .jpg, .jpeg"
@@ -172,7 +173,11 @@ const OffersModal = () => {
                             </p>
 
                             <div className="preview w-125px h-125px">
-                              <img src={fileDataURL} alt="preview" />
+                              <img
+                                className="w-125px h-125px"
+                                src={fileDataURL}
+                                alt="preview"
+                              />
                             </div>
                           </div>
                         </div>
@@ -180,7 +185,7 @@ const OffersModal = () => {
                         <div className="form-text">
                           Allowed file types: png, jpg, jpeg.
                         </div>
-                      </div> */}
+                      </div>
 
                       <div className="fv-row mb-7">
                         <label className="fw-semibold fs-6 mb-2">

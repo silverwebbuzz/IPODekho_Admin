@@ -8,7 +8,12 @@ import { Link, useLocation } from "react-router-dom";
 import AppContentLayout from "../Components/AppContentLayout";
 import FilePreviewer from "../Components/FilePreviewer";
 import PageHeading from "../Components/PageHeading";
-import { getIpoById, updateIPO } from "../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getIpoById,
+  updateIPO,
+  uploadIMG,
+} from "../redux/slice/mainLineIpoSlices";
 import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs/Tabs";
 import blankImage from "../assets/media/offer/blank-image.svg";
@@ -23,7 +28,6 @@ const EditIpo = () => {
   );
 
   const handleIpoStatus = (e) => {
-    console.log(e.target?.value);
     // setIpoStatus(e?.target?.value);
     let payload = {
       id: getIPODataById?.id,
@@ -66,13 +70,12 @@ const EditIpo = () => {
 
   const formData = new FormData();
   const formDataImg = new FormData();
-
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(
     ipoPrefillData?.data?.file ? ipoPrefillData?.data?.file : blankImage
   );
-  console.log(ipoPrefillData.type);
+
   const changeHandler = (e) => {
     const file = e.target.files[0];
     if (!file.type.match(imageMimeType)) {
@@ -80,6 +83,15 @@ const EditIpo = () => {
       return;
     }
     setFile(file);
+
+    formData.append("file", file);
+    formDataImg.append("file", file);
+    let payload = {
+      payload: formDataImg,
+      id: { id: ipoPrefillData?.data?.id },
+    };
+
+    dispatch(uploadIMG({ payload }));
   };
 
   useEffect(() => {
@@ -126,10 +138,6 @@ const EditIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    {/* <FilePreviewer
-                      editImage="editImage"
-                      ipoPrefillData={ipoPrefillData?.data?.file}
-                    /> */}
                     <p>
                       <label
                         htmlFor="image"
@@ -150,6 +158,12 @@ const EditIpo = () => {
 
                     <div className="preview w-150px h-150px">
                       <img src={fileDataURL} alt="preview" />
+                    </div>
+                    <div
+                      // onClick={handleRemoveImage}
+                      className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    >
+                      <i class="bi bi-x fs-2"></i>
                     </div>
                   </div>
                 </div>
@@ -211,6 +225,7 @@ const EditIpo = () => {
                         // defaultValue={getIPODataById?.IPOStatus}
                         // value={ipoStatus}
                       >
+                        <option></option>
                         <option value="Live">Live</option>
                         <option value="WaitingAllotment">
                           Waiting Allotment
@@ -260,80 +275,68 @@ const EditIpo = () => {
               >
                 {({ values, setFieldValue }) => (
                   <Form>
-                    <div className="card card-flush py-4">
-                      <div className="card-header">
-                        <div className="card-title">
-                          <h2>Tentative Timetable</h2>
-                        </div>
+                    <div className="card-body pt-0">
+                      <div className="w-100 fv-row mb-10">
+                        <label className="form-label">IPO Open Date</label>
+                        <DatePickerField
+                          name="IPOOpenDate"
+                          className="form-control mb-2"
+                          value={values?.IPOOpenDate}
+                          onChange={setFieldValue}
+                        />
                       </div>
 
-                      <div className="card-body pt-0">
-                        <div className="w-100 fv-row mb-10">
-                          <label className="form-label">IPO Open Date</label>
-                          <DatePickerField
-                            name="IPOOpenDate"
-                            className="form-control mb-2"
-                            value={values?.IPOOpenDate}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-
-                        <div className="w-100 fv-row mb-10">
-                          <label className="form-label">IPO Close Date</label>
-                          <DatePickerField
-                            name="IPOCloseDate"
-                            className="form-control mb-2"
-                            value={values?.IPOCloseDate}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-                        <div className="w-100 fv-row mb-10">
-                          <label className="form-label">
-                            IPO Allotment Date
-                          </label>
-                          <DatePickerField
-                            name="IPOAllotmentDate"
-                            className="form-control mb-2"
-                            value={values?.IPOAllotmentDate}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-                        <div className="w-100 fv-row mb-10">
-                          <label className="form-label">
-                            IPO Refunds Initiation
-                          </label>
-                          <DatePickerField
-                            name="IPORefundsInitiation"
-                            className="form-control mb-2"
-                            value={values?.IPORefundsInitiation}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-                        <div className="w-100 fv-row mb-10">
-                          <label className="form-label">
-                            IPO Demat Transfer
-                          </label>
-                          <DatePickerField
-                            name="IPODematTransfer"
-                            className="form-control mb-2"
-                            value={values?.IPODematTransfer}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-                        <div className="w-100 fv-row">
-                          <label className="form-label">IPO Listing Date</label>
-                          <DatePickerField
-                            name="IPOListingDate"
-                            className="form-control mb-2"
-                            value={values?.IPOListingDate}
-                            onChange={setFieldValue}
-                          />
-                        </div>
-                        <div className="d-flex justify-content-center mt-4">
-                          <button type="submit" className="btn btn-primary" ss>
-                            Save Changes
-                          </button>
-                        </div>
+                      <div className="w-100 fv-row mb-10">
+                        <label className="form-label">IPO Close Date</label>
+                        <DatePickerField
+                          name="IPOCloseDate"
+                          className="form-control mb-2"
+                          value={values?.IPOCloseDate}
+                          onChange={setFieldValue}
+                        />
+                      </div>
+                      <div className="w-100 fv-row mb-10">
+                        <label className="form-label">IPO Allotment Date</label>
+                        <DatePickerField
+                          name="IPOAllotmentDate"
+                          className="form-control mb-2"
+                          value={values?.IPOAllotmentDate}
+                          onChange={setFieldValue}
+                        />
+                      </div>
+                      <div className="w-100 fv-row mb-10">
+                        <label className="form-label">
+                          IPO Refunds Initiation
+                        </label>
+                        <DatePickerField
+                          name="IPORefundsInitiation"
+                          className="form-control mb-2"
+                          value={values?.IPORefundsInitiation}
+                          onChange={setFieldValue}
+                        />
+                      </div>
+                      <div className="w-100 fv-row mb-10">
+                        <label className="form-label">IPO Demat Transfer</label>
+                        <DatePickerField
+                          name="IPODematTransfer"
+                          className="form-control mb-2"
+                          value={values?.IPODematTransfer}
+                          onChange={setFieldValue}
+                        />
+                      </div>
+                      <div className="w-100 fv-row">
+                        <label className="form-label">IPO Listing Date</label>
+                        <DatePickerField
+                          name="IPOListingDate"
+                          className="form-control mb-2"
+                          value={values?.IPOListingDate}
+                          onChange={setFieldValue}
+                        />
+                      </div>
+                      <div className="d-flex justify-content-center mt-4">
+                        <button type="submit" className="btn btn-primary" ss>
+                          Save Changes
+                        </button>
                       </div>
                     </div>
                   </Form>

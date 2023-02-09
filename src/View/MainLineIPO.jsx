@@ -20,7 +20,7 @@ const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -74,7 +74,7 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch, updatedIpo]);
+  }, [dispatch, updatedIpo, createIpo]);
 
   return (
     <>

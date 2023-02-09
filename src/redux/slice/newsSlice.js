@@ -11,6 +11,9 @@ import {
 const initialState = {
   newsData: [],
   isLoading: false,
+  addNews: [],
+  editNews: [],
+  editNewsImage: null,
 };
 
 export const createNews = createAsyncThunk(

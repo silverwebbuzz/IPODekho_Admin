@@ -9,7 +9,7 @@ import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
 import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
-import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { createMainLineIpo, uploadIMG } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
@@ -76,7 +76,7 @@ const AddIpo = () => {
   const [fileDataURL, setFileDataURL] = useState(
     IPOTYPE?.data?.file ? IPOTYPE?.data?.file : blankImage
   );
-  console.log(IPOTYPE.type);
+
   const changeHandler = (e) => {
     const file = e.target.files[0];
     if (!file.type.match(imageMimeType)) {
@@ -84,6 +84,17 @@ const AddIpo = () => {
       return;
     }
     setFile(file);
+
+    formData.append("file", file);
+    if (ID) {
+      let payload = { payload: formData, id: { id: ID } };
+      dispatch(uploadIMG({ payload }));
+    } else {
+      let payload = { payload: formData, id: { id: null } };
+      dispatch(uploadIMG({ payload }));
+    }
+
+    // dispatch(createMainLineIpo({ payload }));
   };
 
   useEffect(() => {
@@ -150,6 +161,12 @@ const AddIpo = () => {
                     <div className="preview w-150px h-150px">
                       <img src={fileDataURL} alt="preview" />
                     </div>
+                    <div
+                      // onClick={handleRemoveImage}
+                      className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    >
+                      <i class="bi bi-x fs-2"></i>
+                    </div>
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -159,44 +176,80 @@ const AddIpo = () => {
               </div>
             </div>
 
-            <div className="card card-flush py-4">
-              <div className="card-header">
-                <div className="card-title">
-                  <h2>Status</h2>
-                </div>
-
-                <div className="card-toolbar">
-                  <div className="rounded-circle bg-danger w-15px h-15px"></div>
-                </div>
-              </div>
-              <Formik
-                enableReinitialize
-                initialValues={{ IPOStatus: getIPODataById?.IPOStatus }}
-              >
+            <Formik
+              enableReinitialize
+              initialValues={{ IPOStatus: getIPODataById?.IPOStatus }}
+            >
+              {({ values }) => (
                 <Form onChange={handleIpoStatus}>
-                  <div className="card-body pt-0">
-                    <Field
-                      as="select"
-                      className="form-control mb-2"
-                      name="IPOStatus"
-                      // data-placeholder="Select an option"
-                      // onChange={(e) => handleIpoStatus(e)}
-                      // defaultValue={getIPODataById?.IPOStatus}
-                      // value={ipoStatus}
-                    >
-                      <option value="Live">Live</option>
-                      <option value="WaitingAllotment">
-                        Waiting Allotment
-                      </option>
-                      <option value="AllotmentOut">Allotment Out</option>
-                      <option value="Upcoming">Upcoming</option>
-                      <option value="Listed">Listed</option>
-                    </Field>
-                    <div className="text-muted fs-7">Set the ipo status. </div>
+                  <div className="card card-flush py-4">
+                    <div className="card-header">
+                      <div className="card-title">
+                        <h2>Status</h2>
+                      </div>
+
+                      <div className="card-toolbar">
+                        {values.IPOStatus === "Live" ? (
+                          <div
+                            className="rounded-circle bg-danger w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOStatus === "WaitingAllotment" ? (
+                          <div
+                            className="rounded-circle bg-warning w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOStatus === "AllotmentOut" ? (
+                          <div
+                            className="rounded-circle bg-primary w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOStatus === "Upcoming" ? (
+                          <div
+                            className="rounded-circle bg-info w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOStatus === "Upcoming" ? (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : (
+                          <div
+                            className="rounded-circle bg-none w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="card-body pt-0">
+                      <Field
+                        as="select"
+                        className="form-control mb-2"
+                        name="IPOStatus"
+                        // data-placeholder="Select an option"
+                        // onChange={(e) => handleIpoStatus(e)}
+                        // defaultValue={getIPODataById?.IPOStatus}
+                        // value={ipoStatus}
+                      >
+                        <option></option>
+                        <option value="Live">Live</option>
+                        <option value="WaitingAllotment">
+                          Waiting Allotment
+                        </option>
+                        <option value="AllotmentOut">Allotment Out</option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Listed">Listed</option>
+                      </Field>
+                      <div className="text-muted fs-7">
+                        Set the ipo status.{" "}
+                      </div>
+                    </div>
                   </div>
                 </Form>
-              </Formik>
-            </div>
+              )}
+            </Formik>
             <Formik
               initialValues={{
                 IPOOpenDate: "",
