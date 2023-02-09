@@ -206,13 +206,17 @@ const SmeIpo = () => {
                         <td className="w-150px mw-150px">N/A</td>
                       ) : (
                         <td className="w-150px mw-150px">
-                          {Itm?.IPOOpenDate === undefined
+                          {Itm?.IPOOpenDate === undefined ||
+                          Itm?.IPOOpenDate === "" ||
+                          Itm?.IPOOpenDate === null
                             ? "N/A"
                             : moment(Itm?.IPOOpenDate).format(
                                 "MMM d, yyyy"
                               )}{" "}
                           to{" "}
-                          {Itm?.IPOCloseDate === undefined
+                          {Itm?.IPOCloseDate === undefined ||
+                          Itm?.IPOCloseDate === "" ||
+                          Itm?.IPOCloseDate === null
                             ? "N/A"
                             : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
                         </td>

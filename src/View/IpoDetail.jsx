@@ -14,13 +14,13 @@ const IpoDetail = () => {
     (state) => state?.mainLineIpoSlice
   );
   const location = useLocation();
-  const IPOdata = location.state.data;
+  const IPOdata = location?.state?.data;
   const dispatch = useDispatch();
   console.log(IPOdata);
   useEffect(() => {
     const payload = {
       id: IPOdata?.id,
-      CategoryForIPOS: IPOdata.CategoryForIPOS,
+      CategoryForIPOS: IPOdata?.CategoryForIPOS,
     };
     dispatch(getIpoById({ payload }));
   }, [dispatch]);
