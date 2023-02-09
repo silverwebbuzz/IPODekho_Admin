@@ -203,12 +203,17 @@ const EditIpo = () => {
                           ></div>
                         ) : values.IPOStatus === "Upcoming" ? (
                           <div
-                            className="rounded-circle bg-info w-15px h-15px"
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOStatus === "Listed" ? (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
                         ) : (
                           <div
-                            className="rounded-circle bg-success w-15px h-15px"
+                            className="rounded-circle bg-none w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
                         )}

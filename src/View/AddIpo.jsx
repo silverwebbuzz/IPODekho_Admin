@@ -209,7 +209,7 @@ const AddIpo = () => {
                             className="rounded-circle bg-info w-15px h-15px"
                             id="kt_ipo_status"
                           ></div>
-                        ) : values.IPOStatus === "Upcoming" ? (
+                        ) : values.IPOStatus === "Listed" ? (
                           <div
                             className="rounded-circle bg-success w-15px h-15px"
                             id="kt_ipo_status"
