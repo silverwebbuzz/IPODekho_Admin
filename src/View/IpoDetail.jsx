@@ -7,17 +7,20 @@ import PageHeading from "../Components/PageHeading";
 import Tabs from "../../src/Components/Tabs/Tabs";
 import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 import { Field, Form, Formik } from "formik";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const IpoDetail = () => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById, getAllMainLineIpoData } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
   const location = useLocation();
-  const IPOdata = location.state.data;
+  const IPOdata = location?.state?.data;
   const dispatch = useDispatch();
-
+  console.log(IPOdata);
   useEffect(() => {
     const payload = {
       id: IPOdata?.id,
-      CategoryForIPOS: IPOdata.CategoryForIPOS,
+      CategoryForIPOS: IPOdata?.CategoryForIPOS,
     };
     dispatch(getIpoById({ payload }));
   }, [dispatch]);
@@ -58,54 +61,15 @@ const IpoDetail = () => {
                         className="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                         // data-kt-image-input="true"
                       >
-                        <div
-                          className="image-input-wrapper w-150px h-150px"
-                          style={{
-                            backgroundImage:
-                              "url(assets/media/ipo/Elin-Electronics-logo.jpeg)",
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                          }}
-                        ></div>
-
-                        <label
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="change"
-                          data-bs-toggle="tooltip"
-                          title="Change logo"
-                        >
-                          <i className="bi bi-pencil-fill fs-7"></i>
-
-                          <input
-                            type="file"
-                            name="avatar"
-                            accept=".png, .jpg, .jpeg"
-                          />
-                          <input type="hidden" name="avatar_remove" />
-                        </label>
-
-                        <span
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="cancel"
-                          data-bs-toggle="tooltip"
-                          title="Cancel avatar"
-                        >
-                          <i className="bi bi-x fs-2"></i>
-                        </span>
-
-                        <span
-                          className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                          data-kt-image-input-action="remove"
-                          data-bs-toggle="tooltip"
-                          title="Remove avatar"
-                        >
-                          <i className="bi bi-x fs-2"></i>
-                        </span>
-                      </div>
-
-                      <div className="text-muted fs-7">
-                        Set the product thumbnail image. Only .png, .jpg and
-                        *.jpeg image files are accepted
+                        <div className="image-input-wrapper w-150px h-150px file_preview_wrapper">
+                          <div className="preview">
+                            <img
+                              className=" w-150px h-150px"
+                              src={IPOdata?.file ? IPOdata?.file : blankImage}
+                              alt="preview"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -117,10 +81,37 @@ const IpoDetail = () => {
                       </div>
 
                       <div className="card-toolbar">
-                        <div
-                          className="rounded-circle bg-danger w-15px h-15px"
-                          id="kt_ipo_status"
-                        ></div>
+                        {values.IPOstatus === "Live" ? (
+                          <div
+                            className="rounded-circle bg-danger w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "WaitingAllotment" ? (
+                          <div
+                            className="rounded-circle bg-warning w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "AllotmentOut" ? (
+                          <div
+                            className="rounded-circle bg-primary w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "Upcoming" ? (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values.IPOstatus === "Listed" ? (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : (
+                          <div
+                            className="rounded-circle bg-none w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        )}
                       </div>
                     </div>
 

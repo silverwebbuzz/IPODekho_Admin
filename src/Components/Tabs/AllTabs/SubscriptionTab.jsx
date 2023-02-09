@@ -4,10 +4,13 @@ import { useContext } from "react";
 import { FormContext } from "../../../App";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  updateIPO,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { TabContext } from "../Tabs";
-const SubscriptionTab = ({ ipoEdit }) => {
+const SubscriptionTab = ({ ipoEdit, IPOTYPE }) => {
   const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
@@ -16,10 +19,7 @@ const SubscriptionTab = ({ ipoEdit }) => {
 
   const handleSubmit = (one) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       subscriptionDetails: one.subscriptionDetails,
       qualifiedInstitutions: one.qualifiedInstitutions,
       nonInstitutionalBuyers: one.nonInstitutionalBuyers,
@@ -30,12 +30,17 @@ const SubscriptionTab = ({ ipoEdit }) => {
       others: one.others,
       total: one.total,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
   const DatePickerField = ({ name, value, onChange }) => {
@@ -43,14 +48,13 @@ const SubscriptionTab = ({ ipoEdit }) => {
       <DatePicker
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}
       />
     );
   };
-  const IpoType = "Edit";
   return (
     <>
       <div>
@@ -58,7 +62,7 @@ const SubscriptionTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  subscriptionDetails: [],
+                  subscriptionDetails: getIPODataById?.subscriptionDetails,
                   qualifiedInstitutions: getIPODataById?.qualifiedInstitutions,
                   nonInstitutionalBuyers:
                     getIPODataById?.nonInstitutionalBuyers,
@@ -95,22 +99,6 @@ const SubscriptionTab = ({ ipoEdit }) => {
             let Data = { ...tabData, ...one };
             setTabData(Data);
             handleSubmit(one);
-            // setPrefillData(data);
-            // setActiveStepIndex(activeStepIndex + 1);
-            // } else {
-            //   const totalOf =
-            //     +values?.qualifiedInstitutions +
-            //     +values?.nonInstitutionalBuyers +
-            //     +values?.bNII +
-            //     +values?.sNII +
-            //     +values?.retailInvestors +
-            //     +values?.employees +
-            //     +values?.others;
-            // const one = { ...values, ["total"]: totalOf };
-            // const data = { ...formData, ...one };
-            // setFormData(data);
-            // setActiveStepIndex(activeStepIndex + 1);
-            // }
           }}
         >
           {({ values, setFieldValue }) => (
@@ -326,15 +314,13 @@ const SubscriptionTab = ({ ipoEdit }) => {
                         <tr>
                           <td className="fw-bold">Total</td>
                           <td>
-                            {values.total
-                              ? values.total
-                              : +values?.qualifiedInstitutions +
-                                +values?.nonInstitutionalBuyers +
-                                +values?.bNII +
-                                +values?.sNII +
-                                +values?.retailInvestors +
-                                +values?.employees +
-                                +values?.others}
+                            {+values?.qualifiedInstitutions +
+                              +values?.nonInstitutionalBuyers +
+                              +values?.bNII +
+                              +values?.sNII +
+                              +values?.retailInvestors +
+                              +values?.employees +
+                              +values?.others}
                           </td>
                         </tr>
                       </tbody>
@@ -344,7 +330,7 @@ const SubscriptionTab = ({ ipoEdit }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

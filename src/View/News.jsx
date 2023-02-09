@@ -7,13 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllNews } from "../redux/slice/newsSlice";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
+import { Link } from "react-router-dom";
+import blankImage from "../assets/media/offer/blank-image.svg";
+import moment from "moment/moment";
 
 const News = () => {
-  const { newsData } = useSelector((state) => state.newsReducer);
+  const { newsData, addNews, editNews, editNewsImage } = useSelector(
+    (state) => state.newsReducer
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNews());
-  }, []);
+  }, [addNews, editNews, editNewsImage]);
+
   return (
     <>
       <PageHeading title={"News"} />
@@ -40,8 +46,9 @@ const News = () => {
                 className="d-flex justify-content-end"
                 data-kt-user-table-toolbar="base"
               >
-                <a
-                  href="news-add.html"
+                <Link
+                  state={{ type: "newsAdd" }}
+                  to="/news/news_add"
                   type="button"
                   className="btn btn-primary"
                 >
@@ -49,7 +56,7 @@ const News = () => {
                     <CommonAddIcon />
                   </span>
                   Add News
-                </a>
+                </Link>
               </div>
 
               <div
@@ -94,23 +101,24 @@ const News = () => {
                     <tr>
                       <td>
                         <img
-                          src={news?.file}
+                          src={news?.file ? news?.file : blankImage}
                           alt="news-image"
                           className="mh-75px"
                         />
                       </td>
                       <td className="mw-350px">{news?.Title}</td>
-                      <td>{news?.Date}</td>
+                      <td>{moment(news?.Date).format("MMM d, yyyy")}</td>
                       <td className="text-end">
-                        <a
-                          href="news-edit.html"
+                        <Link
+                          state={{ type: "newsEdit", data: news }}
+                          to="/news/news_add"
                           className="btn btn-light btn-active-light-primary btn-sm"
                         >
                           <span className="svg-icon svg-icon-muted svg-icon-1hx">
                             <CommonEditIcon />
                           </span>
                           Edit
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   );

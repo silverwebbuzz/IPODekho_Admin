@@ -13,11 +13,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
-import companyImg from "../assets/media/ipo/Elin-Electronics-logo.jpeg";
+import moment from "moment/moment";
+import blankImage from "../assets/media/offer/blank-image.svg";
+
 const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
-  const { getAllMainLineIpoData } = useSelector(
+  const [GMPStatus, setGMPStatus] = useState();
+  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -31,12 +34,36 @@ const MainLineIPO = () => {
   //   dispatch(updateIPO({ payload }));
   // };
 
-  const handleGmp = (e, ID) => {
-    console.log(e);
+  // const handleGmp = (e, ID) => {
+  //   setGMP(e?.target?.value);
+  //   let payload = {
+  //     id: ID,
+  //     GMP: e?.target?.value,
+  //     GMPStatus: e.target?.checked === true ? "ON" : "OFF",
+  //   };
+  //   dispatch(updateIPO({ payload }));
+  // };
+
+  // useEffect(() => {
+  //   let payload = {
+  //     CategoryForIPOS: "MainlineIPO",
+  //   };
+  //   dispatch(getAllMainLineIpo({ payload }));
+  // }, [dispatch]);
+
+  const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
       id: ID,
       GMP: e?.target?.value,
+    };
+    dispatch(updateIPO({ payload }));
+  };
+
+  const handleGmp = (e, ID) => {
+    setGMPStatus(e.target?.checked);
+    let payload = {
+      id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
     dispatch(updateIPO({ payload }));
@@ -47,7 +74,7 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch]);
+  }, [dispatch, updatedIpo, createIpo]);
 
   return (
     <>
@@ -141,7 +168,10 @@ const MainLineIPO = () => {
                   </div>
                 </div>
 
-                <Link to="/mainline_ipo/add_ipo">
+                <Link
+                  to="/mainline_ipo/add_ipo"
+                  state={{ data: "MainlineIPO", type: "ipoAdd" }}
+                >
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
@@ -176,42 +206,81 @@ const MainLineIPO = () => {
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
                         <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                          <a href="ipo-detail.html">
+                          <Link
+                            to="/mainline_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
+                          >
                             <div className="symbol-label">
                               <img
                                 style={{ height: "100%" }}
-                                src={Itm?.file || companyImg}
+                                src={Itm?.file}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
                             </div>
-                          </a>
+                          </Link>
                         </div>
                         <div className="d-flex flex-column">
-                          <a
-                            href="ipo-detail.html"
+                          <Link
+                            state={{ data: Itm, type: "ipoEdit" }}
+                            to="/mainline_ipo/ipo_edit"
                             className="text-gray-800 text-hover-primary mb-1"
                           >
                             {Itm?.companyName}
-                          </a>
+                          </Link>
                         </div>
                       </td>
-                      <td className="w-150px mw-150px">{Itm?.offerDate}</td>
-                      <td className="w-100px mw-100px">
-                        ₹{Itm?.fromPrice} to ₹{Itm?.toPrice}
-                      </td>
+                      {(Itm?.IPOOpenDate === undefined ||
+                        Itm?.IPOOpenDate === "" ||
+                        Itm?.IPOOpenDate === null) &&
+                      (Itm?.IPOCloseDate === undefined ||
+                        Itm?.IPOCloseDate === "" ||
+                        Itm?.IPOCloseDate === null) ? (
+                        <td className="w-150px mw-150px">N/A</td>
+                      ) : (
+                        <td className="w-150px mw-150px">
+                          {Itm?.IPOOpenDate === undefined
+                            ? "N/A"
+                            : moment(Itm?.IPOOpenDate).format(
+                                "MMM d, yyyy"
+                              )}{" "}
+                          to
+                          {/* <br /> */}
+                          {Itm?.IPOCloseDate === undefined
+                            ? "N/A"
+                            : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                        </td>
+                      )}
+                      {(Itm?.toPrice === "" ||
+                        Itm?.toPrice === undefined ||
+                        Itm?.toPrice === null) &&
+                      (Itm?.fromPrice === "" ||
+                        Itm?.fromPrice === undefined ||
+                        Itm?.fromPrice === null) ? (
+                        <td className="w-100px mw-100px">N/A</td>
+                      ) : (
+                        <td className="w-100px mw-100px">
+                          ₹
+                          {Itm?.fromPrice === "" ||
+                          Itm?.fromPrice === undefined ||
+                          Itm?.fromPrice === null
+                            ? "N/A"
+                            : Itm?.fromPrice}{" "}
+                          to ₹
+                          {Itm?.toPrice === "" ||
+                          Itm?.toPrice === undefined ||
+                          Itm?.toPrice === null
+                            ? "N/A"
+                            : Itm?.toPrice}
+                        </td>
+                      )}
                       <td>{Itm?.lotSize} Shares</td>
                       <td className="text-center">
                         <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            // value=
-                            defaultChecked={
-                              Itm?.GMPStatus === "ON" ? true : false
-                            }
-                            //
-                            // checked
+                            checked={Itm?.GMPStatus === "ON" ? true : false}
                             onChange={(e) => handleGmp(e, Itm?.id)}
                           />
                         </div>
@@ -220,7 +289,7 @@ const MainLineIPO = () => {
                           className="form-control w-70px mt-3"
                           defaultValue={Itm?.GMP}
                           // value={GMPV}
-                          onChange={(e) => handleGmp(e, Itm?.id)}
+                          onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>
                       <td>
@@ -233,7 +302,7 @@ const MainLineIPO = () => {
                             Upcoming
                           </div>
                         ) : Itm?.IPOStatus === "Listed" ? (
-                          <div className="badge badge-light-primary fw-bold">
+                          <div className="badge badge-light-success fw-bold">
                             Listed
                           </div>
                         ) : Itm?.IPOStatus === "AllotmentOut" ? (

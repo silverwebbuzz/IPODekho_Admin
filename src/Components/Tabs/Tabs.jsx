@@ -15,11 +15,10 @@ import ListedInfoTab from "./AllTabs/ListedInfoTab";
 import { useSelector } from "react-redux";
 
 export const TabContext = createContext();
-const Tabs = ({ ipoDetail, ipoEdit }) => {
+const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
   const { ID } = useSelector((state) => state?.mainLineIpoSlice);
-
   const [tabData, setTabData] = useState({});
   return (
     <>
@@ -115,7 +114,11 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
               {ipoDetail ? (
                 <DisabledGeneralTab />
               ) : (
-                <GeneralTab ipoEdit={ipoEdit} />
+                <GeneralTab
+                  ipoEdit={ipoEdit}
+                  ipoPrefillData={ipoPrefillData}
+                  IPOTYPE={IPOTYPE}
+                />
               )}
             </TabPaneLayout>
           ) : activeTab === "ipo_financials" ? (
@@ -123,7 +126,11 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
               {ipoDetail ? (
                 <DisabledFinancialsTab />
               ) : (
-                <FinancialsTab ipoEdit={ipoEdit} />
+                <FinancialsTab
+                  ipoEdit={ipoEdit}
+                  IPOTYPE={IPOTYPE}
+                  ipoPrefillData={ipoPrefillData}
+                />
               )}
             </TabPaneLayout>
           ) : activeTab === "ipo_companyinfo" ? (
@@ -131,7 +138,11 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
               {ipoDetail ? (
                 <DisabledRegistrarInfoTab />
               ) : (
-                <RegistrarInfoTab ipoEdit={ipoEdit} />
+                <RegistrarInfoTab
+                  ipoEdit={ipoEdit}
+                  IPOTYPE={IPOTYPE}
+                  ipoPrefillData={ipoPrefillData}
+                />
               )}
             </TabPaneLayout>
           ) : activeTab === "ipo_subscription" ? (
@@ -139,7 +150,11 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
               {ipoDetail ? (
                 <DisabledSubscriptionTab />
               ) : (
-                <SubscriptionTab ipoEdit={ipoEdit} />
+                <SubscriptionTab
+                  ipoEdit={ipoEdit}
+                  IPOTYPE={IPOTYPE}
+                  ipoPrefillData={ipoPrefillData}
+                />
               )}
             </TabPaneLayout>
           ) : activeTab === "ipo_listed_info" ? (
@@ -147,7 +162,11 @@ const Tabs = ({ ipoDetail, ipoEdit }) => {
               {ipoDetail ? (
                 <DisabledListedInfoTab />
               ) : (
-                <ListedInfoTab ipoEdit={ipoEdit} />
+                <ListedInfoTab
+                  ipoEdit={ipoEdit}
+                  IPOTYPE={IPOTYPE}
+                  ipoPrefillData={ipoPrefillData}
+                />
               )}
             </TabPaneLayout>
           ) : (
