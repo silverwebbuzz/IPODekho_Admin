@@ -22,3 +22,7 @@ export const ADMIN_CREATE_IPO_ALLOTMENT_TIPS =
   "IPOAllotmentTips/CreateIPOAllotmentTips";
 export const ADMIN_UPDATE_IPO_ALLOTMENT_TIPS =
   "IPOAllotmentTips/UpdateAllotmentTips/";
+
+export const ADMIN_CREATE_PRIVACY_POLICY = "privacyPolicy/CreatePrivacyPolicy";
+export const ADMIN_GETALL_PRIVACY_POLICY = "privacyPolicy/GetAllPrivacyPolicy";
+export const ADMIN_UPDATE_PRIVACY_POLICY = "privacyPolicy/updatePrivacyPolicy/";

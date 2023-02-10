@@ -156,7 +156,7 @@ const OffersModal = () => {
                 <Form>
                   <div id="kt_modal_add_offer_form" className="form">
                     <div
-                      className="d-flex flex-column scroll-y "
+                      className="d-flex flex-column scroll-y"
                       id="kt_modal_add_offer_scroll"
                       data-kt-scroll="true"
                       data-kt-scroll-activate="{default: false, lg: true}"
