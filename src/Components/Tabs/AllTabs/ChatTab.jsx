@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  Firestore,
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
@@ -32,7 +33,19 @@ const ChatTab = () => {
           console.log(errorCode, errorMessage);
         });
       const { uid } = auth.currentUser;
-      // await addDoc(collection(db, "messages"), {
+      await addDoc(collection(db, "messages"), {
+        msg: values.msg,
+        name: "sahil",
+        avatar: "",
+        createdAt: serverTimestamp(),
+        date: Timestamp.now(),
+        uid,
+      }).then((res) => {
+        console.log(res);
+      });
+
+      // const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
+      // await addDoc(ChatCollection, {
       //   msg: values.msg,
       //   name: "sahil",
       //   avatar: "",
@@ -40,15 +53,6 @@ const ChatTab = () => {
       //   date: Timestamp.now(),
       //   uid,
       // });
-      const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
-      await addDoc(ChatCollection, {
-        msg: values.msg,
-        name: "sahil",
-        avatar: "",
-        createdAt: serverTimestamp(),
-        date: Timestamp.now(),
-        uid,
-      });
       // await addDoc(
       //   collection(db,"Chat").doc("LH9ihxv72vAPT1XJwXoL").set({
       //     msg: values.msg,
