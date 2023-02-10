@@ -13,6 +13,16 @@ import { createMainLineIpo, uploadIMG } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import { signInWithEmailAndPassword } from "@firebase/auth";
+import {
+  query,
+  orderBy,
+  onSnapshot,
+  limit,
+  addDoc,
+  collection,
+} from "firebase/firestore";
+import { auth, db } from "../FirebaseConfig";
 const AddIpo = () => {
   const [clearImage, setClearImage] = useState(false);
   const [ipoDates, setIpoDates] = useState("");
@@ -37,6 +47,7 @@ const AddIpo = () => {
     );
   };
   console.log(IPOTYPE);
+
   const handleIpoStatus = (e) => {
     let payload = {
       IPOStatus: e?.target?.value,
@@ -129,6 +140,7 @@ const AddIpo = () => {
       };
       fileReader.readAsDataURL(file);
     }
+
     return () => {
       isCancel = true;
       if (fileReader && fileReader.readyState === 1) {
@@ -136,6 +148,27 @@ const AddIpo = () => {
       }
     };
   }, [file]);
+
+  useEffect(() => {
+    if (ID !== "") {
+      // jl
+      signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+      const { uid } = auth.currentUser;
+      addDoc(collection(db, "Chat"), {
+        ipoId: ID,
+        uid,
+      });
+    }
+  }, [ID]);
   return (
     <>
       <PageHeading title={"IPO Add"} />
