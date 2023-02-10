@@ -2,26 +2,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import {
-  ADMIN_CREATE_PRIVACY_POLICY,
+  ADMIN_CREATE_IPO_ALLOTMENT_TIPS,
+  ADMIN_GET_ALL_IPO_ALLOTMENT_TIPS,
+  ADMIN_UPDATE_IPO_ALLOTMENT_TIPS,
   BASE_URL_FOR_ADMIN,
-  ADMIN_UPDATE_PRIVACY_POLICY,
-  ADMIN_GETALL_PRIVACY_POLICY,
 } from "../../UrlConfig";
 
 const initialState = {
-  isLoading: false,
-  privacyPolicyId: "",
-  createPrivacyPolicyData: [],
-  updatePrivacyPolicyData: [],
-  getAllPrivacyPolicyData: [],
+  createIpoAllotData: [],
+  updateIpoAllotData: [],
+  getAllIpoAllotData: [],
 };
 
-export const createPrivacyPolicy = createAsyncThunk(
-  "admin/createPrivacyPolicy",
+export const createAllotment = createAsyncThunk(
+  "admin/createAllotment",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        BASE_URL_FOR_ADMIN + ADMIN_CREATE_PRIVACY_POLICY,
+        BASE_URL_FOR_ADMIN + ADMIN_CREATE_IPO_ALLOTMENT_TIPS,
         payload,
         {
           headers: {
@@ -38,12 +36,12 @@ export const createPrivacyPolicy = createAsyncThunk(
   }
 );
 
-export const getAllPrivacyPolicy = createAsyncThunk(
-  "admin/getAllPrivacyPolicy",
+export const getAllAllotment = createAsyncThunk(
+  "admin/getAllAllotment",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GETALL_PRIVACY_POLICY,
+        BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_IPO_ALLOTMENT_TIPS,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -59,12 +57,12 @@ export const getAllPrivacyPolicy = createAsyncThunk(
   }
 );
 
-export const updatePrivacyPolicy = createAsyncThunk(
-  "admin/updatePrivacyPolicy",
+export const updateAllotment = createAsyncThunk(
+  "admin/updateAllotment",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_PRIVACY_POLICY}${payload?.id}`,
+        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_IPO_ALLOTMENT_TIPS}${payload?.id}`,
         payload,
         {
           headers: {
@@ -80,45 +78,45 @@ export const updatePrivacyPolicy = createAsyncThunk(
   }
 );
 
-const privacyPolicySlice = createSlice({
-  name: "admin/privacyPolicySlice",
+const ipoAllotSlice = createSlice({
+  name: "admin/ipoAllotSlice",
   initialState,
   extraReducers: (builder) => {
     builder
       //CREATE
-      .addCase(createPrivacyPolicy.pending, (state) => {
+      .addCase(createAllotment.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createPrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(createAllotment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.createPrivacyPolicyData = action.payload;
+        state.createIpoAllotData = action.payload;
       })
-      .addCase(createPrivacyPolicy.rejected, (state) => {
+      .addCase(createAllotment.rejected, (state) => {
         state.isLoading = false;
       })
       //READ
-      .addCase(getAllPrivacyPolicy.pending, (state) => {
+      .addCase(getAllAllotment.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllPrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(getAllAllotment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.getAllPrivacyPolicyData = action.payload;
+        state.getAllIpoAllotData = action.payload;
       })
-      .addCase(getAllPrivacyPolicy.rejected, (state) => {
+      .addCase(getAllAllotment.rejected, (state) => {
         state.isLoading = false;
       })
       //UPDATE
-      .addCase(updatePrivacyPolicy.pending, (state) => {
+      .addCase(updateAllotment.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updatePrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(updateAllotment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.updatePrivacyPolicyData = action.payload;
+        state.updateIpoAllotData = action.payload;
       })
-      .addCase(updatePrivacyPolicy.rejected, (state) => {
+      .addCase(updateAllotment.rejected, (state) => {
         state.isLoading = false;
       });
   },
 });
 
-export default privacyPolicySlice.reducer;
+export default ipoAllotSlice.reducer;

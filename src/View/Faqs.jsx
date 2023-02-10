@@ -1,12 +1,33 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React from "react";
+import { useEffect } from "react";
 import ReactQuill from "react-quill";
+import { useDispatch, useSelector } from "react-redux";
 import { modules } from "../Constants/commonConstants";
+import { createFaq, getAllFaqs, updateFaq } from "../redux/slice/faqsSlice";
 
 const Faqs = () => {
+  const { createFaqData, getAllFaqData, updateFaqData } = useSelector(
+    (state) => state.faqsReducer
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllFaqs());
+  }, [createFaqData, updateFaqData]);
+
   const handleSubmit = (values) => {
-    console.log(values);
+    const payload = {
+      faq: values.faqs,
+    };
+    if (getAllFaqData[0]?.id) {
+      payload.id = getAllFaqData[0]?.id;
+      dispatch(updateFaq({ payload }));
+    } else {
+      dispatch(createFaq({ payload }));
+    }
   };
+
   return (
     <div className="app-main flex-column flex-row-fluid" id="kt_app_main">
       <div className="d-flex flex-column flex-column-fluid">
@@ -57,9 +78,16 @@ const Faqs = () => {
                     </div>
                   </div> */}
                   <Formik
-                    initialValues={{
-                      faqs: [{ Que: "", ans: "" }],
-                    }}
+                    enableReinitialize
+                    initialValues={
+                      getAllFaqData[0]?.id
+                        ? {
+                            faqs: getAllFaqData[0]?.faq,
+                          }
+                        : {
+                            faqs: [{ Que: "", ans: "" }],
+                          }
+                    }
                     onSubmit={handleSubmit}
                   >
                     {({ values }) => (

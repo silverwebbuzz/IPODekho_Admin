@@ -25,7 +25,7 @@ const OffersModal = () => {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(
-    offerData?.file && modalType === "editOffer" ? offerData?.file : blankImage
+    offerData?.file && modalType === "editOffer" ? offerData?.file : null
   );
 
   const changeHandler = (e) => {
@@ -200,14 +200,22 @@ const OffersModal = () => {
                                 alt="preview"
                               />
                             </div>
-                            {clearImage && offerData?.file ? (
+                            {/* {offerData?.file && fileDataURL ? (
                               <div
                                 onClick={handleRemoveImage}
                                 className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                               >
                                 <i className="bi bi-x fs-2"></i>
                               </div>
-                            ) : null}
+                            ) : null} */}
+
+                            {/* {if(modalType === "editOffer"){
+                              if(offerData?.file){
+                                return  
+                              }
+                            }else{
+                              return
+                            }} */}
                           </div>
                         </div>
 

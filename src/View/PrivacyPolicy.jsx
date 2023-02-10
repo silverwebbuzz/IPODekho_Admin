@@ -8,12 +8,40 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import { modules } from "../Constants/commonConstants";
 import { Field, Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
-import { createPrivacyPolicy } from "../redux/slice/privacyPolicySlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createPrivacyPolicy,
+  getAllPrivacyPolicy,
+  updatePrivacyPolicy,
+} from "../redux/slice/privacyPolicySlice";
+import { useEffect } from "react";
+
 const PrivacyPolicy = () => {
   const [companyDescription, setCompanyDescription] =
     useState("<h1>HEllO</h1>");
+  const {
+    createPrivacyPolicyData,
+    getAllPrivacyPolicyData,
+    updatePrivacyPolicyData,
+  } = useSelector((state) => state.privacyPolicyReducer);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllPrivacyPolicy());
+  }, [createPrivacyPolicyData, updatePrivacyPolicyData]);
+
+  const handleSubmit = (values) => {
+    const payload = {
+      PrivacyPolicy: values?.PrivacyPolicy,
+    };
+    if (getAllPrivacyPolicyData[0]?.id) {
+      payload.id = getAllPrivacyPolicyData[0]?.id;
+      dispatch(updatePrivacyPolicy({ payload }));
+    } else {
+      dispatch(createPrivacyPolicy({ payload }));
+    }
+  };
+
   return (
     <>
       <PageHeading title={"Privacy Policy"} />
@@ -27,15 +55,18 @@ const PrivacyPolicy = () => {
               <div className="card-body">
                 {/* <div className="min-h-500px h-500px mb-2"></div> */}
                 <Formik
-                  initialValues={{
-                    PrivacyPolicy: "",
-                  }}
-                  onSubmit={(values) => {
-                    const payload = {
-                      PrivacyPolicy: values?.PrivacyPolicy,
-                    };
-                    dispatch(createPrivacyPolicy({ payload }));
-                  }}
+                  enableReinitialize
+                  initialValues={
+                    getAllPrivacyPolicyData[0]?.id
+                      ? {
+                          PrivacyPolicy:
+                            getAllPrivacyPolicyData[0]?.PrivacyPolicy,
+                        }
+                      : {
+                          PrivacyPolicy: "",
+                        }
+                  }
+                  onSubmit={(values) => handleSubmit(values)}
                 >
                   <Form>
                     <Field name="PrivacyPolicy">

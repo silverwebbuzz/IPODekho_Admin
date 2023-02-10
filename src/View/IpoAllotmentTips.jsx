@@ -5,18 +5,35 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
 import { modules } from "../Constants/commonConstants";
-import { getAllAllotmentTips } from "../redux/slice/allotmentSlice";
+import {
+  createAllotment,
+  getAllAllotment,
+  updateAllotment,
+} from "../redux/slice/ipoAllotSlice";
+// import { getAllAllotmentTips } from "../redux/slice/allotmentSlice";
 
 const IpoAllotmentTips = () => {
   const dispatch = useDispatch();
-  const { allotmentTipsSliceReducer } = useSelector(
-    (state) => state.allotmentTipsSliceReducer
-  );
+  const { updateIpoAllotData, createIpoAllotData, getAllIpoAllotData } =
+    useSelector((state) => state.ipoAllotReducer);
+
   // console.log(allotmentTipsSliceReducer);
-  const handleSubmit = (values) => {};
   useEffect(() => {
-    dispatch(getAllAllotmentTips());
-  }, []);
+    dispatch(getAllAllotment());
+  }, [createIpoAllotData, updateIpoAllotData]);
+
+  console.log(getAllIpoAllotData[0]);
+  const handleSubmit = (values) => {
+    const payload = {
+      AllotmentTips: values?.AllotmentTips,
+    };
+    if (getAllIpoAllotData[0]?.id) {
+      payload.id = getAllIpoAllotData[0]?.id;
+      dispatch(updateAllotment({ payload }));
+    } else {
+      dispatch(createAllotment({ payload }));
+    }
+  };
   return (
     <div className="app-main flex-column flex-row-fluid" id="kt_app_main">
       <div className="d-flex flex-column flex-column-fluid">
@@ -41,10 +58,17 @@ const IpoAllotmentTips = () => {
             <div className="card">
               <div className="card-body">
                 <Formik
-                  initialValues={{
-                    AllotmentTips: "",
-                  }}
-                  onSubmit={handleSubmit}
+                  enableReinitialize
+                  initialValues={
+                    getAllIpoAllotData[0]?.id
+                      ? {
+                          AllotmentTips: getAllIpoAllotData[0]?.AllotmentTips,
+                        }
+                      : {
+                          AllotmentTips: "",
+                        }
+                  }
+                  onSubmit={(values) => handleSubmit(values)}
                 >
                   {({ values }) => (
                     <Form>
