@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import "../../../assets/css/style.bundle.css";
@@ -17,28 +16,31 @@ import MultiSelect from "../../MultiSelect";
 import { useContext } from "react";
 import { TabContext } from "../Tabs";
 import { useEffect } from "react";
+import FileAttachmentIcon from "../../../assets/media/Icons/FileAttachmentIcon";
 
-const GeneralTab = ({ ipoEdit }) => {
+const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const { tabData, setTabData } = useContext(TabContext);
   const dispatch = useDispatch();
-  const draftBtnStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "start",
-  };
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+  const { ID, getIPODataById, getAllMainLineIpoData, updatedIpo } = useSelector(
     (state) => state.mainLineIpoSlice
   );
-
   useEffect(() => {
-    dispatch(getAllMainLineIpo());
-  }, []);
+    if (ipoPrefillData?.data?.id) {
+      const payload = {
+        id: ipoPrefillData?.data?.id,
+        CategoryForIPOS: IPOTYPE,
+      };
+      dispatch(getIpoById({ payload }));
+    }
+  }, [updatedIpo]);
+  useEffect(() => {
+    if (ipoEdit) {
+      setTabData(getIPODataById);
+    }
+  }, [updatedIpo]);
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       companyName: values?.companyName,
       companyDescription: values?.companyDescription,
       ObjectOfIssue: values?.ObjectOfIssue,
@@ -54,19 +56,16 @@ const GeneralTab = ({ ipoEdit }) => {
       nilQuota: values?.nilQuota,
       issueType: values?.issueType,
       listingAt: values?.listingAt,
-      DRHPDraft: values?.DRHPDraft,
-      RHPDraft: values?.RHPDraft,
+      shortText: values?.shortText,
+      // DRHPDraft: values?.DRHPDraft,
+      // RHPDraft: values?.RHPDraft,
       preIssueShareHolding: values?.preIssueShareHolding,
       postIssueShareHolding: values?.postIssueShareHolding,
       promotersName: values?.promotersName,
     };
     if (ipoEdit) {
       payload.id = getIPODataById?.id;
-      console.log(payload);
       dispatch(updateIPO({ payload }));
-      // setTimeout(() => {
-      //   dispatch(getIpoById({ payload }));
-      // }, 100);
     } else {
       if (ID) {
         payload.id = ID;
@@ -77,7 +76,6 @@ const GeneralTab = ({ ipoEdit }) => {
       }
     }
   };
-  // console.log(JSON.parse(localStorage.getItem("ID")));
 
   return (
     <>
@@ -101,12 +99,13 @@ const GeneralTab = ({ ipoEdit }) => {
                   qibQuota: getIPODataById?.qibQuota,
                   nilQuota: getIPODataById?.nilQuota,
                   issueType: getIPODataById?.issueType,
+                  shortText: getIPODataById?.shortText,
                   listingAt: getIPODataById?.listingAt,
-                  DRHPDraft: getIPODataById?.DRHPDraft,
-                  RHPDraft: getIPODataById?.RHPDraft,
+                  // DRHPDraft: getIPODataById?.DRHPDraft,
+                  // RHPDraft: getIPODataById?.RHPDraft,
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
-                  promotersName: [],
+                  promotersName: getIPODataById?.promotersName,
                   // promotersName: getIPODataById?.promotersName || [],
                 }
               : {
@@ -124,9 +123,10 @@ const GeneralTab = ({ ipoEdit }) => {
                   qibQuota: tabData?.qibQuota,
                   nilQuota: tabData?.nilQuota,
                   issueType: tabData?.issueType,
+                  shortText: tabData?.shortText,
                   listingAt: tabData?.listingAt,
-                  DRHPDraft: tabData?.DRHPDraft,
-                  RHPDraft: tabData?.RHPDraft,
+                  // DRHPDraft: tabData?.DRHPDraft,
+                  // RHPDraft: tabData?.RHPDraft,
                   preIssueShareHolding: tabData?.preIssueShareHolding,
                   postIssueShareHolding: tabData?.postIssueShareHolding,
                   promotersName: tabData?.promotersName,
@@ -134,7 +134,6 @@ const GeneralTab = ({ ipoEdit }) => {
           }
           onSubmit={(values) => {
             let Data = { ...tabData, ...values };
-            console.log(Data);
             setTabData(Data);
             handleSubmit(values);
           }}
@@ -336,6 +335,14 @@ const GeneralTab = ({ ipoEdit }) => {
                         className="form-control"
                       />
                     </div>
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Short Text</label>
+                      <Field
+                        type="text"
+                        name="shortText"
+                        className="form-control"
+                      />
+                    </div>
 
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Listing At</label>
@@ -363,9 +370,10 @@ const GeneralTab = ({ ipoEdit }) => {
                         className="form-control"
                       />
                       {/* <button className="btn btn-primary" type="button">
-                        DRHP Draft
+                        DRHP
                       </button> */}
                     </div>
+                    {/* DRHP <FileAttachmentIcon /> */}
 
                     <div
                       className="w-100 fv-row flex-md-root"
@@ -378,8 +386,9 @@ const GeneralTab = ({ ipoEdit }) => {
                         className="form-control"
                       />
                       {/* <button className="btn btn-primary" type="button">
-                        RHP Draft
+                        RHP
                       </button> */}
+                      {/* RHP <FileAttachmentIcon /> */}
                     </div>
                   </div>
                 </div>

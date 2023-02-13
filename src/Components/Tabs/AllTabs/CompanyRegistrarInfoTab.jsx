@@ -1,24 +1,25 @@
-import { Field, Form, Formik } from "formik";
-import React from "react";
+import { Field, FieldArray, Form, Formik } from "formik";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormContext } from "../../../App";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getIpoById,
+  updateIPO,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
-const RegistrarInfoTab = ({ ipoEdit }) => {
+const RegistrarInfoTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
   const dispatch = useDispatch();
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+  const { ID, getIPODataById, updatedIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
   const { tabData, setTabData } = useContext(TabContext);
 
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       address: values?.address,
       companyPhone: values?.companyPhone,
       email: values?.email,
@@ -29,15 +30,35 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
       registerWebsite: values?.registerWebsite,
       allotmentLink: values?.allotmentLink,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
-
+  useEffect(() => {
+    if (ipoPrefillData?.data?.id) {
+      const payload = {
+        id: ipoPrefillData?.data?.id,
+        CategoryForIPOS: IPOTYPE,
+      };
+      dispatch(getIpoById({ payload }));
+    }
+  }, [updatedIpo]);
+  useEffect(() => {
+    if (ipoEdit) {
+      setTabData(getIPODataById);
+    } else {
+      setTabData({});
+    }
+  }, [updatedIpo]);
   return (
     <>
       <div>
@@ -143,15 +164,6 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
 
                   <div className="d-flex flex-wrap gap-5 mb-10">
                     <div className="w-100 fv-row flex-md-root">
-                      <label className="form-label">Phone</label>
-                      <Field
-                        type="text"
-                        className="form-control"
-                        name="registerPhone"
-                      />
-                    </div>
-
-                    <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">Email</label>
                       <Field
                         type="text"
@@ -178,11 +190,63 @@ const RegistrarInfoTab = ({ ipoEdit }) => {
                       name="allotmentLink"
                     />
                   </div>
+                  <div className="w-100 fv-row flex-md-root">
+                    <label className="form-label mt-4">Phone</label>
+                    {/* <Field
+                        type="text"
+                        className="form-control"
+                        name="registerPhone"
+                      /> */}
+                    <FieldArray
+                      name="registerPhone"
+                      render={(arrayHelpers) => (
+                        <div>
+                          {values?.registerPhone?.map(
+                            (registerPhone, index) => (
+                              <div key={index}>
+                                <div className="col-md-8 d-flex">
+                                  <Field
+                                    type="phone"
+                                    className="form-control mt-2"
+                                    name={`registerPhone[${index}].phone`}
+                                  />
+                                  <div className="col-md-4">
+                                    <button
+                                      type="button"
+                                      data-repeater-delete
+                                      style={{
+                                        marginLeft: "20px",
+                                      }}
+                                      className="btn btn-sm btn-light-danger mb-2 mt-3"
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <i className="la la-trash-o"></i>
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          )}
+                          <button
+                            type="button"
+                            className="btn btn-light-primary mt-2"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              arrayHelpers.push({ phone: "" });
+                            }}
+                          >
+                            <i className="la la-plus" /> Add
+                          </button>
+                        </div>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

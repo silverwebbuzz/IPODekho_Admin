@@ -1,13 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./Components/Layout";
-import { createContext } from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 
 const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));
 const News = lazy(() => import("./View/News"));
+const NewsAdd = lazy(() => import("./View/NewsAdd"));
 const Offers = lazy(() => import("./View/Offers"));
 const Faqs = lazy(() => import("./View/Faqs"));
 const IpoAllotmentTips = lazy(() => import("./View/IpoAllotmentTips"));
@@ -19,7 +17,6 @@ const Notifications = lazy(() => import("./View/Notifications"));
 const AddIpo = lazy(() => import("./View/AddIpo"));
 const IpoEdit = lazy(() => import("./View/IpoEdit"));
 const IpoDetail = lazy(() => import("./View/IpoDetail"));
-
 const App = () => {
   return (
     <>
@@ -35,6 +32,7 @@ const App = () => {
             <Route path="sme_ipo/ipo_detail" element={<IpoDetail />} />
             <Route path="sme_ipo/ipo_edit" element={<IpoEdit />} />
             <Route path="news" element={<News />} />
+            <Route path="news/news_add" element={<NewsAdd />} />
             <Route path="offers" element={<Offers />} />
             <Route path="faqs" element={<Faqs />} />
             <Route path="ipo_allotment_tips" element={<IpoAllotmentTips />} />

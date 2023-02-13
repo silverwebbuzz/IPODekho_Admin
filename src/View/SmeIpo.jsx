@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import PageHeading from "../Components/PageHeading";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
@@ -9,29 +9,35 @@ import "../assets/css/style.bundle.css";
 import "../assets/plugins/global/plugins.bundle.css";
 import CommonFilterIcon from "../assets/media/Icons/CommonFilterIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
-import companyImg from "../assets/media/ipo/Elin-Electronics-logo.jpeg";
+import blankImage from "../assets/media/offer/blank-image.svg";
 import { useState } from "react";
+import moment from "moment/moment";
 const SmeIpo = () => {
   const dispatch = useDispatch();
+  const [GMPStatus, setGMPStatus] = useState();
 
   const [GMP, setGMP] = useState("");
-  const { getAllMainLineIpoData } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMP: e?.target?.value,
     };
+    dispatch(updateIPO({ payload }));
   };
 
   const handleGmp = (e, ID) => {
+    setGMPStatus(e.target?.checked);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -43,7 +49,7 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch]);
+  }, [dispatch, updatedIpo, createIpo, GMP]);
 
   return (
     <>
@@ -138,7 +144,10 @@ const SmeIpo = () => {
                   </div>
                 </div>
 
-                <Link to="/sme_ipo/add_ipo">
+                <Link
+                  to="/sme_ipo/add_ipo"
+                  state={{ data: "SmeIPO", type: "ipoAdd" }}
+                >
                   <button type="button" className="btn btn-primary">
                     <span className="svg-icon svg-icon-2">
                       <CommonAddIcon />
@@ -174,45 +183,92 @@ const SmeIpo = () => {
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
                         <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                          <a href="ipo-detail.html">
+                          <Link
+                            to="/sme_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
+                          >
                             <div className="symbol-label">
                               <img
-                                src={Itm?.file || companyImg}
+                                src={Itm?.file ? Itm?.file : blankImage}
                                 alt="Elin Electronics"
                                 className="w-100"
                               />
                             </div>
-                          </a>
+                          </Link>
                         </div>
                         <div className="d-flex flex-column">
-                          <a
-                            href="ipo-detail.html"
+                          <Link
+                            to="/sme_ipo/ipo_edit"
+                            state={{ data: Itm, type: "ipoEdit" }}
                             className="text-gray-800 text-hover-primary mb-1"
                           >
                             {Itm?.companyName}
-                          </a>
+                          </Link>
                         </div>
                       </td>
-                      <td className="w-150px mw-150px">{Itm?.offerDate}</td>
-                      <td className="w-100px mw-100px">
-                        ₹{Itm?.offerPriceFrom} to ₹{Itm?.offerPriceTo}
-                      </td>
+                      {console.log(Itm?.IPOOpenDate)}
+                      {(Itm?.IPOOpenDate === undefined ||
+                        Itm?.IPOOpenDate === "" ||
+                        Itm?.IPOOpenDate === null) &&
+                      (Itm?.IPOCloseDate === undefined ||
+                        Itm?.IPOCloseDate === "" ||
+                        Itm?.IPOCloseDate === null) ? (
+                        <td className="w-150px mw-150px">N/A</td>
+                      ) : (
+                        <td className="w-150px mw-150px">
+                          {Itm?.IPOOpenDate === undefined ||
+                          Itm?.IPOOpenDate === "" ||
+                          Itm?.IPOOpenDate === null
+                            ? "N/A"
+                            : moment(Itm?.IPOOpenDate).format(
+                                "MMM d, yyyy"
+                              )}{" "}
+                          to{" "}
+                          {Itm?.IPOCloseDate === undefined ||
+                          Itm?.IPOCloseDate === "" ||
+                          Itm?.IPOCloseDate === null
+                            ? "N/A"
+                            : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                        </td>
+                      )}
+                      {(Itm?.toPrice === "" ||
+                        Itm?.toPrice === undefined ||
+                        Itm?.toPrice === null) &&
+                      (Itm?.fromPrice === "" ||
+                        Itm?.fromPrice === undefined ||
+                        Itm?.fromPrice === null) ? (
+                        <td className="w-100px mw-100px">N/A</td>
+                      ) : (
+                        <td className="w-100px mw-100px">
+                          ₹
+                          {Itm?.fromPrice === "" ||
+                          Itm?.fromPrice === undefined ||
+                          Itm?.fromPrice === null
+                            ? "N/A"
+                            : Itm?.fromPrice}{" "}
+                          to ₹
+                          {Itm?.toPrice === "" ||
+                          Itm?.toPrice === undefined ||
+                          Itm?.toPrice === null
+                            ? "N/A"
+                            : Itm?.toPrice}
+                        </td>
+                      )}
                       <td>{Itm?.lotSize} Shares</td>
                       <td className="text-center">
                         <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            value=""
-                            // checked
+                            checked={Itm?.GMPStatus === "ON" ? true : false}
                             onChange={(e) => handleGmp(e, Itm?.id)}
                           />
                         </div>
                         <input
                           type="number"
                           className="form-control w-70px mt-3"
-                          defaultValue={Itm?.GMP}
-                          // value={GMP}
+                          // defaultValue={Itm?.GMP}
+                          value={Itm?.GMP}
                           onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>

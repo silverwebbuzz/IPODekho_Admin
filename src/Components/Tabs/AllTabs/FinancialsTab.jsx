@@ -1,22 +1,25 @@
 import { Field, FieldArray, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
+import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { createMainLineIpo } from "../../../redux/slice/mainLineIpoSlices";
+import {
+  createMainLineIpo,
+  getIpoById,
+  updateIPO,
+} from "../../../redux/slice/mainLineIpoSlices";
 import { TabContext } from "../Tabs";
 
-const FinancialsTab = ({ ipoEdit }) => {
+const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
   const dispatch = useDispatch();
   const { tabData, setTabData } = useContext(TabContext);
-  const { ID, getIPODataById, getAllMainLineIpoData } = useSelector(
+
+  const { ID, getIPODataById, updatedIpo } = useSelector(
     (state) => state.mainLineIpoSlice
   );
   const handleSubmit = (values) => {
     const payload = {
-      CategoryForIPOS:
-        getAllMainLineIpoData?.CategoryForIPOS === "MainlineIPO"
-          ? "MainlineIPO"
-          : "SmeIPO",
+      CategoryForIPOS: IPOTYPE,
       earningPerShare: values?.earningPerShare,
       earningPERatio: values?.earningPERatio,
       returnonNetWorth: values?.returnonNetWorth,
@@ -25,15 +28,47 @@ const FinancialsTab = ({ ipoEdit }) => {
       financialLotsize: values?.financialLotsize,
       peersComparison: values?.peersComparison,
     };
-    if (ID) {
-      payload.id = ID;
-      dispatch(createMainLineIpo({ payload }));
+    if (ipoEdit) {
+      payload.id = getIPODataById?.id;
+      dispatch(updateIPO({ payload }));
     } else {
-      payload.id = null;
-      dispatch(createMainLineIpo({ payload }));
+      if (ID) {
+        payload.id = ID;
+        dispatch(createMainLineIpo({ payload }));
+      } else {
+        payload.id = null;
+        dispatch(createMainLineIpo({ payload }));
+      }
     }
   };
-
+  useEffect(() => {
+    if (ipoPrefillData?.data?.id) {
+      const payload = {
+        id: ipoPrefillData?.data?.id,
+        CategoryForIPOS: IPOTYPE,
+      };
+      dispatch(getIpoById({ payload }));
+    }
+  }, [updatedIpo]);
+  useEffect(() => {
+    if (ipoEdit) {
+      setTabData(getIPODataById);
+    } else {
+      setTabData({});
+    }
+  }, [updatedIpo]);
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
   return (
     <>
       <div>
@@ -41,10 +76,10 @@ const FinancialsTab = ({ ipoEdit }) => {
           initialValues={
             ipoEdit
               ? {
-                  companyFinancials: [],
+                  companyFinancials: getIPODataById?.companyFinancials,
                   earningPerShare: getIPODataById?.earningPerShare,
-                  financialLotsize: [],
-                  peersComparison: [],
+                  financialLotsize: getIPODataById?.financialLotsize,
+                  peersComparison: getIPODataById?.peersComparison,
                   earningPERatio: getIPODataById?.earningPERatio,
                   returnonNetWorth: getIPODataById?.returnonNetWorth,
                   netAssetValue: getIPODataById?.netAssetValue,
@@ -65,7 +100,7 @@ const FinancialsTab = ({ ipoEdit }) => {
             handleSubmit(values);
           }}
         >
-          {({ values }) => (
+          {({ values, setFieldValue }) => (
             <Form>
               <div className="card card-flush py-4">
                 <div className="card-header">
@@ -97,7 +132,7 @@ const FinancialsTab = ({ ipoEdit }) => {
                           render={(arrayHelpers) => (
                             <div>
                               {values.companyFinancials?.map(
-                                (companyFinacials, index) => (
+                                (companyFinancials, index) => (
                                   <div data-repeater-item>
                                     <div
                                       key={index}
@@ -105,26 +140,30 @@ const FinancialsTab = ({ ipoEdit }) => {
                                     >
                                       <div className="form-group row mb-5">
                                         <div className="col-md-4">
-                                          <Field
-                                            type="text"
-                                            className="form-control"
+                                          <DatePickerField
+                                            className="form-control mb-2"
+                                            value={companyFinancials?.period}
+                                            onChange={setFieldValue}
                                             name={`companyFinancials.${index}.period`}
                                           />
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`companyFinancials.${index}.assets`}
                                           />
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`companyFinancials.${index}.revenue`}
                                           />
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`companyFinancials.${index}.profit`}
                                           />
@@ -185,11 +224,14 @@ const FinancialsTab = ({ ipoEdit }) => {
                       <label className="form-label">
                         Earning Per Share (EPS)
                       </label>
-                      <Field
-                        type="text"
-                        name="earningPerShare"
-                        className="form-control"
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          type="number"
+                          name="earningPerShare"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
 
                     <div className="w-100 fv-row flex-md-root">
@@ -198,7 +240,7 @@ const FinancialsTab = ({ ipoEdit }) => {
                       </label>
                       <Field
                         name="earningPERatio"
-                        type="text"
+                        type="number"
                         className="form-control"
                       />
                     </div>
@@ -207,22 +249,28 @@ const FinancialsTab = ({ ipoEdit }) => {
                       <label className="form-label">
                         Return on Net Worth (RoNW)s
                       </label>
-                      <Field
-                        type="text"
-                        name="returnonNetWorth"
-                        className="form-control"
-                      />
+                      <div className="input-group">
+                        <Field
+                          type="number"
+                          name="returnonNetWorth"
+                          className="form-control"
+                        />
+                        <span className="input-group-text">%</span>
+                      </div>
                     </div>
 
                     <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">
                         Net Asset Value (NAV)
                       </label>
-                      <Field
-                        type="text"
-                        name="netAssetValue"
-                        className="form-control"
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">₹</span>
+                        <Field
+                          type="number"
+                          name="netAssetValue"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -274,21 +322,29 @@ const FinancialsTab = ({ ipoEdit }) => {
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`financialLotsize.${index}.lots`}
                                           />
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`financialLotsize.${index}.shares`}
                                           />
                                         </div>
                                         <div className="col-md-2">
-                                          <Field
-                                            className="form-control "
-                                            name={`financialLotsize.${index}.amount`}
-                                          />
+                                          <div className="input-group">
+                                            <span className="input-group-text">
+                                              ₹
+                                            </span>
+                                            <Field
+                                              type="number"
+                                              className="form-control "
+                                              name={`financialLotsize.${index}.amount`}
+                                            />
+                                          </div>
                                         </div>
                                       </div>
                                       <div className="col-md-2">
@@ -382,28 +438,41 @@ const FinancialsTab = ({ ipoEdit }) => {
                                         </div>
                                         <div className="col-md-2">
                                           <Field
-                                            type="text"
+                                            type="number"
                                             className="form-control"
                                             name={`peersComparison.${index}.PB`}
                                           />
                                         </div>
                                         <div className="col-md-2">
                                           <Field
+                                            type="number"
                                             className="form-control "
                                             name={`peersComparison.${index}.PE`}
                                           />
                                         </div>
                                         <div className="col-md-2">
-                                          <Field
-                                            className="form-control "
-                                            name={`peersComparison.${index}.RoNW`}
-                                          />
+                                          <div className="input-group">
+                                            <Field
+                                              type="number"
+                                              className="form-control "
+                                              name={`peersComparison.${index}.RoNW`}
+                                            />
+                                            <span className="input-group-text">
+                                              %
+                                            </span>
+                                          </div>
                                         </div>
                                         <div className="col-md-2">
-                                          <Field
-                                            className="form-control "
-                                            name={`peersComparison.${index}.Revenue`}
-                                          />
+                                          <div className="input-group">
+                                            <Field
+                                              type="number"
+                                              className="form-control "
+                                              name={`peersComparison.${index}.Revenue`}
+                                            />
+                                            <span className="input-group-text">
+                                              Cr.
+                                            </span>
+                                          </div>
                                         </div>
                                       </div>
                                       <div className="col-md-2">
@@ -450,7 +519,7 @@ const FinancialsTab = ({ ipoEdit }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">
-                  <span className="indicator-label">{"Next >>"}</span>
+                  <span className="indicator-label">Save Changes</span>
                 </button>
               </div>
             </Form>

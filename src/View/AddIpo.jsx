@@ -9,15 +9,30 @@ import "../assets/css/customStepperStyle.css";
 import { useDispatch, useSelector } from "react-redux";
 import Tabs from "../Components/Tabs/Tabs";
 import FilePreview2 from "../Components/FilePreview2";
-import { createMainLineIpo } from "../redux/slice/mainLineIpoSlices";
+import { createMainLineIpo, uploadIMG } from "../redux/slice/mainLineIpoSlices";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import blankImage from "../assets/media/offer/blank-image.svg";
+import { signInWithEmailAndPassword } from "@firebase/auth";
+import {
+  query,
+  orderBy,
+  onSnapshot,
+  limit,
+  addDoc,
+  collection,
+} from "firebase/firestore";
+import { auth, db } from "../FirebaseConfig";
 const AddIpo = () => {
-  // const [ipoDates, setIpoDates] = useState("");
-
+  const [clearImage, setClearImage] = useState(false);
+  const [ipoDates, setIpoDates] = useState("");
+  const location = useLocation();
+  const IPOTYPE = location.state;
   const dispatch = useDispatch();
-  const { ID, getIPODataById } = useSelector(
+  const { ID, getIPODataById, uploadImage } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -26,10 +41,24 @@ const AddIpo = () => {
         dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
-          // setIpoDates(val);
+          setIpoDates(name, val);
         }}
       />
     );
+  };
+  // console.log(IPOTYPE);
+
+  const handleIpoStatus = (e) => {
+    let payload = {
+      IPOStatus: e?.target?.value,
+    };
+    if (ID) {
+      payload.id = ID;
+      dispatch(createMainLineIpo({ payload }));
+    } else {
+      payload.id = null;
+      dispatch(createMainLineIpo({ payload }));
+    }
   };
   const handleSubmit = (values) => {
     let payload = {
@@ -49,9 +78,94 @@ const AddIpo = () => {
       payload.id = null;
       dispatch(createMainLineIpo({ payload }));
     }
-    // id: ID,
   };
 
+  const formData = new FormData();
+  const formDataImg = new FormData();
+
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+  const [file, setFile] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState(IPOTYPE?.data?.file);
+
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
+    setClearImage(false);
+    const file = "";
+    formDataImg.append("file", file);
+
+    if (ID.length !== 0) {
+      let payload = { payload: formDataImg, id: { id: ID } };
+      dispatch(uploadIMG({ payload }));
+    } else {
+      let payload = { payload: formDataImg, id: { id: null } };
+      dispatch(uploadIMG({ payload }));
+    }
+  };
+
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.match(imageMimeType)) {
+      alert("Image mime type is not valid");
+      return;
+    }
+    setFile(file);
+
+    formData.append("file", file);
+    if (ID) {
+      let payload = { payload: formData, id: { id: ID } };
+      dispatch(uploadIMG({ payload }));
+    } else {
+      let payload = { payload: formData, id: { id: null } };
+      dispatch(uploadIMG({ payload }));
+    }
+    setClearImage(true);
+    // dispatch(createMainLineIpo({ payload }));
+  };
+
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+
+    if (file) {
+      fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const { result } = e.target;
+        if (result && !isCancel) {
+          setFileDataURL(result);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [file]);
+
+  // useEffect(() => {
+  //   if (ID !== "") {
+  //     // jl
+  //     signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
+  //       .then((userCredential) => {
+  //         const user = userCredential.user;
+  //         console.log(user);
+  //       })
+  //       .catch((error) => {
+  //         const errorCode = error.code;
+  //         const errorMessage = error.message;
+  //         console.log(errorCode, errorMessage);
+  //       });
+  //     const { uid } = auth.currentUser;
+  //     addDoc(collection(db, "Chat"), {
+  //       ipoId: ID,
+  //       uid,
+  //     });
+  //   }
+  // }, [ID]);
   return (
     <>
       <PageHeading title={"IPO Add"} />
@@ -74,8 +188,38 @@ const AddIpo = () => {
                   data-kt-image-input="true"
                 >
                   <div className="btn-container w-150px h-150px m-auto position-relative file_preview_wrapper">
-                    <FilePreviewer addImage="addImage" />
-                    {/* <FilePreview2 addImage="addImage" /> */}
+                    <p>
+                      <label
+                        htmlFor="image"
+                        className="btn position-absolute edit_btn btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i className="bi bi-pencil-fill fs-7" />
+                      </label>
+                      <input
+                        name="file"
+                        type="file"
+                        id="image"
+                        onChange={changeHandler}
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        //   value={values?.file}
+                      />
+                    </p>
+
+                    <div className="preview w-150px h-150px">
+                      <img
+                        src={fileDataURL ? fileDataURL : blankImage}
+                        alt="preview"
+                      />
+                    </div>
+                    {fileDataURL && (
+                      <div
+                        onClick={handleRemoveImage}
+                        className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                      >
+                        <i class="bi bi-x fs-2"></i>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="text-muted fs-7">
@@ -84,6 +228,81 @@ const AddIpo = () => {
                 </div>
               </div>
             </div>
+
+            <Formik
+              enableReinitialize
+              initialValues={{ IPOStatus: getIPODataById?.IPOStatus }}
+            >
+              {({ values }) => (
+                <Form onChange={handleIpoStatus}>
+                  <div className="card card-flush py-4">
+                    <div className="card-header">
+                      <div className="card-title">
+                        <h2>Status</h2>
+                      </div>
+
+                      <div className="card-toolbar">
+                        {values?.IPOStatus === "Live" ? (
+                          <div
+                            className="rounded-circle bg-danger w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values?.IPOStatus === "WaitingAllotment" ? (
+                          <div
+                            className="rounded-circle bg-warning w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values?.IPOStatus === "AllotmentOut" ? (
+                          <div
+                            className="rounded-circle bg-primary w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values?.IPOStatus === "Upcoming" ? (
+                          <div
+                            className="rounded-circle bg-info w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : values?.IPOStatus === "Listed" ? (
+                          <div
+                            className="rounded-circle bg-success w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        ) : (
+                          <div
+                            className="rounded-circle bg-none w-15px h-15px"
+                            id="kt_ipo_status"
+                          ></div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="card-body pt-0">
+                      <Field
+                        as="select"
+                        className="form-control mb-2"
+                        name="IPOStatus"
+                        // data-placeholder="Select an option"
+                        // onChange={(e) => handleIpoStatus(e)}
+                        // defaultValue={getIPODataById?.IPOStatus}
+                        // value={ipoStatus}
+                      >
+                        <option></option>
+                        <option value="Live">Live</option>
+                        <option value="WaitingAllotment">
+                          Waiting Allotment
+                        </option>
+                        <option value="AllotmentOut">Allotment Out</option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Listed">Listed</option>
+                      </Field>
+                      <div className="text-muted fs-7">
+                        Set the ipo status.{" "}
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
             <Formik
               initialValues={{
                 IPOOpenDate: "",
@@ -103,41 +322,6 @@ const AddIpo = () => {
                   <div className="card card-flush py-4">
                     <div className="card-header">
                       <div className="card-title">
-                        <h2>Status</h2>
-                      </div>
-
-                      <div className="card-toolbar">
-                        <div className="rounded-circle bg-danger w-15px h-15px"></div>
-                      </div>
-                    </div>
-
-                    <div className="card-body pt-0">
-                      <Field
-                        as="select"
-                        className="form-select mb-2"
-                        data-placeholder="Select an option"
-                        // onChange={(e) => console.log(e)}
-                        name="IPOStatus"
-                      >
-                        <option></option>
-                        <option value="Live" selected="selected">
-                          Live
-                        </option>
-                        <option value="WaitingAllotment">
-                          Waiting Allotment
-                        </option>
-                        <option value="AllotmentOut">Allotment Out</option>
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Listed">Listed</option>
-                      </Field>
-
-                      <div className="text-muted fs-7">Set the ipo status.</div>
-                    </div>
-                  </div>
-                  <br />
-                  <div className="card card-flush py-4">
-                    <div className="card-header">
-                      <div className="card-title">
                         <h2>Tentative Timetable</h2>
                       </div>
                     </div>
@@ -151,7 +335,6 @@ const AddIpo = () => {
                           value={values?.IPOOpenDate}
                           onChange={setFieldValue}
                         />
-                        {/* {console.log(values?.IPOOpenDate)} */}
                       </div>
 
                       <div className="w-100 fv-row mb-10">
@@ -215,25 +398,8 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-              <Tabs />
+              <Tabs IPOTYPE={IPOTYPE?.data} />
             </div>
-            {/* <Steppers IpoType="Add" /> */}
-            {/* <div className="d-flex justify-content-end">
-              <Link to="/" className="btn btn-light me-5">
-                Cancel
-              </Link>
-              <button
-                type="submit"
-                id="kt_ecommerce_add_product_submit"
-                className="btn btn-primary"
-              >
-                <span className="indicator-label">Save Changes</span>
-                <span className="indicator-progress">
-                  Please wait...
-                  <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button>
-            </div> */}
           </div>
         </div>
       </AppContentLayout>

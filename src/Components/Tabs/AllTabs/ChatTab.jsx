@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatTab = () => {
+const DisabledChatTab = () => {
   return (
     <>
       <div className="card" id="kt_chat_messenger">
@@ -324,4 +324,4 @@ const ChatTab = () => {
   );
 };
 
-export default ChatTab;
+export default DisabledChatTab;

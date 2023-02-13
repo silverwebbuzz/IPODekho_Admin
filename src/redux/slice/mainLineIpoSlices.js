@@ -15,7 +15,9 @@ const initialState = {
   getIPODataById: [],
   ID: "",
   getAllMainLineIpoData: [],
-  // updatedIpo: [],
+  updatedIpo: [],
+  createIpo: [],
+  uploadImage: "",
 };
 
 export const getAllMainLineIpo = createAsyncThunk(
@@ -72,9 +74,7 @@ export const updateIPO = createAsyncThunk(
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
-            "Content-Type": "multipart/form-data",
-
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -91,10 +91,8 @@ export const uploadIMG = createAsyncThunk(
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${
-          payload.id?.id ? payload.id?.id : null
-        }`,
-        payload.payload,
+        `${BASE_URL_FOR_ADMIN + ADMIN_IMG_UPLOAD}${payload?.id?.id}`,
+        payload?.payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -137,7 +135,11 @@ export const createMainLineIpo = createAsyncThunk(
 const mainLineIpoSlice = createSlice({
   name: "mainLineIpoSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setClearId: (state, action) => {
+      state.ID = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllMainLineIpo.pending, (state) => {
@@ -166,6 +168,7 @@ const mainLineIpoSlice = createSlice({
       .addCase(uploadIMG.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
+        state.uploadImage = action.payload;
         state.loading = false;
       })
       .addCase(uploadIMG.rejected, (state) => {
@@ -177,6 +180,7 @@ const mainLineIpoSlice = createSlice({
       .addCase(createMainLineIpo.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
+        state.createIpo = action.payload;
         state.loading = false;
       })
       .addCase(createMainLineIpo.rejected, (state) => {
@@ -187,7 +191,7 @@ const mainLineIpoSlice = createSlice({
       })
       .addCase(updateIPO.fulfilled, (state, action) => {
         state.loading = false;
-        // state.updatedIpo = action.payload;
+        state.updatedIpo = action.payload;
       })
       .addCase(updateIPO.rejected, (state) => {
         state.loading = false;
@@ -195,4 +199,5 @@ const mainLineIpoSlice = createSlice({
   },
 });
 
+export const { setClearId } = mainLineIpoSlice.actions;
 export default mainLineIpoSlice.reducer;
