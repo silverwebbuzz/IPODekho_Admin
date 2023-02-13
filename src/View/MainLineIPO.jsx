@@ -8,7 +8,11 @@ import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
+import {
+  getAllMainLineIpo,
+  setClearId,
+  updateIPO,
+} from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 import moment from "moment/moment";
@@ -18,7 +22,7 @@ const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -76,6 +80,7 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
+    dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo]);
 
   return (
