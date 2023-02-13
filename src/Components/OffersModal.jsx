@@ -196,26 +196,18 @@ const OffersModal = () => {
                             <div className="preview w-125px h-125px">
                               <img
                                 className="w-125px h-125px"
-                                src={fileDataURL}
+                                src={fileDataURL ? fileDataURL : blankImage}
                                 alt="preview"
                               />
                             </div>
-                            {/* {offerData?.file && fileDataURL ? (
+                            {fileDataURL && (
                               <div
                                 onClick={handleRemoveImage}
                                 className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                               >
                                 <i className="bi bi-x fs-2"></i>
                               </div>
-                            ) : null} */}
-
-                            {/* {if(modalType === "editOffer"){
-                              if(offerData?.file){
-                                return  
-                              }
-                            }else{
-                              return
-                            }} */}
+                            )}
                           </div>
                         </div>
 

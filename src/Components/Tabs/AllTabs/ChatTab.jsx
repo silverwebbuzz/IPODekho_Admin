@@ -1,98 +1,6 @@
-import { Field, Form, Formik } from "formik";
-import { auth, db } from "../../../FirebaseConfig";
-import {
-  addDoc,
-  collection,
-  doc,
-  Firestore,
-  serverTimestamp,
-  Timestamp,
-} from "firebase/firestore";
-import { query, orderBy, onSnapshot, limit } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-// import { useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import moment from "moment/moment";
+import React from "react";
 
-const ChatTab = () => {
-  const [message, setMessage] = useState();
-  const MSGS = message && message && Object.values(message);
-  const sendMessage = async (values) => {
-    if (values?.msg.trim() === "") {
-      alert("Enter valid message");
-      return;
-    } else {
-      signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
-      const { uid } = auth.currentUser;
-      await addDoc(collection(db, "messages"), {
-        msg: values.msg,
-        name: "sahil",
-        avatar: "",
-        createdAt: serverTimestamp(),
-        date: Timestamp.now(),
-        uid,
-      }).then((res) => {
-        console.log(res);
-      });
-
-      // const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
-      // await addDoc(ChatCollection, {
-      //   msg: values.msg,
-      //   name: "sahil",
-      //   avatar: "",
-      //   createdAt: serverTimestamp(),
-      //   date: Timestamp.now(),
-      //   uid,
-      // });
-      // await addDoc(
-      //   collection(db,"Chat").doc("LH9ihxv72vAPT1XJwXoL").set({
-      //     msg: values.msg,
-      //     name: "sahil",
-      //     avatar: "",
-      //     createdAt: serverTimestamp(),
-      //     date: Timestamp.now(),
-      //     uid,
-      //   })
-      // );
-    }
-  };
-
-  const timeFormat = (secs) => {
-    // let seconds = moment(secs);
-    let output = new Date(secs * 1000);
-    let formatTime = moment(output).format("d MMM LT");
-
-    // console.log("formatTime", output);
-    return formatTime;
-  };
-
-  useEffect(() => {
-    const q = query(
-      collection(db, "messages"),
-      orderBy("createdAt"),
-      limit(50)
-    );
-    const ChatCollection = doc(db, "Chat/LH9ihxv72vAPT1XJwXoL");
-    console.log("ChatCollection", ChatCollection);
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-      let messages = [];
-      QuerySnapshot.forEach((doc) => {
-        messages.push({ ...doc.data(), id: doc.id });
-      });
-      setMessage(messages);
-    });
-    return () => unsubscribe;
-  }, []);
-
+const DisabledChatTab = () => {
   return (
     <>
       <div className="card" id="kt_chat_messenger">
@@ -120,122 +28,300 @@ const ChatTab = () => {
             data-kt-scroll-wrappers="#kt_content, #kt_app_content, #kt_chat_messenger_body"
             data-kt-scroll-offset="5px"
           >
-            {MSGS?.map((msg, i) => {
-              return (
-                <>
-                  <div className="d-flex justify-content-start mb-10">
-                    <div className="d-flex flex-column align-items-start">
-                      <div className="d-flex align-items-center mb-2">
-                        <div className="symbol symbol-35px symbol-circle">
-                          <img alt="Pic" src="assets/media/user/300-25.jpg" />
-                        </div>
-
-                        <div className="ms-3">
-                          <a
-                            href="#"
-                            className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
-                          >
-                            {"user name"}
-                            {/* {console.log("MSGS", msg)}{" "} */}
-                          </a>
-                          <span className="text-muted fs-7 mb-1">2 mins</span>
-                        </div>
-                      </div>
-
-                      <div
-                        className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
-                        data-kt-element="message-text"
-                      >
-                        {"user message"}
-                      </div>
-                    </div>
+            <div className="d-flex justify-content-start mb-10">
+              <div className="d-flex flex-column align-items-start">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-25.jpg" />
                   </div>
 
-                  <div className="d-flex justify-content-end mb-10">
-                    <div className="d-flex flex-column align-items-end">
-                      <div className="d-flex align-items-center mb-2">
-                        <div className="me-3">
-                          <span className="text-muted fs-7 mb-1">
-                            {timeFormat(msg?.createdAt?.seconds).toString()}
-                          </span>
-                          <a
-                            href="#"
-                            className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
-                          >
-                            You
-                          </a>
-                        </div>
-
-                        <div className="symbol symbol-35px symbol-circle">
-                          <img alt="Pic" src="assets/media/user/300-1.jpg" />
-                        </div>
-                      </div>
-
-                      <div
-                        className="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
-                        data-kt-element="message-text"
-                      >
-                        {msg?.msg}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
-        <Formik
-          initialValues={{ msg: "" }}
-          onSubmit={(values, { resetForm }) => {
-            sendMessage(values);
-            resetForm();
-          }}
-        >
-          {({ values }) => (
-            <Form>
-              <div className="card-footer pt-4" id="kt_chat_messenger_footer">
-                <Field
-                  name="msg"
-                  className="form-control form-control-flush mb-3"
-                  as="textarea"
-                  rows="1"
-                />
-
-                <div className="d-flex flex-stack">
-                  <div className="d-flex align-items-center me-2">
-                    <button
-                      className="btn btn-sm btn-icon btn-active-light-primary me-1"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      title="Coming soon"
+                  <div className="ms-3">
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
                     >
-                      <i className="bi bi-paperclip fs-3"></i>
-                    </button>
-                    <button
-                      className="btn btn-sm btn-icon btn-active-light-primary me-1"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      title="Coming soon"
-                    >
-                      <i className="bi bi-upload fs-3"></i>
-                    </button>
+                      Brian Cox
+                    </a>
+                    <span className="text-muted fs-7 mb-1">2 mins</span>
                   </div>
+                </div>
 
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    // data-kt-element="send"
-                  >
-                    Send
-                  </button>
+                <div
+                  className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                  data-kt-element="message-text"
+                >
+                  How likely are you to recommend our company to your friends
+                  and family ?
                 </div>
               </div>
-            </Form>
-          )}
-        </Formik>
+            </div>
+
+            <div className="d-flex justify-content-end mb-10">
+              <div className="d-flex flex-column align-items-end">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="me-3">
+                    <span className="text-muted fs-7 mb-1">5 mins</span>
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
+                    >
+                      You
+                    </a>
+                  </div>
+
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-1.jpg" />
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                  data-kt-element="message-text"
+                >
+                  Hey there, we’re just writing to let you know that you’ve been
+                  subscribed to a repository on GitHub.
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-start mb-10">
+              <div className="d-flex flex-column align-items-start">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-25.jpg" />
+                  </div>
+
+                  <div className="ms-3">
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
+                    >
+                      Brian Cox
+                    </a>
+                    <span className="text-muted fs-7 mb-1">1 Hour</span>
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                  data-kt-element="message-text"
+                >
+                  Ok, Understood!
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-end mb-10">
+              <div className="d-flex flex-column align-items-end">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="me-3">
+                    <span className="text-muted fs-7 mb-1">2 Hours</span>
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
+                    >
+                      You
+                    </a>
+                  </div>
+
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-1.jpg" />
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                  data-kt-element="message-text"
+                >
+                  You’ll receive notifications for all issues, pull requests!
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-start mb-10">
+              <div className="d-flex flex-column align-items-start">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-25.jpg" />
+                  </div>
+
+                  <div className="ms-3">
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
+                    >
+                      Brian Cox
+                    </a>
+                    <span className="text-muted fs-7 mb-1">3 Hours</span>
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                  data-kt-element="message-text"
+                >
+                  You can unwatch this repository immediately by clicking here:
+                  <a href="https://keenthemes.com">Keenthemes.com</a>
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-end mb-10">
+              <div className="d-flex flex-column align-items-end">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="me-3">
+                    <span className="text-muted fs-7 mb-1">4 Hours</span>
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
+                    >
+                      You
+                    </a>
+                  </div>
+
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-1.jpg" />
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                  data-kt-element="message-text"
+                >
+                  Most purchased Business courses during this sale!
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-start mb-10">
+              <div className="d-flex flex-column align-items-start">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-25.jpg" />
+                  </div>
+
+                  <div className="ms-3">
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
+                    >
+                      Brian Cox
+                    </a>
+                    <span className="text-muted fs-7 mb-1">5 Hours</span>
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                  data-kt-element="message-text"
+                >
+                  Company BBQ to celebrate the last quater achievements and
+                  goals. Food and drinks provided
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="d-flex justify-content-end mb-10 d-none"
+              data-kt-element="template-out"
+            >
+              <div className="d-flex flex-column align-items-end">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="me-3">
+                    <span className="text-muted fs-7 mb-1">Just now</span>
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary ms-1"
+                    >
+                      You
+                    </a>
+                  </div>
+
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-1.jpg" />
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                  data-kt-element="message-text"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              className="d-flex justify-content-start mb-10 d-none"
+              data-kt-element="template-in"
+            >
+              <div className="d-flex flex-column align-items-start">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="symbol symbol-35px symbol-circle">
+                    <img alt="Pic" src="assets/media/user/300-25.jpg" />
+                  </div>
+
+                  <div className="ms-3">
+                    <a
+                      href="#"
+                      className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
+                    >
+                      Brian Cox
+                    </a>
+                    <span className="text-muted fs-7 mb-1">Just now</span>
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                  data-kt-element="message-text"
+                >
+                  Right before vacation season we have the next Big Deal for
+                  you.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card-footer pt-4" id="kt_chat_messenger_footer">
+          <textarea
+            className="form-control form-control-flush mb-3"
+            rows="1"
+            data-kt-element="input"
+            placeholder="Type a message"
+          ></textarea>
+
+          <div className="d-flex flex-stack">
+            <div className="d-flex align-items-center me-2">
+              <button
+                className="btn btn-sm btn-icon btn-active-light-primary me-1"
+                type="button"
+                data-bs-toggle="tooltip"
+                title="Coming soon"
+              >
+                <i className="bi bi-paperclip fs-3"></i>
+              </button>
+              <button
+                className="btn btn-sm btn-icon btn-active-light-primary me-1"
+                type="button"
+                data-bs-toggle="tooltip"
+                title="Coming soon"
+              >
+                <i className="bi bi-upload fs-3"></i>
+              </button>
+            </div>
+
+            <button
+              className="btn btn-primary"
+              type="button"
+              data-kt-element="send"
+            >
+              Send
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-export default ChatTab;
+export default DisabledChatTab;

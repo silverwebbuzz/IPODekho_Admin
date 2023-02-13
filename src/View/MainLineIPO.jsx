@@ -52,15 +52,19 @@ const MainLineIPO = () => {
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
+      CategoryForIPOS: "MainlineIPO",
       id: ID,
       GMP: e?.target?.value,
     };
+
     dispatch(updateIPO({ payload }));
   };
 
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
     let payload = {
+      CategoryForIPOS: "MainlineIPO",
+
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -212,7 +216,7 @@ const MainLineIPO = () => {
                               <img
                                 style={{ height: "100%" }}
                                 src={Itm?.file ? Itm?.file : blankImage}
-                                alt="Elin Electronics"
+                                alt="image not available"
                                 className="w-100"
                               />
                             </div>
@@ -285,8 +289,8 @@ const MainLineIPO = () => {
                         <input
                           type="number"
                           className="form-control w-70px mt-3"
-                          defaultValue={Itm?.GMP}
-                          // value={GMPV}
+                          // defaultValue={Itm?.GMP}
+                          value={Itm?.GMP}
                           onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>

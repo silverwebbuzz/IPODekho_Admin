@@ -4,14 +4,12 @@ import ReactQuill from "react-quill";
 import { Link, useLocation } from "react-router-dom";
 import { modules } from "../Constants/commonConstants";
 import DatePicker from "react-datepicker";
-import FilePreviewer from "../Components/FilePreviewer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   createNews,
   updateNews,
   updateNewsImage,
 } from "../redux/slice/newsSlice";
-import FilePreview2 from "../Components/FilePreview2";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
@@ -26,10 +24,8 @@ const NewsAdd = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(
-    newsData?.data?.file ? newsData?.data?.file : blankImage
-  );
-  const [removeImage, setRemoveImage] = useState(false);
+  const [fileDataURL, setFileDataURL] = useState(newsData?.data?.file);
+
   console.log(newsData.type);
 
   const changeHandler = (e) => {
@@ -77,7 +73,6 @@ const NewsAdd = () => {
     );
   };
   const handleRemoveImage = () => {
-    setRemoveImage(true);
     setFile("");
     setFileDataURL("");
   };
@@ -95,7 +90,7 @@ const NewsAdd = () => {
         Title: values?.Title,
         Date: values?.newsDate,
       };
-      formDataImg.append("file", removeImage ? blankImage : file);
+      formDataImg.append("file", file);
       let payloadImage = {
         payload: formDataImg,
         payloadId: { id: newsData?.data?.id },
@@ -141,40 +136,52 @@ const NewsAdd = () => {
                   <div
                     className="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                     data-kt-image-input="true"
+                    style={{ position: "relative" }}
                   >
-                    <div className="btn-container image-input-wrapper image-input-placeholder w-400px h-400px m-auto position-relative file_preview_wrapper">
-                      <p>
-                        <label
-                          htmlFor="image"
-                          className="btn position-absolute edit_btn btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                        >
-                          <i className="bi bi-pencil-fill fs-7" />
-                        </label>
-                        <input
-                          name="file"
-                          type="file"
-                          id="image"
-                          onChange={changeHandler}
-                          hidden
-                          accept=".png, .jpg, .jpeg"
-                          //   value={values?.file}
-                        />
-                      </p>
+                    <div
+                      style={{
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                      }}
+                    >
+                      <img
+                        className="image-input-wrapper w-400px h-400px"
+                        src={fileDataURL ? fileDataURL : blankImage}
+                        alt="preview"
+                      />
+                    </div>
 
-                      <div className="preview w-400px h-400px">
-                        <img
-                          // src={fileDataURL}
-                          src={fileDataURL}
-                          alt="preview"
-                        />
-                      </div>
+                    <label
+                      htmlFor="image"
+                      data-kt-image-input-action="change"
+                      className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    >
+                      <i className="bi bi-pencil-fill fs-7" />
+
+                      <input
+                        name="file"
+                        type="file"
+                        id="image"
+                        onChange={changeHandler}
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        //   value={values?.file}
+                      />
+                    </label>
+
+                    {fileDataURL && (
                       <div
+                        style={{
+                          position: "absolute",
+                          right: "-12px",
+                          bottom: "-12px",
+                        }}
                         onClick={handleRemoveImage}
-                        className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                        className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                       >
                         <i class="bi bi-x fs-2"></i>
                       </div>
-                    </div>
+                    )}
                   </div>
 
                   <div className="text-muted fs-7">

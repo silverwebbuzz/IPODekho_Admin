@@ -14,6 +14,7 @@ import {
 } from "../redux/slice/offersSlice";
 import OffersModal from "../Components/OffersModal";
 import ReactModal from "react-modal";
+import blankImage from "../assets/media/offer/blank-image.svg";
 
 const Offers = () => {
   const customStyles = {
@@ -124,7 +125,7 @@ const Offers = () => {
                     <tr>
                       <td>
                         <img
-                          src={offer?.file}
+                          src={offer?.file ? offer?.file : blankImage}
                           alt="offer"
                           className="mh-75px"
                         />

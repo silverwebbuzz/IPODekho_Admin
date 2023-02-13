@@ -101,7 +101,7 @@ export const uploadIMG = createAsyncThunk(
         }
       );
 
-      console.log("response", response);
+      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);

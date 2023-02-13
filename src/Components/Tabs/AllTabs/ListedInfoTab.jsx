@@ -65,7 +65,6 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
       />
     );
   };
-  console.log(getIPODataById?.listingDate);
   return (
     <>
       <div>
@@ -126,7 +125,6 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
                         value={values?.listingDate}
                         onChange={setFieldValue}
                       />
-                      {console.log(values?.listingDate)}
                     </div>
 
                     <div className="w-100 fv-row flex-md-root">
@@ -247,7 +245,7 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
                       <label className="form-label">Closing Different</label>
                       <div className="input-group">
                         <Field
-                          type="text"
+                          type="number"
                           className="form-control"
                           name="closingDifferent"
                         />

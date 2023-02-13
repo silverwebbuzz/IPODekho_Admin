@@ -27,6 +27,7 @@ const SmeIpo = () => {
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMP: e?.target?.value,
     };
@@ -36,6 +37,7 @@ const SmeIpo = () => {
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -47,7 +49,7 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch, updatedIpo, createIpo]);
+  }, [dispatch, updatedIpo, createIpo, GMP]);
 
   return (
     <>
@@ -265,8 +267,8 @@ const SmeIpo = () => {
                         <input
                           type="number"
                           className="form-control w-70px mt-3"
-                          defaultValue={Itm?.GMP}
-                          // value={GMP}
+                          // defaultValue={Itm?.GMP}
+                          value={Itm?.GMP}
                           onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>
