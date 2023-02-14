@@ -8,6 +8,11 @@ import sidebarToggleSlice from "../slice/sidebarToggleSlice";
 import privacyPolicySlice from "../slice/privacyPolicySlice";
 import faqsSlice from "../slice/faqsSlice";
 import ipoAllotSlice from "../slice/ipoAllotSlice";
+import termsAndConditionsSlice from "../slice/termsAndConditionsSlice";
+import contactUsSlice from "../slice/contactUsSlice";
+import usersSlice from "../slice/usersSlice";
+import modalSlice from "../slice/modalSlice";
+import notificationsSlice from "../slice/notificationsSlice";
 const reducer = combineReducers({
   //slice
   mainLineIpoSlice: mainLineIpoSlices,
@@ -19,5 +24,10 @@ const reducer = combineReducers({
   privacyPolicyReducer: privacyPolicySlice,
   faqsReducer: faqsSlice,
   ipoAllotReducer: ipoAllotSlice,
+  termsConditionsReducer: termsAndConditionsSlice,
+  contactUsReducer: contactUsSlice,
+  userReducer: usersSlice,
+  modalReducer: modalSlice,
+  notificationReducer: notificationsSlice,
 });
 export default reducer;

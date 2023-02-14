@@ -6,15 +6,11 @@ import PageHeading from "../Components/PageHeading";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  getAllOffers,
-  setModalIsOpen,
-  setModalType,
-  setOfferData,
-} from "../redux/slice/offersSlice";
+import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
 import OffersModal from "../Components/OffersModal";
 import ReactModal from "react-modal";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import { getAllOffers, setOfferData } from "../redux/slice/offersSlice";
 
 const Offers = () => {
   const customStyles = {
@@ -29,13 +25,10 @@ const Offers = () => {
       maxWidth: "650px",
     },
   };
-  const {
-    getAllOffersData,
-    modalIsOpen,
-    addOfferData,
-    editOfferData,
-    offerImage,
-  } = useSelector((state) => state.offersReducer);
+  const { getAllOffersData, addOfferData, editOfferData, offerImage } =
+    useSelector((state) => state.offersReducer);
+
+  const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {

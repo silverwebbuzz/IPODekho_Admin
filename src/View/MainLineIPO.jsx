@@ -26,33 +26,6 @@ const MainLineIPO = () => {
     (state) => state?.mainLineIpoSlice
   );
 
-  // const handleGMPNumber = (e, ID) => {
-  //   console.log(e);
-  //   setGMP(e?.target?.value);
-  //   let payload = {
-  //     id: ID,
-  //     GMP: e?.target?.value,
-  //   };
-  //   dispatch(updateIPO({ payload }));
-  // };
-
-  // const handleGmp = (e, ID) => {
-  //   setGMP(e?.target?.value);
-  //   let payload = {
-  //     id: ID,
-  //     GMP: e?.target?.value,
-  //     GMPStatus: e.target?.checked === true ? "ON" : "OFF",
-  //   };
-  //   dispatch(updateIPO({ payload }));
-  // };
-
-  // useEffect(() => {
-  //   let payload = {
-  //     CategoryForIPOS: "MainlineIPO",
-  //   };
-  //   dispatch(getAllMainLineIpo({ payload }));
-  // }, [dispatch]);
-
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {

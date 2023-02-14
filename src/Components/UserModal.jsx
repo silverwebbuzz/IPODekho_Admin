@@ -12,21 +12,24 @@ import {
 } from "../redux/slice/offersSlice";
 
 import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
+import { getUserById, updateUsers } from "../redux/slice/usersSlice";
 
-const OffersModal = () => {
+const UserModal = ({ userID }) => {
   const [clearImage, setClearImage] = useState(false);
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
-  const { offerData } = useSelector((state) => state.offersReducer);
+  const { getDataByIdData } = useSelector((state) => state.userReducer);
   const { modalType } = useSelector((state) => state.modalReducer);
 
-  console.log(modalType);
-  console.log("offerData", offerData);
+  console.log(getDataByIdData);
+
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(
-    offerData?.file && modalType === "editOffer" ? offerData?.file : null
+    getDataByIdData?.photoURL && modalType === "editUser"
+      ? getDataByIdData?.photoURL
+      : null
   );
 
   const changeHandler = (e) => {
@@ -62,6 +65,13 @@ const OffersModal = () => {
     };
   }, [file]);
 
+  useEffect(() => {
+    let payload = {
+      id: userID,
+    };
+    dispatch(getUserById({ payload }));
+  }, []);
+
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
@@ -69,31 +79,16 @@ const OffersModal = () => {
   };
 
   const handleSubmit = (values) => {
-    formData.append("offerTitle", values.offerTitle);
-    formData.append("offerDescription", values.offerDescription);
-    formData.append("offerSequence", values.offerSequence);
-    formData.append("offerStatus", values.offerStatus);
-    formData.append("file", file);
+    formData.append("displayName", values?.displayName);
+    formData.append("email", values?.email);
+    formData.append("phoneNumber", values?.phoneNumber);
+    formData.append("photoURL", file);
+    let payload = {
+      payload: formData,
+      payloadId: { id: getDataByIdData?.id },
+    };
 
-    if (modalType === "editOffer") {
-      const payload = {
-        id: offerData?.id,
-        offerTitle: values?.offerTitle,
-        offerDescription: values?.offerDescription,
-        offerSequence: values?.offerSequence,
-        offerStatus: values?.offerStatus,
-      };
-      formDataImg.append("file", file);
-      let payloadImage = {
-        payload: formDataImg,
-        payloadId: { id: offerData?.id },
-      };
-      dispatch(updateOfferImage({ payloadImage }));
-      dispatch(updateOffer({ payload }));
-    } else {
-      let payload = formData;
-      dispatch(createOffer({ payload }));
-    }
+    dispatch(updateUsers({ payload }));
     dispatch(setModalIsOpen(false));
     dispatch(setModalType(""));
   };
@@ -108,7 +103,7 @@ const OffersModal = () => {
       <div className="modal-dialog modal-dialog-centered mw-650px">
         <div className="modal-content">
           <div className="modal-header" id="kt_modal_add_offer_header">
-            <h2 className="fw-bold">Add Offer</h2>
+            <h2 className="fw-bold">Add User</h2>
 
             <div
               onClick={() => {
@@ -126,20 +121,18 @@ const OffersModal = () => {
             <Formik
               enableReinitialize
               initialValues={
-                modalType === "editOffer"
+                modalType === "editUser"
                   ? {
-                      offerTitle: offerData?.offerTitle,
-                      offerDescription: offerData?.offerDescription,
-                      offerSequence: offerData?.offerSequence,
-                      offerStatus: offerData?.offerStatus,
-                      file: offerData?.file,
+                      displayName: getDataByIdData?.displayName,
+                      email: getDataByIdData?.email,
+                      phoneNumber: getDataByIdData?.phoneNumber,
+                      photoURL: getDataByIdData?.photoURL,
                     }
                   : {
-                      offerTitle: "",
-                      offerDescription: "",
-                      offerSequence: "",
-                      offerStatus: "",
-                      file: "",
+                      displayName: "",
+                      email: "",
+                      phoneNumber: "",
+                      photoURL: "",
                     }
               }
               onSubmit={(values) => handleSubmit(values)}
@@ -213,70 +206,36 @@ const OffersModal = () => {
 
                       <div className="fv-row mb-7">
                         <label className="fw-semibold fs-6 mb-2">
-                          Offer Title
+                          first Name
                         </label>
 
                         <Field
                           type="text"
-                          name="offerTitle"
+                          name="displayName"
                           className="form-control form-control-solid mb-3 mb-lg-0"
-                          placeholder="Offer Title"
+                          placeholder="first name"
                         />
                       </div>
 
                       <div className="fv-row mb-7">
-                        <label className="fw-semibold fs-6 mb-2">
-                          Offer Description
-                        </label>
+                        <label className="fw-semibold fs-6 mb-2">Email</label>
 
                         <Field
-                          name="offerDescription"
-                          as="textarea"
+                          name="email"
+                          type="email"
                           className="form-control form-control-solid mb-3 mb-lg-0"
+                          placeholder="email"
                         />
                       </div>
 
                       <div className="fv-row mb-7">
-                        <label className="fw-semibold fs-6 mb-2">
-                          Offer Sequence
-                        </label>
-
+                        <label className="fw-semibold fs-6 mb-2">Phone</label>
                         <Field
-                          name="offerSequence"
-                          type="number"
+                          name="phoneNumber"
+                          type="tel"
                           className="form-control form-control-solid mb-3 mb-lg-0"
-                          placeholder="Offer Sequence"
+                          placeholder="phone"
                         />
-                      </div>
-
-                      <div className="fv-row mb-7">
-                        <label className="fw-semibold fs-6 mb-2">Status</label>
-
-                        <div className="d-flex">
-                          <div className="form-check form-check-custom form-check-success form-check-solid me-10">
-                            <label className="form-check-label">
-                              <Field
-                                className="form-check-input"
-                                type="radio"
-                                value="Active"
-                                name="offerStatus"
-                              />
-                              Active
-                            </label>
-                          </div>
-
-                          <div className="form-check form-check-custom form-check-danger form-check-solid">
-                            <label className="form-check-label">
-                              <Field
-                                className="form-check-input"
-                                type="radio"
-                                value="Deactive"
-                                name="offerStatus"
-                              />
-                              Deactive
-                            </label>
-                          </div>
-                        </div>
                       </div>
                     </div>
 
@@ -307,4 +266,4 @@ const OffersModal = () => {
   );
 };
 
-export default OffersModal;
+export default UserModal;

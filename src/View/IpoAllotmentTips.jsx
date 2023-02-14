@@ -70,33 +70,31 @@ const IpoAllotmentTips = () => {
                   }
                   onSubmit={(values) => handleSubmit(values)}
                 >
-                  {({ values }) => (
-                    <Form>
-                      <div>
-                        <div
-                          id="ipo_allotment_tips_content"
-                          name="ipo_allotment_tips_content"
-                          className="min-h-500px h-500px mb-2"
-                        >
-                          <Field name="AllotmentTips">
-                            {({ field }) => (
-                              <ReactQuill
-                                className="min-h-200px h-200px "
-                                modules={modules}
-                                value={field.value}
-                                onChange={field.onChange(field.name)}
-                              />
-                            )}
-                          </Field>
-                        </div>
+                  <Form>
+                    <div>
+                      <div
+                        id="ipo_allotment_tips_content"
+                        name="ipo_allotment_tips_content"
+                        className="min-h-500px h-500px mb-2"
+                      >
+                        <Field name="AllotmentTips">
+                          {({ field }) => (
+                            <ReactQuill
+                              className="min-h-200px h-200px "
+                              modules={modules}
+                              value={field.value}
+                              onChange={field.onChange(field.name)}
+                            />
+                          )}
+                        </Field>
                       </div>
-                      <div className="d-flex justify-content-end mt-15">
-                        <button className="btn btn-primary" type="submit">
-                          Save Changes
-                        </button>
-                      </div>
-                    </Form>
-                  )}
+                    </div>
+                    <div className="d-flex justify-content-end mt-15">
+                      <button className="btn btn-primary" type="submit">
+                        Save Changes
+                      </button>
+                    </div>
+                  </Form>
                 </Formik>
               </div>
             </div>

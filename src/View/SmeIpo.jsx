@@ -2,7 +2,11 @@ import React from "react";
 import PageHeading from "../Components/PageHeading";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
-import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
+import {
+  getAllMainLineIpo,
+  setClearId,
+  updateIPO,
+} from "../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "../assets/css/style.bundle.css";
@@ -49,6 +53,7 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
+    dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo, GMP]);
 
   return (

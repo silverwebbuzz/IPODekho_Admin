@@ -1,4 +1,4 @@
-export const BASE_URL_FOR_ADMIN = "http://13.233.247.160:5000/";
+export const BASE_URL_FOR_ADMIN = "http://localhost:5000/";
 
 export const ADMIN_GET_ALL_MAIN_IPO = "GetMainLineIpo";
 export const ADMIN_CREATE_MAIN_IPO = "createMainlineIPO/";
@@ -30,3 +30,21 @@ export const ADMIN_UPDATE_PRIVACY_POLICY = "privacyPolicy/updatePrivacyPolicy/";
 export const ADMIN_CREATE_FAQS = "Faqs/CreateFaq";
 export const ADMIN_GETALL_FAQS = "Faqs/GetAllFaq";
 export const ADMIN_UPDATE_FAQS = "Faqs//updateFaq/";
+
+export const ADMIN_CREATE_TERMS_CONDITIONS =
+  "termsAndCondition/CreateTermsAndCondition";
+export const ADMIN_UPDATE_TERMS_CONDITIONS =
+  "termsAndCondition/updateTermsAndCondition/";
+export const ADMIN_GETALL_TERMS_CONDITIONS =
+  "termsAndCondition/GetAllTermsAndCondition";
+
+export const ADMIN_GETALL_CONTACTS = "contact/getAllContact";
+
+export const ADMIN_GETALL_USERS = "user/getAllUser";
+export const ADMIN_UPDATE_USER = "user/updateProfile/";
+export const ADMIN_GET_SINGLE_USER = "user/getSingleUser/";
+
+export const ADMIN_CREATE_NOTIFICATIONS = "Notification/createNotification";
+export const ADMIN_GETALL_NOTIFICATIONS = "Notification/GetAllNotification";
+export const ADMIN_GET_SINGLE_NOTIFICATIONS =
+  "Notification/GetSingleNotification/";
