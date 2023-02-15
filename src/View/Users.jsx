@@ -6,7 +6,7 @@ import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import UserModal from "../Components/UserModal";
-import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
+import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getAllUsers, getUserById } from "../redux/slice/usersSlice";
 
 const Users = () => {
@@ -23,7 +23,9 @@ const Users = () => {
     },
   };
   const [userId, setUserId] = useState("");
-  const { updateData, getAllData } = useSelector((state) => state.userReducer);
+  const { updateData, getAllData, getUserById } = useSelector(
+    (state) => state.userReducer
+  );
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
 
@@ -94,7 +96,6 @@ const Users = () => {
                         <button
                           onClick={() => {
                             dispatch(setModalIsOpen(true));
-                            dispatch(setModalType("editUser"));
                             setUserId(userInfo?.id);
                           }}
                           type="button"
@@ -120,7 +121,7 @@ const Users = () => {
         isOpen={modalIsOpen}
         onRequestClose={() => {
           dispatch(setModalIsOpen(false));
-          dispatch(setModalType(""));
+          // dispatch(getUserById(""));
         }}
         style={customStyles}
         contentLabel="Example Modal"

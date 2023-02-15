@@ -14,7 +14,6 @@ const initialState = {
   updateData: [],
   getAllData: [],
   getDataByIdData: [],
-  userData: null,
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -53,7 +52,7 @@ export const updateUsers = createAsyncThunk(
         }
       );
       console.log(response?.data);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
@@ -74,7 +73,7 @@ export const getUserById = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
+      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -85,11 +84,7 @@ export const getUserById = createAsyncThunk(
 const usersSlice = createSlice({
   name: "termsAndConditionsSlice",
   initialState,
-  reducers: {
-    setUserData: (state, action) => {
-      state.userData = action.payload;
-    },
-  },
+
   extraReducers: (builder) => {
     builder
       //READ
@@ -127,5 +122,4 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setUserData } = usersSlice.actions;
 export default usersSlice.reducer;

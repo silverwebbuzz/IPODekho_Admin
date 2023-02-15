@@ -5,36 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "../assets/css/FilePreviewer.css";
-import {
-  createOffer,
-  updateOffer,
-  updateOfferImage,
-} from "../redux/slice/offersSlice";
 
-import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
+import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getUserById, updateUsers } from "../redux/slice/usersSlice";
 
 const UserModal = ({ userID }) => {
-  const [clearImage, setClearImage] = useState(false);
   const formData = new FormData();
-  const formDataImg = new FormData();
   const dispatch = useDispatch();
   const { getDataByIdData } = useSelector((state) => state.userReducer);
-  const { modalType } = useSelector((state) => state.modalReducer);
-
-  console.log(getDataByIdData);
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(
-    getDataByIdData?.photoURL && modalType === "editUser"
-      ? getDataByIdData?.photoURL
-      : null
-  );
+  const [fileDataURL, setFileDataURL] = useState(blankImage);
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
-    console.log(file);
+
     if (!file.type.match(imageMimeType)) {
       alert("Image mime type is not valid");
       return;
@@ -55,7 +41,6 @@ const UserModal = ({ userID }) => {
         }
       };
       fileReader.readAsDataURL(file);
-      setClearImage(true);
     }
     return () => {
       isCancel = true;
@@ -65,17 +50,9 @@ const UserModal = ({ userID }) => {
     };
   }, [file]);
 
-  useEffect(() => {
-    let payload = {
-      id: userID,
-    };
-    dispatch(getUserById({ payload }));
-  }, []);
-
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
-    setClearImage(false);
   };
 
   const handleSubmit = (values) => {
@@ -90,8 +67,21 @@ const UserModal = ({ userID }) => {
 
     dispatch(updateUsers({ payload }));
     dispatch(setModalIsOpen(false));
-    dispatch(setModalType(""));
   };
+
+  useEffect(() => {
+    let payload = {
+      id: userID,
+    };
+    dispatch(getUserById({ payload }));
+  }, [dispatch, fileDataURL]);
+
+  useEffect(() => {
+    setFileDataURL(
+      getDataByIdData?.photoURL ? getDataByIdData?.photoURL : blankImage
+    );
+  }, [getDataByIdData?.photoURL]);
+
   return (
     <div
       className="fade show"
@@ -108,7 +98,7 @@ const UserModal = ({ userID }) => {
             <div
               onClick={() => {
                 dispatch(setModalIsOpen(false));
-                dispatch(setModalType(""));
+                // dispatch(getUserById(""));
               }}
               className="btn btn-icon btn-sm btn-active-icon-primary"
               data-bs-dismiss="modal"
@@ -120,21 +110,12 @@ const UserModal = ({ userID }) => {
           <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
             <Formik
               enableReinitialize
-              initialValues={
-                modalType === "editUser"
-                  ? {
-                      displayName: getDataByIdData?.displayName,
-                      email: getDataByIdData?.email,
-                      phoneNumber: getDataByIdData?.phoneNumber,
-                      photoURL: getDataByIdData?.photoURL,
-                    }
-                  : {
-                      displayName: "",
-                      email: "",
-                      phoneNumber: "",
-                      photoURL: "",
-                    }
-              }
+              initialValues={{
+                photoURL: fileDataURL,
+                displayName: getDataByIdData?.displayName,
+                email: getDataByIdData?.email,
+                phoneNumber: getDataByIdData?.phoneNumber,
+              }}
               onSubmit={(values) => handleSubmit(values)}
             >
               {({ values }) => (
@@ -243,7 +224,7 @@ const UserModal = ({ userID }) => {
                       <button
                         onClick={() => {
                           dispatch(setModalIsOpen(false));
-                          dispatch(setModalType(""));
+                          // dispatch(getUserById(""));
                         }}
                         type="reset"
                         className="btn btn-light me-3"
