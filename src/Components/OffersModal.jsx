@@ -14,7 +14,6 @@ import {
 import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
 
 const OffersModal = () => {
-  const [clearImage, setClearImage] = useState(false);
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
@@ -52,7 +51,6 @@ const OffersModal = () => {
         }
       };
       fileReader.readAsDataURL(file);
-      setClearImage(true);
     }
     return () => {
       isCancel = true;
@@ -65,7 +63,6 @@ const OffersModal = () => {
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
-    setClearImage(false);
   };
 
   const handleSubmit = (values) => {
