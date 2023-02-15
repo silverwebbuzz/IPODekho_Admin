@@ -11,8 +11,6 @@ import {
 
 const initialState = {
   loading: false,
-  modalIsOpen: false,
-  modalType: "",
   getAllOffersData: [],
   offerData: null,
   addOfferData: [],
@@ -113,12 +111,6 @@ const offersSlice = createSlice({
   name: "offersSlice",
   initialState,
   reducers: {
-    setModalType: (state, action) => {
-      state.modalType = action.payload;
-    },
-    setModalIsOpen: (state, action) => {
-      state.modalIsOpen = action.payload;
-    },
     setOfferData: (state, action) => {
       state.offerData = action.payload;
     },
@@ -168,6 +160,5 @@ const offersSlice = createSlice({
   },
 });
 
-export const { setModalType, setModalIsOpen, setOfferData } =
-  offersSlice.actions;
+export const { setOfferData } = offersSlice.actions;
 export default offersSlice.reducer;

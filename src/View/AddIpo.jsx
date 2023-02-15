@@ -46,13 +46,12 @@ const AddIpo = () => {
       />
     );
   };
-  console.log(IPOTYPE);
+  // console.log(IPOTYPE);
 
   const handleIpoStatus = (e) => {
     let payload = {
       IPOStatus: e?.target?.value,
     };
-    console.log(payload);
     if (ID) {
       payload.id = ID;
       dispatch(createMainLineIpo({ payload }));
@@ -86,9 +85,7 @@ const AddIpo = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(
-    IPOTYPE?.data?.file ? IPOTYPE?.data?.file : blankImage
-  );
+  const [fileDataURL, setFileDataURL] = useState(IPOTYPE?.data?.file);
 
   const handleRemoveImage = () => {
     setFile("");
@@ -97,7 +94,7 @@ const AddIpo = () => {
     const file = "";
     formDataImg.append("file", file);
 
-    if (ID) {
+    if (ID.length !== 0) {
       let payload = { payload: formDataImg, id: { id: ID } };
       dispatch(uploadIMG({ payload }));
     } else {
@@ -149,26 +146,26 @@ const AddIpo = () => {
     };
   }, [file]);
 
-  useEffect(() => {
-    if (ID !== "") {
-      // jl
-      signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
-      const { uid } = auth.currentUser;
-      addDoc(collection(db, "Chat"), {
-        ipoId: ID,
-        uid,
-      });
-    }
-  }, [ID]);
+  // useEffect(() => {
+  //   if (ID !== "") {
+  //     // jl
+  //     signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
+  //       .then((userCredential) => {
+  //         const user = userCredential.user;
+  //         console.log(user);
+  //       })
+  //       .catch((error) => {
+  //         const errorCode = error.code;
+  //         const errorMessage = error.message;
+  //         console.log(errorCode, errorMessage);
+  //       });
+  //     const { uid } = auth.currentUser;
+  //     addDoc(collection(db, "Chat"), {
+  //       ipoId: ID,
+  //       uid,
+  //     });
+  //   }
+  // }, [ID]);
   return (
     <>
       <PageHeading title={"IPO Add"} />
@@ -210,16 +207,19 @@ const AddIpo = () => {
                     </p>
 
                     <div className="preview w-150px h-150px">
-                      <img src={fileDataURL} alt="preview" />
+                      <img
+                        src={fileDataURL ? fileDataURL : blankImage}
+                        alt="preview"
+                      />
                     </div>
-                    {clearImage ? (
+                    {fileDataURL && (
                       <div
                         onClick={handleRemoveImage}
                         className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                       >
                         <i class="bi bi-x fs-2"></i>
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 </div>
                 <div className="text-muted fs-7">

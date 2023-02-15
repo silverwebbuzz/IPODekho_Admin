@@ -2,7 +2,11 @@ import React from "react";
 import PageHeading from "../Components/PageHeading";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
-import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
+import {
+  getAllMainLineIpo,
+  setClearId,
+  updateIPO,
+} from "../redux/slice/mainLineIpoSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "../assets/css/style.bundle.css";
@@ -27,6 +31,7 @@ const SmeIpo = () => {
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMP: e?.target?.value,
     };
@@ -36,6 +41,7 @@ const SmeIpo = () => {
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
     let payload = {
+      CategoryForIPOS: "SmeIPO",
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -47,7 +53,8 @@ const SmeIpo = () => {
       CategoryForIPOS: "SmeIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
-  }, [dispatch, updatedIpo, createIpo]);
+    dispatch(setClearId(""));
+  }, [dispatch, updatedIpo, createIpo, GMP]);
 
   return (
     <>
@@ -112,10 +119,10 @@ const SmeIpo = () => {
                       >
                         <option></option>
                         <option value="Live">Live</option>
-                        <option value="Waiting Allotment">
+                        <option value="WaitingAllotment">
                           Waiting Allotment
                         </option>
-                        <option value="Allotment Out">Allotment Out</option>
+                        <option value="AllotmentOut">Allotment Out</option>
                         <option value="Upcoming">Upcoming</option>
                         <option value="Listed">Listed</option>
                       </select>
@@ -265,8 +272,8 @@ const SmeIpo = () => {
                         <input
                           type="number"
                           className="form-control w-70px mt-3"
-                          defaultValue={Itm?.GMP}
-                          // value={GMP}
+                          // defaultValue={Itm?.GMP}
+                          value={Itm?.GMP}
                           onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>

@@ -19,12 +19,16 @@ import Tabs from "../Components/Tabs/Tabs";
 import blankImage from "../assets/media/offer/blank-image.svg";
 
 const EditIpo = () => {
-  const [clearImage, setClearImage] = useState(true);
   const dispatch = useDispatch();
   const location = useLocation();
   const ipoPrefillData = location.state;
   const [ipoDates, setIpoDates] = useState("");
-  const { updatedIpo, getIPODataById } = useSelector(
+  const formData = new FormData();
+  const formDataImg = new FormData();
+  const imageMimeType = /image\/(png|jpg|jpeg)/i;
+  const [file, setFile] = useState(null);
+  const [fileDataURL, setFileDataURL] = useState(ipoPrefillData?.data?.file);
+  const { updatedIpo, getIPODataById, uploadImage } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -36,6 +40,7 @@ const EditIpo = () => {
     };
     dispatch(updateIPO({ payload }));
   };
+
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -69,20 +74,11 @@ const EditIpo = () => {
       CategoryForIPOS: ipoPrefillData?.data?.CategoryForIPOS,
     };
     dispatch(getIpoById({ payload }));
-  }, [dispatch, updatedIpo]);
-
-  const formData = new FormData();
-  const formDataImg = new FormData();
-  const imageMimeType = /image\/(png|jpg|jpeg)/i;
-  const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(
-    ipoPrefillData?.data?.file ? ipoPrefillData?.data?.file : blankImage
-  );
+  }, [dispatch]);
 
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
-    setClearImage(false);
     const file = "";
     formDataImg.append("file", file);
     let payload = {
@@ -133,8 +129,9 @@ const EditIpo = () => {
     };
   }, [file]);
 
-  // console.log(ipoPrefillData?.data?.file);
-
+  useEffect(() => {
+    setFileDataURL(getIPODataById?.file);
+  }, [getIPODataById?.file]);
   return (
     <>
       <PageHeading title={"IPO Edit"} />
@@ -176,16 +173,20 @@ const EditIpo = () => {
                     </p>
 
                     <div className="preview w-150px h-150px">
-                      <img src={fileDataURL} alt="preview" />
+                      <img
+                        src={fileDataURL ? fileDataURL : blankImage}
+                        alt="preview"
+                      />
                     </div>
-                    {ipoPrefillData?.data?.file && clearImage ? (
+
+                    {fileDataURL && (
                       <div
                         onClick={handleRemoveImage}
                         className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                       >
                         <i className="bi bi-x fs-2"></i>
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 </div>
                 <div className="text-muted fs-7">

@@ -8,7 +8,11 @@ import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMainLineIpo, updateIPO } from "../redux/slice/mainLineIpoSlices";
+import {
+  getAllMainLineIpo,
+  setClearId,
+  updateIPO,
+} from "../redux/slice/mainLineIpoSlices";
 import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 import moment from "moment/moment";
@@ -18,49 +22,26 @@ const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-
-  // const handleGMPNumber = (e, ID) => {
-  //   console.log(e);
-  //   setGMP(e?.target?.value);
-  //   let payload = {
-  //     id: ID,
-  //     GMP: e?.target?.value,
-  //   };
-  //   dispatch(updateIPO({ payload }));
-  // };
-
-  // const handleGmp = (e, ID) => {
-  //   setGMP(e?.target?.value);
-  //   let payload = {
-  //     id: ID,
-  //     GMP: e?.target?.value,
-  //     GMPStatus: e.target?.checked === true ? "ON" : "OFF",
-  //   };
-  //   dispatch(updateIPO({ payload }));
-  // };
-
-  // useEffect(() => {
-  //   let payload = {
-  //     CategoryForIPOS: "MainlineIPO",
-  //   };
-  //   dispatch(getAllMainLineIpo({ payload }));
-  // }, [dispatch]);
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
     let payload = {
+      CategoryForIPOS: "MainlineIPO",
       id: ID,
       GMP: e?.target?.value,
     };
+
     dispatch(updateIPO({ payload }));
   };
 
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
     let payload = {
+      CategoryForIPOS: "MainlineIPO",
+
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -72,6 +53,7 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
     };
     dispatch(getAllMainLineIpo({ payload }));
+    dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo]);
 
   return (
@@ -212,7 +194,7 @@ const MainLineIPO = () => {
                               <img
                                 style={{ height: "100%" }}
                                 src={Itm?.file ? Itm?.file : blankImage}
-                                alt="Elin Electronics"
+                                alt="image not available"
                                 className="w-100"
                               />
                             </div>
@@ -285,8 +267,8 @@ const MainLineIPO = () => {
                         <input
                           type="number"
                           className="form-control w-70px mt-3"
-                          defaultValue={Itm?.GMP}
-                          // value={GMPV}
+                          // defaultValue={Itm?.GMP}
+                          value={Itm?.GMP}
                           onChange={(e) => handleGMPNumber(e, Itm?.id)}
                         />
                       </td>

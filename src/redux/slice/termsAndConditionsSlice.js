@@ -2,26 +2,25 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import {
-  ADMIN_CREATE_PRIVACY_POLICY,
+  ADMIN_CREATE_TERMS_CONDITIONS,
+  ADMIN_GETALL_TERMS_CONDITIONS,
+  ADMIN_UPDATE_TERMS_CONDITIONS,
   BASE_URL_FOR_ADMIN,
-  ADMIN_UPDATE_PRIVACY_POLICY,
-  ADMIN_GETALL_PRIVACY_POLICY,
 } from "../../UrlConfig";
 
 const initialState = {
   isLoading: false,
-  privacyPolicyId: "",
-  createPrivacyPolicyData: [],
-  updatePrivacyPolicyData: [],
-  getAllPrivacyPolicyData: [],
+  createData: [],
+  updateData: [],
+  getAllData: [],
 };
 
-export const createPrivacyPolicy = createAsyncThunk(
-  "admin/createPrivacyPolicy",
+export const createTermsConditions = createAsyncThunk(
+  "admin/createTermsConditions",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        BASE_URL_FOR_ADMIN + ADMIN_CREATE_PRIVACY_POLICY,
+        BASE_URL_FOR_ADMIN + ADMIN_CREATE_TERMS_CONDITIONS,
         payload,
         {
           headers: {
@@ -38,12 +37,12 @@ export const createPrivacyPolicy = createAsyncThunk(
   }
 );
 
-export const getAllPrivacyPolicy = createAsyncThunk(
-  "admin/getAllPrivacyPolicy",
+export const getAllTermsConditions = createAsyncThunk(
+  "admin/getAllTermsConditions",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GETALL_PRIVACY_POLICY,
+        BASE_URL_FOR_ADMIN + ADMIN_GETALL_TERMS_CONDITIONS,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -59,12 +58,12 @@ export const getAllPrivacyPolicy = createAsyncThunk(
   }
 );
 
-export const updatePrivacyPolicy = createAsyncThunk(
-  "admin/updatePrivacyPolicy",
+export const updateTermsConditions = createAsyncThunk(
+  "admin/updateTermsConditions",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_PRIVACY_POLICY}${payload?.id}`,
+        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_TERMS_CONDITIONS}${payload?.id}`,
         payload,
         {
           headers: {
@@ -73,6 +72,7 @@ export const updatePrivacyPolicy = createAsyncThunk(
           },
         }
       );
+      console.log(response?.data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -80,45 +80,45 @@ export const updatePrivacyPolicy = createAsyncThunk(
   }
 );
 
-const privacyPolicySlice = createSlice({
-  name: "admin/privacyPolicySlice",
+const termsAndConditionsSlice = createSlice({
+  name: "termsAndConditionsSlice",
   initialState,
   extraReducers: (builder) => {
     builder
       //CREATE
-      .addCase(createPrivacyPolicy.pending, (state) => {
+      .addCase(createTermsConditions.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createPrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(createTermsConditions.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.createPrivacyPolicyData = action.payload;
+        state.createData = action.payload;
       })
-      .addCase(createPrivacyPolicy.rejected, (state) => {
+      .addCase(createTermsConditions.rejected, (state) => {
         state.isLoading = false;
       })
       //READ
-      .addCase(getAllPrivacyPolicy.pending, (state) => {
+      .addCase(getAllTermsConditions.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllPrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(getAllTermsConditions.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.getAllPrivacyPolicyData = action.payload;
+        state.getAllData = action.payload;
       })
-      .addCase(getAllPrivacyPolicy.rejected, (state) => {
+      .addCase(getAllTermsConditions.rejected, (state) => {
         state.isLoading = false;
       })
       //UPDATE
-      .addCase(updatePrivacyPolicy.pending, (state) => {
+      .addCase(updateTermsConditions.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updatePrivacyPolicy.fulfilled, (state, action) => {
+      .addCase(updateTermsConditions.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.updatePrivacyPolicyData = action.payload;
+        state.updateData = action.payload;
       })
-      .addCase(updatePrivacyPolicy.rejected, (state) => {
+      .addCase(updateTermsConditions.rejected, (state) => {
         state.isLoading = false;
       });
   },
 });
 
-export default privacyPolicySlice.reducer;
+export default termsAndConditionsSlice.reducer;
