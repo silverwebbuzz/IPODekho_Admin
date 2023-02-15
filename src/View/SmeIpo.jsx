@@ -19,10 +19,15 @@ import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { useState } from "react";
 import moment from "moment/moment";
+import Pagination from "../Components/Pagination/Pagination";
 const SmeIpo = () => {
   const dispatch = useDispatch();
-  const [GMPStatus, setGMPStatus] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [limit, setLimit] = useState(10);
 
+  const PageSize = 10;
+  const [GMPStatus, setGMPStatus] = useState();
   const [GMP, setGMP] = useState("");
   const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
     (state) => state?.mainLineIpoSlice
@@ -51,11 +56,17 @@ const SmeIpo = () => {
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "SmeIPO",
+      page: currentPage,
+      limit: 5,
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, GMP]);
-
+  }, [dispatch, updatedIpo, createIpo, currentPage, PageSize, GMP]);
+  useEffect(() => {
+    if (getAllMainLineIpoData) {
+      setTotalPage(getAllMainLineIpoData?.Total);
+    }
+  }, [getAllMainLineIpoData?.Total]);
   return (
     <>
       <PageHeading title={"SME IPOs"} />
@@ -183,7 +194,7 @@ const SmeIpo = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                {getAllMainLineIpoData?.map((Itm) => {
+                {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -327,6 +338,13 @@ const SmeIpo = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            currentPage={currentPage}
+            siblingCount={1}
+            totalCount={totalPage ? totalPage : 107}
+            pageSize={PageSize}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </AppContentLayout>
     </>

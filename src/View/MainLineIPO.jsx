@@ -17,14 +17,19 @@ import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import Pagination from "../Components/Pagination/Pagination";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [limit, setLimit] = useState(10);
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
   const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
+  const PageSize = 10;
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
@@ -41,7 +46,6 @@ const MainLineIPO = () => {
     setGMPStatus(e.target?.checked);
     let payload = {
       CategoryForIPOS: "MainlineIPO",
-
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -51,10 +55,12 @@ const MainLineIPO = () => {
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
+      page: currentPage ? currentPage : 1,
+      limit: 5,
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo]);
+  }, [dispatch, updatedIpo, createIpo, currentPage, PageSize]);
 
   return (
     <>
@@ -162,7 +168,6 @@ const MainLineIPO = () => {
               </div>
             </div>
           </div>
-
           <div className="card-body py-4">
             <table
               className="table align-middle table-row-dashed fs-6 gy-5"
@@ -181,7 +186,7 @@ const MainLineIPO = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                {getAllMainLineIpoData?.map((Itm) => {
+                {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -322,6 +327,13 @@ const MainLineIPO = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            currentPage={currentPage}
+            siblingCount={1}
+            totalCount={totalPage ? totalPage : 10}
+            pageSize={PageSize}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </AppContentLayout>
     </>

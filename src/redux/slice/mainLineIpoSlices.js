@@ -26,7 +26,9 @@ export const getAllMainLineIpo = createAsyncThunk(
     // const { setId } = useContext(IDContext);
     try {
       const response = await axios.post(
-        BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_MAIN_IPO,
+        `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_MAIN_IPO}?page=${
+          payload?.page
+        }&limit=${payload?.limit}`,
         payload,
         {
           headers: {

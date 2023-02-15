@@ -32,7 +32,6 @@ const auth = getAuth(app);
 
 function ChatTab() {
   const [messages, setMessages] = useState([]);
-
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
   const adminId = "RSgguExRRwSbkqY2KWKFc41Idbs1";
   const timeFormat = (secs) => {
@@ -40,15 +39,7 @@ function ChatTab() {
     let formatTime = moment(output).format("d MMM LT");
     return formatTime;
   };
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(
-  //     query(collection(db, "messages"), orderBy("createdAt")),
-  //     (snapshot) => {
-  //       setMessages(snapshot.docs.map((doc) => doc.data()));
-  //     }
-  //   );
-  //   return unsubscribe;
-  // }, []);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
@@ -93,7 +84,7 @@ function ChatTab() {
                 href="#"
                 className="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1"
               >
-                Discussion - Elin Electronics Ltd.
+                {getIPODataById?.companyName}
               </a>
             </div>
           </div>
@@ -122,10 +113,7 @@ function ChatTab() {
                           </div>
 
                           <div className="ms-3">
-                            <a
-                              // href="#"
-                              className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"
-                            ></a>
+                            <a className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"></a>
                             <span className="text-muted fs-7 mb-1">
                               {" "}
                               {timeFormat(
@@ -222,13 +210,15 @@ function ChatTab() {
                     </button>
                   </div>
 
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    // data-kt-element="send"
-                  >
-                    Send
-                  </button>
+                  {values.msg.length !== 0 ? (
+                    <button className="btn btn-primary" type="submit">
+                      Send
+                    </button>
+                  ) : (
+                    <button className="btn btn-primary" type="submit" disabled>
+                      Send
+                    </button>
+                  )}
                 </div>
               </div>
             </Form>
