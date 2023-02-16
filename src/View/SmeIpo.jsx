@@ -227,7 +227,7 @@ const SmeIpo = () => {
                               </Link>
                             </div>
                           </td>
-                          {console.log(Itm?.IPOOpenDate)}
+
                           {(Itm?.IPOOpenDate === undefined ||
                             Itm?.IPOOpenDate === "" ||
                             Itm?.IPOOpenDate === null) &&

@@ -132,6 +132,7 @@ const EditIpo = () => {
   useEffect(() => {
     setFileDataURL(getIPODataById?.file);
   }, [getIPODataById?.file]);
+
   return (
     <>
       <PageHeading title={"IPO Edit"} />

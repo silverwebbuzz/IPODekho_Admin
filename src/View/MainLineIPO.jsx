@@ -27,9 +27,8 @@ const MainLineIPO = () => {
   const [limit, setLimit] = useState(10);
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } = useSelector(
-    (state) => state?.mainLineIpoSlice
-  );
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
+    useSelector((state) => state?.mainLineIpoSlice);
   const PageSize = 10;
 
   const handleGMPNumber = (e, ID) => {

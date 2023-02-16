@@ -6,6 +6,7 @@ import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import NotificationModal from "../Components/NotificationModal";
 import PageHeading from "../Components/PageHeading";
+import SpinnerLoader from "../Components/SpinnerLoader";
 import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getAllNotifications } from "../redux/slice/notificationsSlice";
 
@@ -22,7 +23,7 @@ const Notifications = () => {
       maxWidth: "650px",
     },
   };
-  const { createData, getAllData } = useSelector(
+  const { createData, getAllData, isLoading } = useSelector(
     (state) => state.notificationReducer
   );
 
@@ -76,36 +77,40 @@ const Notifications = () => {
             </div>
           </div>
           <div className="card-body">
-            <table
-              className="table table-striped table-row-bordered gy-5 gs-7 border rounded"
-              id="contact_entries_table"
-            >
-              <thead>
-                <tr className="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                  <th className="min-w-125px">Sr No.</th>
-                  <th className="min-w-125px">Title</th>
-                  <th className="min-w-125px mw-350px">Description</th>
-                  <th className="min-w-125px">Redirect</th>
-                  <th className="min-w-125px">Date</th>
-                </tr>
-              </thead>
+            {isLoading ? (
+              <SpinnerLoader />
+            ) : (
+              <table
+                className="table table-striped table-row-bordered gy-5 gs-7 border rounded"
+                id="contact_entries_table"
+              >
+                <thead>
+                  <tr className="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                    <th className="min-w-125px">Sr No.</th>
+                    <th className="min-w-125px">Title</th>
+                    <th className="min-w-125px mw-350px">Description</th>
+                    <th className="min-w-125px">Redirect</th>
+                    <th className="min-w-125px">Date</th>
+                  </tr>
+                </thead>
 
-              <tbody className="fw-semibold text-gray-600">
-                {getAllData.map((data, index) => {
-                  return (
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{data?.notificationTitle}</td>
-                      <td className="mw-350px">
-                        {data?.notificationDescription}
-                      </td>
-                      <td>{data?.Redirect}</td>
-                      <td>May 05 2022, 6:45 am</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                <tbody className="fw-semibold text-gray-600">
+                  {getAllData.map((data, index) => {
+                    return (
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{data?.notificationTitle}</td>
+                        <td className="mw-350px">
+                          {data?.notificationDescription}
+                        </td>
+                        <td>{data?.Redirect}</td>
+                        <td>May 05 2022, 6:45 am</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </AppContentLayout>

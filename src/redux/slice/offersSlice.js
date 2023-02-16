@@ -10,7 +10,7 @@ import {
 } from "../../UrlConfig";
 
 const initialState = {
-  loading: false,
+  isLoading: false,
   getAllOffersData: [],
   offerData: null,
   addOfferData: [],
@@ -118,44 +118,44 @@ const offersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createOffer.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(createOffer.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.addOfferData = action.payload;
       })
       .addCase(createOffer.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(getAllOffers.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getAllOffers.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.getAllOffersData = action.payload;
       })
       .addCase(getAllOffers.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(updateOffer.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(updateOffer.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.editOfferData = action.payload;
       })
       .addCase(updateOffer.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(updateOfferImage.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(updateOfferImage.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.offerImage = action.payload;
       })
       .addCase(updateOfferImage.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       });
   },
 });

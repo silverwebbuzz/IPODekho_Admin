@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./Components/Layout";
+import { BarLoader } from "react-spinners";
 
 const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));
@@ -21,7 +22,7 @@ const App = () => {
   return (
     <>
       <Layout>
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<BarLoader color="#009270" width={"100%"} />}>
           <Routes>
             <Route path="mainline_ipo" element={<MainLineIPO />} />
             <Route path="mainline_ipo/add_ipo" element={<AddIpo />} />

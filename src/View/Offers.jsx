@@ -11,6 +11,7 @@ import OffersModal from "../Components/OffersModal";
 import ReactModal from "react-modal";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { getAllOffers, setOfferData } from "../redux/slice/offersSlice";
+import SpinnerLoader from "../Components/SpinnerLoader";
 
 const Offers = () => {
   const customStyles = {
@@ -25,8 +26,13 @@ const Offers = () => {
       maxWidth: "650px",
     },
   };
-  const { getAllOffersData, addOfferData, editOfferData, offerImage } =
-    useSelector((state) => state.offersReducer);
+  const {
+    getAllOffersData,
+    addOfferData,
+    editOfferData,
+    offerImage,
+    isLoading,
+  } = useSelector((state) => state.offersReducer);
 
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
@@ -97,69 +103,73 @@ const Offers = () => {
           </div>
 
           <div className="card-body py-4">
-            <table
-              className="table align-middle table-row-dashed fs-6 gy-5"
-              id="offer_table"
-            >
-              <thead>
-                <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                  <th className="min-w-125px">Image</th>
-                  <th className="min-w-125px">Offer Title</th>
-                  <th className="min-w-125px mw-350px">Offer Description</th>
-                  <th className="min-w-125px">Offer Sequence</th>
-                  <th className="min-w-125px">Status</th>
-                  <th className="text-end min-w-100px">Actions</th>
-                </tr>
-              </thead>
+            {isLoading ? (
+              <SpinnerLoader />
+            ) : (
+              <table
+                className="table align-middle table-row-dashed fs-6 gy-5"
+                id="offer_table"
+              >
+                <thead>
+                  <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th className="min-w-125px">Image</th>
+                    <th className="min-w-125px">Offer Title</th>
+                    <th className="min-w-125px mw-350px">Offer Description</th>
+                    <th className="min-w-125px">Offer Sequence</th>
+                    <th className="min-w-125px">Status</th>
+                    <th className="text-end min-w-100px">Actions</th>
+                  </tr>
+                </thead>
 
-              <tbody className="text-gray-600 fw-semibold">
-                {getAllOffersData?.map((offer) => {
-                  return (
-                    <tr>
-                      <td>
-                        <img
-                          src={offer?.file ? offer?.file : blankImage}
-                          alt="offer"
-                          className="mh-75px"
-                        />
-                      </td>
-                      <td>{offer?.offerTitle}</td>
-                      <td className="mw-350px">{offer.offerDescription}</td>
-                      <td>{offer?.offerSequence}</td>
-                      <td>
-                        <span
-                          className={`${
-                            offer?.offerStatus === "Deactive"
-                              ? "badge badge-light-danger"
-                              : "badge badge-light-primary"
-                          }`}
-                        >
-                          {offer?.offerStatus}
-                        </span>
-                      </td>
-                      <td className="text-end">
-                        <button
-                          onClick={() => {
-                            dispatch(setModalIsOpen(true));
-                            dispatch(setModalType("editOffer"));
-                            dispatch(setOfferData(offer));
-                          }}
-                          type="button"
-                          className="btn btn-light btn-active-light-primary btn-sm"
-                          data-bs-toggle="modal"
-                          data-bs-target=".kt_modal_edit_offer"
-                        >
-                          <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                            <CommonEditIcon />
+                <tbody className="text-gray-600 fw-semibold">
+                  {getAllOffersData?.map((offer) => {
+                    return (
+                      <tr>
+                        <td>
+                          <img
+                            src={offer?.file ? offer?.file : blankImage}
+                            alt="offer"
+                            className="mh-75px"
+                          />
+                        </td>
+                        <td>{offer?.offerTitle}</td>
+                        <td className="mw-350px">{offer.offerDescription}</td>
+                        <td>{offer?.offerSequence}</td>
+                        <td>
+                          <span
+                            className={`${
+                              offer?.offerStatus === "Deactive"
+                                ? "badge badge-light-danger"
+                                : "badge badge-light-primary"
+                            }`}
+                          >
+                            {offer?.offerStatus}
                           </span>
-                          Edit
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="text-end">
+                          <button
+                            onClick={() => {
+                              dispatch(setModalIsOpen(true));
+                              dispatch(setModalType("editOffer"));
+                              dispatch(setOfferData(offer));
+                            }}
+                            type="button"
+                            className="btn btn-light btn-active-light-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target=".kt_modal_edit_offer"
+                          >
+                            <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                              <CommonEditIcon />
+                            </span>
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </AppContentLayout>

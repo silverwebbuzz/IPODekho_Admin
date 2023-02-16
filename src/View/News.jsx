@@ -10,9 +10,10 @@ import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { Link } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
+import SpinnerLoader from "../Components/SpinnerLoader";
 
 const News = () => {
-  const { newsData, addNews, editNews, editNewsImage } = useSelector(
+  const { newsData, addNews, editNews, editNewsImage, isLoading } = useSelector(
     (state) => state.newsReducer
   );
   const dispatch = useDispatch();
@@ -82,49 +83,53 @@ const News = () => {
           </div>
 
           <div className="card-body py-4">
-            <table
-              className="table align-middle table-row-dashed fs-6 gy-5"
-              id="news_table"
-            >
-              <thead>
-                <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                  <th className="min-w-125px">Featured Image</th>
-                  <th className="min-w-125px mw-350px">News Title</th>
-                  <th className="min-w-125px">News Date</th>
-                  <th className="text-end min-w-100px">Actions</th>
-                </tr>
-              </thead>
+            {isLoading ? (
+              <SpinnerLoader />
+            ) : (
+              <table
+                className="table align-middle table-row-dashed fs-6 gy-5"
+                id="news_table"
+              >
+                <thead>
+                  <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th className="min-w-125px">Featured Image</th>
+                    <th className="min-w-125px mw-350px">News Title</th>
+                    <th className="min-w-125px">News Date</th>
+                    <th className="text-end min-w-100px">Actions</th>
+                  </tr>
+                </thead>
 
-              <tbody className="text-gray-600 fw-semibold">
-                {newsData?.map((news) => {
-                  return (
-                    <tr>
-                      <td>
-                        <img
-                          src={news?.file ? news?.file : blankImage}
-                          alt="news-image"
-                          className="mh-75px"
-                        />
-                      </td>
-                      <td className="mw-350px">{news?.Title}</td>
-                      <td>{moment(news?.Date).format("MMM d, yyyy")}</td>
-                      <td className="text-end">
-                        <Link
-                          state={{ type: "newsEdit", data: news }}
-                          to="/news/news_add"
-                          className="btn btn-light btn-active-light-primary btn-sm"
-                        >
-                          <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                            <CommonEditIcon />
-                          </span>
-                          Edit
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                <tbody className="text-gray-600 fw-semibold">
+                  {newsData?.map((news) => {
+                    return (
+                      <tr>
+                        <td>
+                          <img
+                            src={news?.file ? news?.file : blankImage}
+                            alt="news-image"
+                            className="mh-75px"
+                          />
+                        </td>
+                        <td className="mw-350px">{news?.Title}</td>
+                        <td>{moment(news?.Date).format("MMM d, yyyy")}</td>
+                        <td className="text-end">
+                          <Link
+                            state={{ type: "newsEdit", data: news }}
+                            to="/news/news_add"
+                            className="btn btn-light btn-active-light-primary btn-sm"
+                          >
+                            <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                              <CommonEditIcon />
+                            </span>
+                            Edit
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </AppContentLayout>
