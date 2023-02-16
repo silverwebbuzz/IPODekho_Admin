@@ -18,6 +18,7 @@ import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import Pagination from "../Components/Pagination/Pagination";
+import ReactPaginate from "react-paginate";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
@@ -51,7 +52,10 @@ const MainLineIPO = () => {
     };
     dispatch(updateIPO({ payload }));
   };
-
+  const handlePageClick = (e) => {
+    console.log(e.selected);
+    setCurrentPage(e.selected + 1);
+  };
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -61,10 +65,16 @@ const MainLineIPO = () => {
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo, currentPage, PageSize]);
-
+  useEffect(() => {
+    if (getAllMainLineIpoData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
+      setTotalPage(totalCount);
+    }
+  }, [getAllMainLineIpoData?.Total]);
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />
+
       <AppContentLayout>
         <div className="card">
           <div className="card-header border-0 pt-6">
@@ -186,7 +196,7 @@ const MainLineIPO = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
+                {getAllMainLineIpoData?.IPOS?.map((Itm) => {
                   return (
                     <tr>
                       <td className="d-flex align-items-center mw-230px w-230px">
@@ -326,14 +336,16 @@ const MainLineIPO = () => {
                 })}
               </tbody>
             </table>
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={totalPage}
+              previousLabel="< previous"
+              renderOnZeroPageCount={null}
+            />
           </div>
-          <Pagination
-            currentPage={currentPage}
-            siblingCount={1}
-            totalCount={totalPage ? totalPage : 10}
-            pageSize={PageSize}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
         </div>
       </AppContentLayout>
     </>

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import moment from "moment/moment";
 import { Field, Form, Formik } from "formik";
 import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 const firebaseConfig = {
   // Your Firebase config
@@ -33,10 +34,13 @@ const auth = getAuth(app);
 function ChatTab() {
   const [messages, setMessages] = useState([]);
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+
+  const messageEnd = useRef(null);
   const adminId = "RSgguExRRwSbkqY2KWKFc41Idbs1";
   const timeFormat = (secs) => {
     let output = new Date(secs * 1000);
-    let formatTime = moment(output).format("d MMM LT");
+    let formatTime = moment(output).format("D MMM LT");
+    console.log(formatTime);
     return formatTime;
   };
 
@@ -73,7 +77,12 @@ function ChatTab() {
       }
     );
   };
-
+  useEffect(() => {
+    const scrollToBottom = () => {
+      messageEnd.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    return scrollToBottom;
+  }, [messages]);
   return (
     <>
       <div className="card" id="kt_chat_messenger">
@@ -171,6 +180,7 @@ function ChatTab() {
                   )}
                 </>
               ))}
+            <div ref={messageEnd}></div>
           </div>
         </div>
         <Formik

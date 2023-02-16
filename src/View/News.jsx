@@ -10,11 +10,15 @@ import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { Link } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
+import { useState } from "react";
 
 const News = () => {
   const { newsData, addNews, editNews, editNewsImage } = useSelector(
     (state) => state.newsReducer
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [limit, setLimit] = useState(10);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNews());
@@ -80,7 +84,6 @@ const News = () => {
               </div>
             </div>
           </div>
-
           <div className="card-body py-4">
             <table
               className="table align-middle table-row-dashed fs-6 gy-5"
@@ -126,6 +129,7 @@ const News = () => {
               </tbody>
             </table>
           </div>
+          ``{" "}
         </div>
       </AppContentLayout>
     </>
