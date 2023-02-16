@@ -18,13 +18,19 @@ import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import SpinnerLoader from "../Components/SpinnerLoader";
+import Pagination from "../Components/Pagination/Pagination";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [limit, setLimit] = useState(10);
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
-    useSelector((state) => state?.mainLineIpoSlice);
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const PageSize = 10;
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
@@ -41,7 +47,6 @@ const MainLineIPO = () => {
     setGMPStatus(e.target?.checked);
     let payload = {
       CategoryForIPOS: "MainlineIPO",
-
       id: ID,
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
@@ -51,10 +56,12 @@ const MainLineIPO = () => {
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
+      page: currentPage ? currentPage : 1,
+      limit: 5,
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo]);
+  }, [dispatch, updatedIpo, createIpo, currentPage, PageSize]);
 
   return (
     <>
@@ -162,7 +169,6 @@ const MainLineIPO = () => {
               </div>
             </div>
           </div>
-
           <div className="card-body py-4">
             {isLoading ? (
               <SpinnerLoader />
@@ -328,6 +334,13 @@ const MainLineIPO = () => {
               </table>
             )}
           </div>
+          <Pagination
+            currentPage={currentPage}
+            siblingCount={1}
+            totalCount={totalPage ? totalPage : 10}
+            pageSize={PageSize}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </AppContentLayout>
     </>
