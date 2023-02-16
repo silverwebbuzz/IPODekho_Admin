@@ -1,3 +1,21 @@
 .ql-container {
   font-family: "Poppins" !important ;
 }
+.pagination {
+  width: 100%;
+}
+.pagination ul {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.pagination ul li {
+  margin: 0 10px;
+}
+.pagination ul li {
+  list-style: none;
+}
+
+.pagination ul li .selected a {
+  color: white;
+}

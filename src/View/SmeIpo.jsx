@@ -341,15 +341,17 @@ const SmeIpo = () => {
                 })}
               </tbody>
             </table>
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="next >"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
-              pageCount={totalPage}
-              previousLabel="< previous"
-              renderOnZeroPageCount={null}
-            />
+            <div className="pagination">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={totalPage}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+              />
+            </div>
           </div>
         </div>
       </AppContentLayout>

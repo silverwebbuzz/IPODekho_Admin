@@ -70,7 +70,7 @@ function ChatTab() {
         text: values.msg,
         createdAt: new Date(),
         userId: "RSgguExRRwSbkqY2KWKFc41Idbs1",
-        companyChatRoomId: getIPODataById.id,
+        companyid: getIPODataById.id,
         name: "admin", // need to add dynamic name
         Avatar:
           "https://thumbs.dreamstime.com/b/male-avatar-icon-flat-style-male-user-icon-cartoon-man-avatar-hipster-vector-stock-91462914.jpg",
@@ -79,8 +79,10 @@ function ChatTab() {
   };
   useEffect(() => {
     const scrollToBottom = () => {
-      messageEnd.current?.scrollIntoView({ behavior: "smooth" });
+      messageEnd.current.style.color = "red";
+      // ans?.scrollIntoView({ behavior: "smooth" });
     };
+    console.log(scrollToBottom);
     return scrollToBottom;
   }, [messages]);
   return (
@@ -99,7 +101,11 @@ function ChatTab() {
           </div>
         </div>
 
-        <div className="card-body" id="kt_chat_messenger_body">
+        <div
+          className="card-body"
+          id="kt_chat_messenger_body"
+          style={{ height: "600px", overflow: "scroll" }}
+        >
           <div
             className="scroll-y me-n5 pe-5 h-300px h-lg-auto"
             data-kt-element="messages"
@@ -112,7 +118,7 @@ function ChatTab() {
           >
             {messages &&
               messages.map((messege) => (
-                <>
+                <div className="chatScroll" ref={messageEnd}>
                   {messege.userId !== adminId ? (
                     <div className="d-flex justify-content-start mb-10">
                       <div className="d-flex flex-column align-items-start">
@@ -178,11 +184,11 @@ function ChatTab() {
                   ) : (
                     ""
                   )}
-                </>
+                </div>
               ))}
-            <div ref={messageEnd}></div>
           </div>
         </div>
+        {/* <div  /> */}
         <Formik
           initialValues={{ msg: "" }}
           onSubmit={(values, { resetForm }) => {
