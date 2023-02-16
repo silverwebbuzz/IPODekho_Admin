@@ -17,10 +17,7 @@ import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
-import { ClipLoader } from "react-spinners";
-import MoonLoader from "react-spinners/MoonLoader";
-import CircleLoader from "react-spinners/CircleLoader";
-import PuffLoader from "react-spinners/PuffLoader";
+import SpinnerLoader from "../Components/SpinnerLoader";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
@@ -167,40 +164,29 @@ const MainLineIPO = () => {
           </div>
 
           <div className="card-body py-4">
-            <table
-              className="table align-middle table-row-dashed fs-6 gy-5"
-              id="mainlineipo_table"
-            >
-              <thead>
-                <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                  <th className="mw-300px w-300px">Company</th>
-                  <th className="w-150px mw-150px">Offer Date</th>
-                  <th className="w-100px mw-100px">Offer Price</th>
-                  <th className="min-w-125px">Lot Size</th>
-                  <th className="min-w-125px">GMP</th>
-                  <th className="min-w-125px">Status</th>
-                  <th className="text-end min-w-100px w-200px">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody
-                className="text-gray-600 fw-semibold"
-                style={{ position: "relative" }}
+            {isLoading ? (
+              <SpinnerLoader />
+            ) : (
+              <table
+                className="table align-middle table-row-dashed fs-6 gy-5"
+                id="mainlineipo_table"
               >
-                {true ? (
-                  <div
-                    style={{
-                      width: "100%",
-                      position: "relative",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <PuffLoader color="#36d7b7" />
-                    {/* cssOverride={CSSProperties}  */}
-                  </div>
-                ) : (
-                  getAllMainLineIpoData?.map((Itm) => {
+                <thead>
+                  <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th className="mw-300px w-300px">Company</th>
+                    <th className="w-150px mw-150px">Offer Date</th>
+                    <th className="w-100px mw-100px">Offer Price</th>
+                    <th className="min-w-125px">Lot Size</th>
+                    <th className="min-w-125px">GMP</th>
+                    <th className="min-w-125px">Status</th>
+                    <th className="text-end min-w-100px w-200px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody
+                  className="text-gray-600 fw-semibold"
+                  style={{ position: "relative" }}
+                >
+                  {getAllMainLineIpoData?.map((Itm) => {
                     return (
                       <tr>
                         <td className="d-flex align-items-center mw-230px w-230px">
@@ -337,10 +323,10 @@ const MainLineIPO = () => {
                         </td>
                       </tr>
                     );
-                  })
-                )}
-              </tbody>
-            </table>
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </AppContentLayout>
