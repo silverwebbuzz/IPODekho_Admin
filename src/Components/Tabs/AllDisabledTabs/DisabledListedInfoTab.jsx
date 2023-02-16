@@ -6,13 +6,16 @@ import { useSelector } from "react-redux";
 const DisabledListedInfoTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
 
-  const DatePickerField = ({ name, value }) => {
+  const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
         disabled
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do, yyyy"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
       />
     );
   };
@@ -22,13 +25,13 @@ const DisabledListedInfoTab = () => {
         <Formik
           enableReinitialize
           initialValues={{
-            // listingDate: getIPODataById?.listingDate,
+            listingDate: getIPODataById?.listingDate,
             listingPrice: getIPODataById?.listingPrice,
             listingPosition: getIPODataById?.listingPosition,
             listingDifferent: getIPODataById?.listingDifferent,
             NSECode: getIPODataById?.NSECode,
             BSEScript: getIPODataById?.BSEScript,
-            // closingDate: getIPODataById?.closingDate,
+            closingDate: getIPODataById?.closingDate,
             closingPrice: getIPODataById?.closingPrice,
             scriptPosition: getIPODataById?.scriptPosition,
             closingDifferent: getIPODataById?.closingDifferent,
@@ -52,6 +55,7 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="listingDate"
                         value={values?.listingDate}
+                        onChange={setFieldValue}
                       />
                     </div>
 
@@ -135,6 +139,7 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="closingDate"
                         value={values?.closingDate}
+                        onChange={setFieldValue}
                       />
                     </div>
 

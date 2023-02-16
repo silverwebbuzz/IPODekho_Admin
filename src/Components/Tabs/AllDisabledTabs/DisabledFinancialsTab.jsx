@@ -1,10 +1,23 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext } from "react";
+import ReactDatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 
 const DisabledFinancialsTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <ReactDatePicker
+        disabled
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
   return (
     <>
       <Formik
@@ -19,7 +32,7 @@ const DisabledFinancialsTab = () => {
           netAssetValue: getIPODataById?.netAssetValue,
         }}
       >
-        {({ values }) => (
+        {({ values, setFieldValue }) => (
           <Form>
             <div className="card card-flush py-4">
               <div className="card-header">
@@ -59,10 +72,10 @@ const DisabledFinancialsTab = () => {
                                   >
                                     <div className="form-group row mb-5">
                                       <div className="col-md-4">
-                                        <Field
-                                          disabled
-                                          type="text"
-                                          className="form-control"
+                                        <DatePickerField
+                                          className="form-control mb-2"
+                                          value={companyFinancials?.period}
+                                          onChange={setFieldValue}
                                           name={`companyFinancials.${index}.period`}
                                         />
                                       </div>

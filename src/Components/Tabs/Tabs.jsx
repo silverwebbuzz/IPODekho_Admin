@@ -170,7 +170,9 @@ const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
               )}
             </TabPaneLayout>
           ) : (
-            <TabPaneLayout>{ipoEdit ? <ChatTab /> : ""}</TabPaneLayout>
+            <TabPaneLayout>
+              <ChatTab />
+            </TabPaneLayout>
           )}
         </div>
       </TabContext.Provider>

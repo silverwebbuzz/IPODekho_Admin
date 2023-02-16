@@ -65,7 +65,7 @@ export const getUserById = createAsyncThunk(
     try {
       const response = await axios.get(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_SINGLE_USER}${payload?.id}`,
-
+        payload?.payloadId?.id,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",

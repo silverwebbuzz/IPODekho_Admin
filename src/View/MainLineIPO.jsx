@@ -19,6 +19,7 @@ import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import SpinnerLoader from "../Components/SpinnerLoader";
 import Pagination from "../Components/Pagination/Pagination";
+import ReactPaginate from "react-paginate";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,10 @@ const MainLineIPO = () => {
     };
     dispatch(updateIPO({ payload }));
   };
+  const handlePageClick = (e) => {
+    console.log(e.selected);
+    setCurrentPage(e.selected + 1);
+  };
 
   useEffect(() => {
     let payload = {
@@ -62,9 +67,16 @@ const MainLineIPO = () => {
     dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo, currentPage, PageSize]);
 
+  useEffect(() => {
+    if (getAllMainLineIpoData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
+      setTotalPage(totalCount);
+    }
+  }, [getAllMainLineIpoData?.Total]);
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />
+
       <AppContentLayout>
         <div className="card">
           <div className="card-header border-0 pt-6">
@@ -187,10 +199,7 @@ const MainLineIPO = () => {
                     <th className="text-end min-w-100px w-200px">Actions</th>
                   </tr>
                 </thead>
-                <tbody
-                  className="text-gray-600 fw-semibold"
-                  style={{ position: "relative" }}
-                >
+                <tbody className="text-gray-600 fw-semibold">
                   {getAllMainLineIpoData?.map((Itm) => {
                     return (
                       <tr>
@@ -333,13 +342,18 @@ const MainLineIPO = () => {
               </table>
             )}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            siblingCount={1}
-            totalCount={totalPage ? totalPage : 10}
-            pageSize={PageSize}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageClick}
+              // pageRangeDisplayed={2}
+              pageRangeDisplayed={0}
+              pageCount={totalPage}
+              previousLabel="<"
+              renderOnZeroPageCount={1}
+            />
+          </div>
         </div>
       </AppContentLayout>
     </>

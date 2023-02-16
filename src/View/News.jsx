@@ -11,11 +11,15 @@ import { Link } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 import SpinnerLoader from "../Components/SpinnerLoader";
+import { useState } from "react";
 
 const News = () => {
   const { newsData, addNews, editNews, editNewsImage, isLoading } = useSelector(
     (state) => state.newsReducer
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [limit, setLimit] = useState(10);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNews());
@@ -81,7 +85,6 @@ const News = () => {
               </div>
             </div>
           </div>
-
           <div className="card-body py-4">
             {isLoading ? (
               <SpinnerLoader />
@@ -131,6 +134,7 @@ const News = () => {
               </table>
             )}
           </div>
+          ``{" "}
         </div>
       </AppContentLayout>
     </>

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import moment from "moment/moment";
 import { Field, Form, Formik } from "formik";
 import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 const firebaseConfig = {
   // Your Firebase config
@@ -33,10 +34,13 @@ const auth = getAuth(app);
 function ChatTab() {
   const [messages, setMessages] = useState([]);
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+
+  const messageEnd = useRef(null);
   const adminId = "RSgguExRRwSbkqY2KWKFc41Idbs1";
   const timeFormat = (secs) => {
     let output = new Date(secs * 1000);
-    let formatTime = moment(output).format("d MMM LT");
+    let formatTime = moment(output).format("D MMM LT");
+    console.log(formatTime);
     return formatTime;
   };
 
@@ -66,13 +70,22 @@ function ChatTab() {
         text: values.msg,
         createdAt: new Date(),
         userId: "RSgguExRRwSbkqY2KWKFc41Idbs1",
-        companyChatRoomId: getIPODataById.id,
+        companyid: getIPODataById.id,
         name: "admin", // need to add dynamic name
         Avatar:
           "https://thumbs.dreamstime.com/b/male-avatar-icon-flat-style-male-user-icon-cartoon-man-avatar-hipster-vector-stock-91462914.jpg",
       }
     );
   };
+
+  // useEffect(() => {
+  //   messageEnd?.current?.scrollIntoView({ behavior: "smooth" });
+  //   // console.log(messageEnd);
+  //   // let ans = document.getElementsByClassName("chatScroll");
+  //   // const ans = messageEnd.parentNode();
+  //   // ans?.scrollIntoView({ behavior: "smooth" });
+  //   // console.log(ans);
+  // }, [messages]);
 
   return (
     <>
@@ -90,7 +103,11 @@ function ChatTab() {
           </div>
         </div>
 
-        <div className="card-body" id="kt_chat_messenger_body">
+        <div
+          className="card-body"
+          id="kt_chat_messenger_body"
+          style={{ height: "600px", overflow: "scroll" }}
+        >
           <div
             className="scroll-y me-n5 pe-5 h-300px h-lg-auto"
             data-kt-element="messages"
@@ -103,7 +120,7 @@ function ChatTab() {
           >
             {messages &&
               messages.map((messege) => (
-                <>
+                <div>
                   {messege.userId !== adminId ? (
                     <div className="d-flex justify-content-start mb-10">
                       <div className="d-flex flex-column align-items-start">
@@ -169,10 +186,12 @@ function ChatTab() {
                   ) : (
                     ""
                   )}
-                </>
+                </div>
               ))}
+            <div className="chatScroll"></div>
           </div>
         </div>
+        {/* {/ <div  /> /} */}
         <Formik
           initialValues={{ msg: "" }}
           onSubmit={(values, { resetForm }) => {
@@ -211,7 +230,11 @@ function ChatTab() {
                   </div>
 
                   {values.msg.length !== 0 ? (
-                    <button className="btn btn-primary" type="submit">
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      // onClick={handleScroll}
+                    >
                       Send
                     </button>
                   ) : (

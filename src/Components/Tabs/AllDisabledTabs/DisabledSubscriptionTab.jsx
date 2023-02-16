@@ -11,7 +11,7 @@ const DisabledSubscriptionTab = () => {
         disabled
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do, yyyy"
+        dateFormat="MMM d, yyyy"
         onChange={(val) => {
           onChange(name, val);
         }}

@@ -20,7 +20,7 @@ import blankImage from "../assets/media/offer/blank-image.svg";
 import { useState } from "react";
 import moment from "moment/moment";
 import SpinnerLoader from "../Components/SpinnerLoader";
-import Pagination from "../Components/Pagination/Pagination";
+import ReactPaginate from "react-paginate";
 const SmeIpo = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,7 +42,10 @@ const SmeIpo = () => {
     };
     dispatch(updateIPO({ payload }));
   };
-
+  const handlePageClick = (e) => {
+    console.log(e.selected);
+    setCurrentPage(e.selected + 1);
+  };
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
     let payload = {
@@ -57,14 +60,15 @@ const SmeIpo = () => {
     let payload = {
       CategoryForIPOS: "SmeIPO",
       page: currentPage,
-      limit: 5,
+      limit: 10,
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
   }, [dispatch, updatedIpo, createIpo, currentPage, PageSize, GMP]);
   useEffect(() => {
-    if (getAllMainLineIpoData) {
-      setTotalPage(getAllMainLineIpoData?.Total);
+    if (getAllMainLineIpoData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
+      setTotalPage(totalCount);
     }
   }, [getAllMainLineIpoData?.Total]);
   return (
@@ -347,13 +351,17 @@ const SmeIpo = () => {
               </table>
             )}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            siblingCount={1}
-            totalCount={totalPage ? totalPage : 107}
-            pageSize={PageSize}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={totalPage}
+              previousLabel="<"
+              renderOnZeroPageCount={null}
+            />
+          </div>
         </div>
       </AppContentLayout>
     </>
