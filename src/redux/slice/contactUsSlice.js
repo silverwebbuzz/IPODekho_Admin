@@ -10,10 +10,12 @@ const initialState = {
 
 export const getAllContacts = createAsyncThunk(
   "admin/getAllContacts",
-  async (_, { rejectWithValue }) => {
+  async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GETALL_CONTACTS,
+        `${BASE_URL_FOR_ADMIN + ADMIN_GETALL_CONTACTS}?page=${
+          payload?.page
+        }&limit=${payload?.limit}`,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -21,8 +23,8 @@ export const getAllContacts = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.contactList);
-      return response?.data?.contactList;
+      console.log("response?.data", response?.data?.data);
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }

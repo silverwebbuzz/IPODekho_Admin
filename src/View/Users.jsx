@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
@@ -24,16 +25,37 @@ const Users = () => {
     },
   };
   const [userId, setUserId] = useState("");
+  const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const { updateData, getAllData, getUserById, isLoading } = useSelector(
     (state) => state.userReducer
   );
-  const { modalIsOpen } = useSelector((state) => state.modalReducer);
-  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState("");
 
+  const [recordsPerPage, setRecordsPerPage] = useState(10);
+
+  const userRecord = getAllData ? getAllData : [];
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = userRecord.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+  console.log("currentRecordscurrentRecords", currentRecords);
+  const totalPage = Math.ceil(userRecord.length / recordsPerPage);
+
+  const dispatch = useDispatch();
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
   useEffect(() => {
     dispatch(getAllUsers());
   }, [updateData]);
 
+  const newPacientes = currentRecords.filter((value) =>
+    value?.displayName?.toLowerCase()?.includes(query?.toLowerCase())
+  );
+  console.log(newPacientes);
   return (
     <>
       <PageHeading title={"Users"} />
@@ -51,6 +73,7 @@ const Users = () => {
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search user"
+                  onChange={(e) => setQuery(e.target.value)}
                 />
               </div>
             </div>
@@ -74,7 +97,7 @@ const Users = () => {
                 </thead>
 
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllData.map((userInfo) => {
+                  {newPacientes.map((userInfo) => {
                     return (
                       <tr key={userInfo?.id}>
                         <td className="d-flex align-items-center">
@@ -120,13 +143,48 @@ const Users = () => {
               </table>
             )}
           </div>
+          <div className="d-flex">
+            <div className="dataTables_length d-flex w-auto align-items-center ">
+              <select
+                style={{
+                  minWidth: "fit-content",
+                }}
+                className="form-select form-select-sm form-select-solid"
+                onChange={(e) => setRecordsPerPage(e.target.value)}
+              >
+                {" "}
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <span
+                style={{
+                  minWidth: "fit-content",
+                }}
+              >
+                Showing 1 to {currentRecords.length} of
+                {getAllData?.length} records
+              </span>
+            </div>
+            <div className="pagination">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={(e) => handlePageClick(e)}
+                pageRangeDisplayed={0}
+                pageCount={totalPage ? totalPage : 10}
+                previousLabel="<"
+                renderOnZeroPageCount={1}
+              />
+            </div>
+          </div>
         </div>
       </AppContentLayout>
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={() => {
           dispatch(setModalIsOpen(false));
-          // dispatch(getUserById(""));
         }}
         style={customStyles}
         contentLabel="Example Modal"

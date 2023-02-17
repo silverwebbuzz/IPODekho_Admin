@@ -166,6 +166,7 @@ const AddIpo = () => {
   //     });
   //   }
   // }, [ID]);
+
   return (
     <>
       <PageHeading title={"IPO Add"} />
@@ -311,7 +312,6 @@ const AddIpo = () => {
                 IPORefundsInitiation: "",
                 IPODematTransfer: "",
                 IPOListingDate: "",
-                IPOStatus: "",
               }}
               onSubmit={(values) => {
                 handleSubmit(values);

@@ -40,10 +40,12 @@ export const createNews = createAsyncThunk(
 
 export const getAllNews = createAsyncThunk(
   "admin/getAllNews",
-  async (_, { rejectWithValue }) => {
+  async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_NEWS,
+        `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_NEWS}?page=${
+          payload?.page
+        }&limit=${payload?.limit}`,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -51,7 +53,6 @@ export const getAllNews = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);

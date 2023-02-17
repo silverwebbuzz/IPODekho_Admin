@@ -11,21 +11,34 @@ import { Link } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
 
 const News = () => {
   const { newsData, addNews, editNews, editNewsImage } = useSelector(
     (state) => state.newsReducer
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [totalPageLimit, setTotalPageLimit] = useState(10);
 
   const dispatch = useDispatch();
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
   useEffect(() => {
-    dispatch(getAllNews());
-  }, [addNews, editNews, editNewsImage]);
-  // const timeFormat = (secs) => {
-  //   let output = secs;
-  //   let formatTime = moment(output).format("MMM D yyyy LT");
-  //   return formatTime;
-  // };
+    let payload = {
+      page: currentPage,
+      limit: totalPageLimit,
+    };
+    dispatch(getAllNews({ payload }));
+  }, [addNews, editNews, editNewsImage, currentPage, totalPageLimit]);
+  useEffect(() => {
+    if (newsData?.Total !== undefined) {
+      let totalCount = Math.ceil(newsData?.Total / totalPageLimit);
+      setTotalPage(totalCount);
+    }
+  }, [newsData?.Total, totalPageLimit]);
+
   return (
     <>
       <PageHeading title={"News"} />
@@ -101,7 +114,7 @@ const News = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                {newsData?.map((news) => {
+                {newsData?.AllNews?.map((news) => {
                   return (
                     <tr>
                       <td>
@@ -130,8 +143,44 @@ const News = () => {
                 })}
               </tbody>
             </table>
+            <div className="d-flex">
+              <div className="dataTables_length d-flex w-auto align-items-center ">
+                <select
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                  className="form-select form-select-sm form-select-solid"
+                  onChange={(e) => setTotalPageLimit(e.target.value)}
+                >
+                  {" "}
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  {" "}
+                  Showing 1 to {newsData?.AllNews?.length} of {newsData?.Total}{" "}
+                  records
+                </span>
+              </div>
+              <div className="pagination">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=">"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={0}
+                  pageCount={totalPage}
+                  previousLabel="<"
+                  renderOnZeroPageCount={1}
+                />
+              </div>
+            </div>
           </div>
-          ``{" "}
         </div>
       </AppContentLayout>
     </>

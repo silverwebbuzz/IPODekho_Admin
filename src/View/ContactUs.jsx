@@ -10,9 +10,14 @@ const ContactUs = () => {
   const { getAllData, isLoading } = useSelector(
     (state) => state.contactUsReducer
   );
+  console.log(getAllData);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllContacts());
+    let payload = {
+      page: 1,
+      limit: 10,
+    };
+    dispatch(getAllContacts({ payload }));
   }, []);
 
   return (
@@ -40,7 +45,7 @@ const ContactUs = () => {
                 </thead>
 
                 <tbody className="fw-semibold text-gray-600">
-                  {getAllData?.map((contactInfo) => {
+                  {getAllData?.AllContact?.map((contactInfo) => {
                     return (
                       <tr key={contactInfo?.id}>
                         <td>

@@ -23,3 +23,11 @@
   padding: 5px 12px;
   border-radius: 8px;
 }
+.filterButton {
+  position: relative;
+}
+.filterCard {
+  position: absolute;
+  display: flex !important;
+  top: 85px;
+}

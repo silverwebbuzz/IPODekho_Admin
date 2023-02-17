@@ -12,6 +12,8 @@ import ReactModal from "react-modal";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { getAllOffers, setOfferData } from "../redux/slice/offersSlice";
 import SpinnerLoader from "../Components/SpinnerLoader";
+import ReactPaginate from "react-paginate";
+import { useState } from "react";
 
 const Offers = () => {
   const customStyles = {
@@ -33,15 +35,29 @@ const Offers = () => {
     offerImage,
     isLoading,
   } = useSelector((state) => state.offersReducer);
-
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [totalPageLimit, setTotalPageLimit] = useState(10);
   const dispatch = useDispatch();
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
+  useEffect(() => {
+    let payload = {
+      page: currentPage,
+      limit: totalPageLimit,
+    };
+    dispatch(getAllOffers({ payload }));
+  }, [addOfferData, editOfferData, offerImage, currentPage, totalPage]);
 
   useEffect(() => {
-    dispatch(getAllOffers());
-  }, [addOfferData, editOfferData, offerImage]);
+    if (getAllOffersData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllOffersData?.Total / totalPageLimit);
+      setTotalPage(totalCount);
+    }
+  }, [getAllOffersData?.Total, totalPageLimit]);
 
-  console.log(getAllOffersData);
   return (
     <>
       <PageHeading title={"Offers"} />
@@ -122,7 +138,7 @@ const Offers = () => {
                 </thead>
 
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllOffersData?.map((offer) => {
+                  {getAllOffersData?.AllOffers?.map((offer) => {
                     return (
                       <tr>
                         <td>
@@ -170,6 +186,42 @@ const Offers = () => {
                 </tbody>
               </table>
             )}
+            <div className="d-flex">
+              <div className="dataTables_length d-flex w-auto align-items-center ">
+                <select
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                  className="form-select form-select-sm form-select-solid"
+                  onChange={(e) => setTotalPageLimit(e.target.value)}
+                >
+                  {" "}
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  Showing 1 to {getAllOffersData?.AllOffers?.length} of
+                  {getAllOffersData?.Total} records
+                </span>
+              </div>
+              <div className="pagination">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=">"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={0}
+                  pageCount={totalPage}
+                  previousLabel="<"
+                  renderOnZeroPageCount={1}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </AppContentLayout>

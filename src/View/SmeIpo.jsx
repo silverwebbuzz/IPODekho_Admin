@@ -202,7 +202,7 @@ const SmeIpo = () => {
                   <h1>Loading...</h1>
                 ) : (
                   <tbody className="text-gray-600 fw-semibold">
-                    {getAllMainLineIpoData?.map((Itm) => {
+                    {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                       return (
                         <tr>
                           <td className="d-flex align-items-center mw-230px w-230px">
@@ -349,17 +349,17 @@ const SmeIpo = () => {
                 )}
               </table>
             )}
-          </div>
-          <div className="pagination">
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel=">"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
-              pageCount={totalPage}
-              previousLabel="<"
-              renderOnZeroPageCount={null}
-            />
+            <div className="pagination">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={totalPage}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+              />
+            </div>
           </div>
         </div>
       </AppContentLayout>

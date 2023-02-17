@@ -24,9 +24,9 @@ const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
-  const [limit, setLimit] = useState(10);
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
     useSelector((state) => state?.mainLineIpoSlice);
   const PageSize = 10;
@@ -99,7 +99,8 @@ const MainLineIPO = () => {
               >
                 <button
                   type="button"
-                  className="btn btn-light-primary me-3"
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="filterButton btn btn-light-primary me-3"
                   data-kt-menu-trigger="click"
                   data-kt-menu-placement="bottom-end"
                 >
@@ -108,61 +109,69 @@ const MainLineIPO = () => {
                   </span>
                   Filter
                 </button>
-
-                <div
-                  className="menu menu-sub menu-sub-dropdown w-300px w-md-325px"
-                  data-kt-menu="true"
-                >
-                  <div className="px-7 py-5">
-                    <div className="fs-5 text-dark fw-bold">Filter Options</div>
-                  </div>
-
-                  <div className="separator border-gray-200"></div>
-
-                  <div className="px-7 py-5" data-kt-user-table-filter="form">
-                    <div className="mb-10">
-                      <label className="form-label fs-6 fw-semibold">
-                        IPO Status:
-                      </label>
-                      <select
-                        className="form-select form-select-solid fw-bold"
-                        data-kt-select2="true"
-                        data-placeholder="Select option"
-                        data-allow-clear="true"
-                        data-kt-user-table-filter="status"
-                        data-hide-search="true"
-                      >
-                        <option></option>
-                        <option value="Live">Live</option>
-                        <option value="WaitingAllotment">
-                          Waiting Allotment
-                        </option>
-                        <option value="AllotmentOut">Allotment Out</option>
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Listed">Listed</option>
-                      </select>
+                {isOpen ? (
+                  <div
+                    className="filterCard menu menu-sub menu-sub-dropdown w-300px w-md-325px"
+                    data-kt-menu="true"
+                  >
+                    <div className="px-7 py-5">
+                      <div className="fs-5 text-dark fw-bold">
+                        Filter Options
+                      </div>
                     </div>
 
-                    <div className="d-flex justify-content-end">
-                      <button
-                        type="reset"
-                        className="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
-                        data-kt-menu-dismiss="true"
-                        data-kt-user-table-filter="reset"
-                      >
-                        Reset
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary fw-semibold px-6"
-                        data-kt-menu-dismiss="true"
-                        data-kt-user-table-filter="filter"
-                      >
-                        Apply
-                      </button>
+                    <div className="separator border-gray-200"></div>
+
+                    <div
+                      className="px-7 py-5 "
+                      data-kt-user-table-filter="form"
+                    >
+                      <div className="mb-10">
+                        <label className="form-label fs-6 fw-semibold">
+                          IPO Status:
+                        </label>
+                        <select
+                          className="form-select form-select-solid fw-bold"
+                          data-kt-select2="true"
+                          data-placeholder="Select option"
+                          data-allow-clear="true"
+                          data-kt-user-table-filter="status"
+                          data-hide-search="true"
+                        >
+                          <option></option>
+                          <option value="Live">Live</option>
+                          <option value="WaitingAllotment">
+                            Waiting Allotment
+                          </option>
+                          <option value="AllotmentOut">Allotment Out</option>
+                          <option value="Upcoming">Upcoming</option>
+                          <option value="Listed">Listed</option>
+                        </select>
+                      </div>
+
+                      <div className="d-flex justify-content-end">
+                        <button
+                          type="reset"
+                          className="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
+                          data-kt-menu-dismiss="true"
+                          data-kt-user-table-filter="reset"
+                        >
+                          Reset
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary fw-semibold px-6"
+                          data-kt-menu-dismiss="true"
+                          data-kt-user-table-filter="filter"
+                        >
+                          Apply
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  ""
+                )}
 
                 <Link
                   to="/mainline_ipo/add_ipo"
@@ -198,7 +207,7 @@ const MainLineIPO = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllMainLineIpoData?.map((Itm) => {
+                  {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                     return (
                       <tr>
                         <td className="d-flex align-items-center mw-230px w-230px">

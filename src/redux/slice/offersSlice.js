@@ -20,10 +20,12 @@ const initialState = {
 
 export const getAllOffers = createAsyncThunk(
   "admin/getAllOffers",
-  async (_, { rejectWithValue }) => {
+  async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_OFFERS,
+        `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_OFFERS}?page=${
+          payload?.page
+        }&limit=${payload?.limit}`,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
