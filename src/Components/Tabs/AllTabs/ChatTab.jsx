@@ -35,7 +35,7 @@ function ChatTab() {
   const [messages, setMessages] = useState([]);
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
 
-  const messageEnd = useRef(null);
+  const messageEnd = useRef();
   const adminId = "RSgguExRRwSbkqY2KWKFc41Idbs1";
   const timeFormat = (secs) => {
     let output = new Date(secs * 1000);
@@ -78,15 +78,14 @@ function ChatTab() {
     );
   };
 
-  // useEffect(() => {
-  //   messageEnd?.current?.scrollIntoView({ behavior: "smooth" });
-  //   // console.log(messageEnd);
-  //   // let ans = document.getElementsByClassName("chatScroll");
-  //   // const ans = messageEnd.parentNode();
-  //   // ans?.scrollIntoView({ behavior: "smooth" });
-  //   // console.log(ans);
-  // }, [messages]);
-
+  useEffect(() => {
+    // messageEnd.current.style.backgroundColor = "black";
+    const scrollToBottom = async () => {
+      // ans?.scrollIntoView({ behavior: "smooth" });
+      messageEnd?.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    return scrollToBottom;
+  }, [messages]);
   return (
     <>
       <div className="card" id="kt_chat_messenger">
@@ -104,7 +103,7 @@ function ChatTab() {
         </div>
 
         <div
-          className="card-body"
+          className="card-body chatScroll"
           id="kt_chat_messenger_body"
           style={{ height: "600px", overflow: "scroll" }}
         >
@@ -190,8 +189,9 @@ function ChatTab() {
               ))}
             <div className="chatScroll"></div>
           </div>
+          <div ref={messageEnd} />
         </div>
-        {/* {/ <div  /> /} */}
+
         <Formik
           initialValues={{ msg: "" }}
           onSubmit={(values, { resetForm }) => {

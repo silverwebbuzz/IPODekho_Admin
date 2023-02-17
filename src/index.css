@@ -7,7 +7,8 @@
 .pagination ul {
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: flex-end;
+  align-items: center;
 }
 .pagination ul li {
   margin: 0 10px;
@@ -16,6 +17,9 @@
   list-style: none;
 }
 
-.pagination ul li .selected {
+.pagination ul li.selected {
   color: white;
+  background-color: #009270;
+  padding: 5px 12px;
+  border-radius: 8px;
 }

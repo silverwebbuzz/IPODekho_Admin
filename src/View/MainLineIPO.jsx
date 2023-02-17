@@ -18,7 +18,6 @@ import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import SpinnerLoader from "../Components/SpinnerLoader";
-import Pagination from "../Components/Pagination/Pagination";
 import ReactPaginate from "react-paginate";
 
 const MainLineIPO = () => {
@@ -61,12 +60,11 @@ const MainLineIPO = () => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
       page: currentPage ? currentPage : 1,
-      limit: 5,
+      limit: 10,
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, currentPage, PageSize]);
-
+  }, [dispatch, updatedIpo, createIpo, currentPage]);
   useEffect(() => {
     if (getAllMainLineIpoData?.Total !== undefined) {
       let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);

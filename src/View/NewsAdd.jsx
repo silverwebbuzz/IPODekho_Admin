@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { modules } from "../Constants/commonConstants";
 import DatePicker from "react-datepicker";
 import { useDispatch } from "react-redux";
@@ -13,12 +13,12 @@ import {
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
-
+import "react-datepicker/dist/react-datepicker.css";
 const NewsAdd = () => {
   const location = useLocation();
   const newsData = location.state;
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const formData = new FormData();
   const formDataImg = new FormData();
 
@@ -95,12 +95,13 @@ const NewsAdd = () => {
         payload: formDataImg,
         payloadId: { id: newsData?.data?.id },
       };
-
       dispatch(updateNewsImage({ payloadImage }));
       dispatch(updateNews({ payload }));
+      navigate("/news");
     } else {
       let payload = formData;
       dispatch(createNews({ payload }));
+      navigate("/news");
     }
   };
 
@@ -109,6 +110,7 @@ const NewsAdd = () => {
       <PageHeading
         title={newsData.type === "newsEdit" ? "News Edit" : "News Add"}
       />
+      {console.log(newsData)}
       <AppContentLayout>
         <div className="card">
           <div className="card-body">
@@ -119,7 +121,7 @@ const NewsAdd = () => {
                   ? {
                       Content: newsData?.data?.Content,
                       Title: newsData?.data?.Title,
-                      newsDate: newsData?.data?.newsDate,
+                      newsDate: newsData?.data?.Date,
                     }
                   : {
                       Content: "",
@@ -193,7 +195,7 @@ const NewsAdd = () => {
                     <label className="form-label">Date</label>
                     <DatePickerField
                       name="newsDate"
-                      className="form-control mb-2"
+                      // className="form-control mb-2"
                       value={values?.newsDate}
                       onChange={setFieldValue}
                     />
