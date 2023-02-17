@@ -78,14 +78,6 @@ function ChatTab() {
     );
   };
 
-  useEffect(() => {
-    // messageEnd.current.style.backgroundColor = "black";
-    const scrollToBottom = async () => {
-      // ans?.scrollIntoView({ behavior: "smooth" });
-      messageEnd?.current?.scrollIntoView({ behavior: "smooth" });
-    };
-    return scrollToBottom;
-  }, [messages]);
   return (
     <>
       <div className="card" id="kt_chat_messenger">
