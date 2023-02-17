@@ -26,7 +26,6 @@ const SmeIpo = () => {
   const [totalPage, setTotalPage] = useState(10);
   const [limit, setLimit] = useState(10);
 
-  const PageSize = 10;
   const [GMPStatus, setGMPStatus] = useState();
   const [GMP, setGMP] = useState("");
   const { getAllMainLineIpoData, updatedIpo, createIpo } = useSelector(
@@ -64,7 +63,7 @@ const SmeIpo = () => {
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, currentPage, PageSize, GMP]);
+  }, [dispatch, updatedIpo, createIpo, currentPage, GMP]);
   useEffect(() => {
     if (getAllMainLineIpoData?.Total !== undefined) {
       let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);

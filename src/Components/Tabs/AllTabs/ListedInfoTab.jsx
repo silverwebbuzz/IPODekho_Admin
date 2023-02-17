@@ -20,7 +20,7 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-
+  console.log(IPOTYPE, "IPOTYPEIPOTYPEIPOTYPEIPOTYPE");
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: IPOTYPE,
@@ -40,16 +40,28 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
     if (ipoEdit) {
       payload.id = getIPODataById?.id;
       dispatch(updateIPO({ payload }));
-      navigate("/mainline_ipo");
+      if (IPOTYPE === "MainlineIPO") {
+        navigate("/mainline_ipo");
+      } else {
+        navigate("/sme_ipo");
+      }
     } else {
       if (ID) {
         payload.id = ID;
         dispatch(createMainLineIpo({ payload }));
-        navigate("/mainline_ipo");
+        if (IPOTYPE === "MainlineIPO") {
+          navigate("/mainline_ipo");
+        } else {
+          navigate("/sme_ipo");
+        }
       } else {
         payload.id = null;
         dispatch(createMainLineIpo({ payload }));
-        navigate("/mainline_ipo");
+        if (IPOTYPE === "MainlineIPO") {
+          navigate("/mainline_ipo");
+        } else {
+          navigate("/sme_ipo");
+        }
       }
     }
   };

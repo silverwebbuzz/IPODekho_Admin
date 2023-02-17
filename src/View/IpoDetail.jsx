@@ -8,6 +8,7 @@ import Tabs from "../../src/Components/Tabs/Tabs";
 import { getIpoById } from "../redux/slice/mainLineIpoSlices";
 import { Field, Form, Formik } from "formik";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import DatePicker from "react-datepicker";
 
 const IpoDetail = () => {
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
@@ -25,6 +26,19 @@ const IpoDetail = () => {
     dispatch(getIpoById({ payload }));
   }, [dispatch]);
   console.log(getIPODataById);
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        disabled
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
   return (
     <>
       <PageHeading title={"IPO Details"} />
@@ -41,7 +55,7 @@ const IpoDetail = () => {
             IPOListingDate: getIPODataById?.IPOListingDate,
           }}
         >
-          {({ values }) => (
+          {({ values, setFieldValue }) => (
             <Form>
               <div
                 id="edit_ipo_form"
@@ -136,74 +150,68 @@ const IpoDetail = () => {
                         <h2>Tentative Timetable</h2>
                       </div>
                     </div>
-
                     <div className="card-body pt-0">
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">IPO Open Date</label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPOOpenDate"
-                          id="ipo_open_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPOOpenDate}
+                          onChange={setFieldValue}
                         />
                       </div>
 
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">IPO Close Date</label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPOCloseDate"
-                          id="ipo_close_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPOCloseDate}
+                          onChange={setFieldValue}
                         />
                       </div>
-
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">IPO Allotment Date</label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPOAllotmentDate"
-                          id="ipo_allotment_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPOAllotmentDate}
+                          onChange={setFieldValue}
                         />
                       </div>
-
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">
                           IPO Refunds Initiation
                         </label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPORefundsInitiation"
-                          id="ipo_refunds_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPORefundsInitiation}
+                          onChange={setFieldValue}
                         />
                       </div>
-
                       <div className="w-100 fv-row mb-10">
                         <label className="form-label">IPO Demat Transfer</label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPODematTransfer"
-                          id="ipo_demat_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPODematTransfer}
+                          onChange={setFieldValue}
                         />
                       </div>
-
                       <div className="w-100 fv-row">
                         <label className="form-label">IPO Listing Date</label>
-                        <Field
-                          type="text"
+                        <DatePickerField
                           name="IPOListingDate"
-                          id="ipo_listing_date"
                           className="form-control mb-2"
-                          disabled
+                          value={values?.IPOListingDate}
+                          onChange={setFieldValue}
                         />
+                      </div>
+                      <div className="d-flex justify-content-center mt-4">
+                        <button type="submit" className="btn btn-primary" ss>
+                          Save Changes
+                        </button>
                       </div>
                     </div>
                   </div>

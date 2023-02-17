@@ -23,7 +23,11 @@ const News = () => {
   useEffect(() => {
     dispatch(getAllNews());
   }, [addNews, editNews, editNewsImage]);
-
+  // const timeFormat = (secs) => {
+  //   let output = secs;
+  //   let formatTime = moment(output).format("MMM D yyyy LT");
+  //   return formatTime;
+  // };
   return (
     <>
       <PageHeading title={"News"} />
@@ -110,7 +114,7 @@ const News = () => {
                         />
                       </td>
                       <td className="mw-350px">{news?.Title}</td>
-                      <td>{moment(news?.Date).format("MMM d, yyyy")}</td>
+                      <td>{moment(news?.Date).format("MMM D yyyy ,h:mm")}</td>
                       <td className="text-end">
                         <Link
                           state={{ type: "newsEdit", data: news }}
