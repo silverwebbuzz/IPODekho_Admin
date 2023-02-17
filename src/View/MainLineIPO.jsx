@@ -17,6 +17,7 @@ import "../assets/plugins/custom/datatables/datatables.bundle.css";
 import { useState } from "react";
 import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import SpinnerLoader from "../Components/SpinnerLoader";
 import ReactPaginate from "react-paginate";
 
 const MainLineIPO = () => {
@@ -26,9 +27,9 @@ const MainLineIPO = () => {
   const [limit, setLimit] = useState(10);
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
-    (state) => state?.mainLineIpoSlice
-  );
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
+    useSelector((state) => state?.mainLineIpoSlice);
+  const PageSize = 10;
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
@@ -54,6 +55,7 @@ const MainLineIPO = () => {
     console.log(e.selected);
     setCurrentPage(e.selected + 1);
   };
+
   useEffect(() => {
     let payload = {
       CategoryForIPOS: "MainlineIPO",
@@ -177,174 +179,178 @@ const MainLineIPO = () => {
             </div>
           </div>
           <div className="card-body py-4">
-            <table
-              className="table align-middle table-row-dashed fs-6 gy-5"
-              id="mainlineipo_table"
-            >
-              <thead>
-                <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                  <th className="mw-300px w-300px">Company</th>
-                  <th className="w-150px mw-150px">Offer Date</th>
-                  <th className="w-100px mw-100px">Offer Price</th>
-                  <th className="min-w-125px">Lot Size</th>
-                  <th className="min-w-125px">GMP</th>
-                  <th className="min-w-125px">Status</th>
-                  <th className="text-end min-w-100px w-200px">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-gray-600 fw-semibold">
-                {getAllMainLineIpoData?.IPOS?.map((Itm) => {
-                  return (
-                    <tr>
-                      <td className="d-flex align-items-center mw-230px w-230px">
-                        <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                          <Link
-                            to="/mainline_ipo/ipo_edit"
-                            state={{ data: Itm, type: "ipoEdit" }}
-                          >
-                            <div className="symbol-label">
-                              <img
-                                style={{ height: "100%" }}
-                                src={Itm?.file ? Itm?.file : blankImage}
-                                alt="image not available"
-                                className="w-100"
-                              />
-                            </div>
-                          </Link>
-                        </div>
-                        <div className="d-flex flex-column">
-                          <Link
-                            state={{ data: Itm, type: "ipoEdit" }}
-                            to="/mainline_ipo/ipo_edit"
-                            className="text-gray-800 text-hover-primary mb-1"
-                          >
-                            {Itm?.companyName}
-                          </Link>
-                        </div>
-                      </td>
-                      {(Itm?.IPOOpenDate === undefined ||
-                        Itm?.IPOOpenDate === "" ||
-                        Itm?.IPOOpenDate === null) &&
-                      (Itm?.IPOCloseDate === undefined ||
-                        Itm?.IPOCloseDate === "" ||
-                        Itm?.IPOCloseDate === null) ? (
-                        <td className="w-150px mw-150px">N/A</td>
-                      ) : (
-                        <td className="w-150px mw-150px">
-                          {Itm?.IPOOpenDate === undefined
-                            ? "N/A"
-                            : moment(Itm?.IPOOpenDate).format(
-                                "MMM d, yyyy"
-                              )}{" "}
-                          to
-                          {/* <br /> */}
-                          {Itm?.IPOCloseDate === undefined
-                            ? "N/A"
-                            : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+            {isLoading ? (
+              <SpinnerLoader />
+            ) : (
+              <table
+                className="table align-middle table-row-dashed fs-6 gy-5"
+                id="mainlineipo_table"
+              >
+                <thead>
+                  <tr className="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th className="mw-300px w-300px">Company</th>
+                    <th className="w-150px mw-150px">Offer Date</th>
+                    <th className="w-100px mw-100px">Offer Price</th>
+                    <th className="min-w-125px">Lot Size</th>
+                    <th className="min-w-125px">GMP</th>
+                    <th className="min-w-125px">Status</th>
+                    <th className="text-end min-w-100px w-200px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-600 fw-semibold">
+                  {getAllMainLineIpoData?.map((Itm) => {
+                    return (
+                      <tr>
+                        <td className="d-flex align-items-center mw-230px w-230px">
+                          <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                            <Link
+                              to="/mainline_ipo/ipo_edit"
+                              state={{ data: Itm, type: "ipoEdit" }}
+                            >
+                              <div className="symbol-label">
+                                <img
+                                  style={{ height: "100%" }}
+                                  src={Itm?.file ? Itm?.file : blankImage}
+                                  alt="image not available"
+                                  className="w-100"
+                                />
+                              </div>
+                            </Link>
+                          </div>
+                          <div className="d-flex flex-column">
+                            <Link
+                              state={{ data: Itm, type: "ipoEdit" }}
+                              to="/mainline_ipo/ipo_edit"
+                              className="text-gray-800 text-hover-primary mb-1"
+                            >
+                              {Itm?.companyName}
+                            </Link>
+                          </div>
                         </td>
-                      )}
-                      {(Itm?.toPrice === "" ||
-                        Itm?.toPrice === undefined ||
-                        Itm?.toPrice === null) &&
-                      (Itm?.fromPrice === "" ||
-                        Itm?.fromPrice === undefined ||
-                        Itm?.fromPrice === null) ? (
-                        <td className="w-100px mw-100px">N/A</td>
-                      ) : (
-                        <td className="w-100px mw-100px">
-                          ₹
-                          {Itm?.fromPrice === "" ||
-                          Itm?.fromPrice === undefined ||
-                          Itm?.fromPrice === null
-                            ? "N/A"
-                            : Itm?.fromPrice}{" "}
-                          to ₹
-                          {Itm?.toPrice === "" ||
+                        {(Itm?.IPOOpenDate === undefined ||
+                          Itm?.IPOOpenDate === "" ||
+                          Itm?.IPOOpenDate === null) &&
+                        (Itm?.IPOCloseDate === undefined ||
+                          Itm?.IPOCloseDate === "" ||
+                          Itm?.IPOCloseDate === null) ? (
+                          <td className="w-150px mw-150px">N/A</td>
+                        ) : (
+                          <td className="w-150px mw-150px">
+                            {Itm?.IPOOpenDate === undefined
+                              ? "N/A"
+                              : moment(Itm?.IPOOpenDate).format(
+                                  "MMM d, yyyy"
+                                )}{" "}
+                            to
+                            {/* <br /> */}
+                            {Itm?.IPOCloseDate === undefined
+                              ? "N/A"
+                              : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
+                          </td>
+                        )}
+                        {(Itm?.toPrice === "" ||
                           Itm?.toPrice === undefined ||
-                          Itm?.toPrice === null
-                            ? "N/A"
-                            : Itm?.toPrice}
-                        </td>
-                      )}
-                      <td>{Itm?.lotSize} Shares</td>
-                      <td className="text-center">
-                        <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
+                          Itm?.toPrice === null) &&
+                        (Itm?.fromPrice === "" ||
+                          Itm?.fromPrice === undefined ||
+                          Itm?.fromPrice === null) ? (
+                          <td className="w-100px mw-100px">N/A</td>
+                        ) : (
+                          <td className="w-100px mw-100px">
+                            ₹
+                            {Itm?.fromPrice === "" ||
+                            Itm?.fromPrice === undefined ||
+                            Itm?.fromPrice === null
+                              ? "N/A"
+                              : Itm?.fromPrice}{" "}
+                            to ₹
+                            {Itm?.toPrice === "" ||
+                            Itm?.toPrice === undefined ||
+                            Itm?.toPrice === null
+                              ? "N/A"
+                              : Itm?.toPrice}
+                          </td>
+                        )}
+                        <td>{Itm?.lotSize} Shares</td>
+                        <td className="text-center">
+                          <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={Itm?.GMPStatus === "ON" ? true : false}
+                              onChange={(e) => handleGmp(e, Itm?.id)}
+                            />
+                          </div>
                           <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={Itm?.GMPStatus === "ON" ? true : false}
-                            onChange={(e) => handleGmp(e, Itm?.id)}
+                            type="number"
+                            className="form-control w-70px mt-3"
+                            // defaultValue={Itm?.GMP}
+                            value={Itm?.GMP}
+                            onChange={(e) => handleGMPNumber(e, Itm?.id)}
                           />
-                        </div>
-                        <input
-                          type="number"
-                          className="form-control w-70px mt-3"
-                          // defaultValue={Itm?.GMP}
-                          value={Itm?.GMP}
-                          onChange={(e) => handleGMPNumber(e, Itm?.id)}
-                        />
-                      </td>
-                      <td>
-                        {Itm?.IPOStatus === "Live" ? (
-                          <div className="badge badge-light-danger fw-bold">
-                            Live
-                          </div>
-                        ) : Itm?.IPOStatus === "Upcoming" ? (
-                          <div className="badge badge-light-info fw-bold">
-                            Upcoming
-                          </div>
-                        ) : Itm?.IPOStatus === "Listed" ? (
-                          <div className="badge badge-light-success fw-bold">
-                            Listed
-                          </div>
-                        ) : Itm?.IPOStatus === "AllotmentOut" ? (
-                          <div className="badge badge-light-primary fw-bold">
-                            Allotment Out
-                          </div>
-                        ) : Itm?.IPOStatus === "WaitingAllotment" ? (
-                          <div className="badge badge-light-warning fw-bold">
-                            Waiting Allotment
-                          </div>
-                        ) : null}
-                      </td>
-                      <td className="text-end w-200px">
-                        <div className="menu-item px-3">
-                          <Link
-                            to="/mainline_ipo/ipo_edit"
-                            state={{ data: Itm, type: "ipoEdit" }}
-                            className="btn btn-light btn-primary btn-sm"
-                          >
-                            <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">
-                              <CommonEditIcon />{" "}
-                            </span>
-                          </Link>
+                        </td>
+                        <td>
+                          {Itm?.IPOStatus === "Live" ? (
+                            <div className="badge badge-light-danger fw-bold">
+                              Live
+                            </div>
+                          ) : Itm?.IPOStatus === "Upcoming" ? (
+                            <div className="badge badge-light-info fw-bold">
+                              Upcoming
+                            </div>
+                          ) : Itm?.IPOStatus === "Listed" ? (
+                            <div className="badge badge-light-success fw-bold">
+                              Listed
+                            </div>
+                          ) : Itm?.IPOStatus === "AllotmentOut" ? (
+                            <div className="badge badge-light-primary fw-bold">
+                              Allotment Out
+                            </div>
+                          ) : Itm?.IPOStatus === "WaitingAllotment" ? (
+                            <div className="badge badge-light-warning fw-bold">
+                              Waiting Allotment
+                            </div>
+                          ) : null}
+                        </td>
+                        <td className="text-end w-200px">
+                          <div className="menu-item px-3">
+                            <Link
+                              to="/mainline_ipo/ipo_edit"
+                              state={{ data: Itm, type: "ipoEdit" }}
+                              className="btn btn-light btn-primary btn-sm"
+                            >
+                              <span className="svg-icon svg-icon-muted svg-icon-size-3 me-0">
+                                <CommonEditIcon />{" "}
+                              </span>
+                            </Link>
 
-                          <Link
-                            to="/mainline_ipo/ipo_detail"
-                            state={{ data: Itm }}
-                            className="btn btn-light btn-light-primary btn-sm px-3"
-                          >
-                            <i className="bi bi-eye fs-2 pe-0"></i>
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="pagination">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel=">"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={totalPage}
-                previousLabel="<"
-                renderOnZeroPageCount={null}
-              />
-            </div>
+                            <Link
+                              to="/mainline_ipo/ipo_detail"
+                              state={{ data: Itm }}
+                              className="btn btn-light btn-light-primary btn-sm px-3"
+                            >
+                              <i className="bi bi-eye fs-2 pe-0"></i>
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className="pagination">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePageClick}
+              // pageRangeDisplayed={2}
+              pageRangeDisplayed={0}
+              pageCount={totalPage}
+              previousLabel="<"
+              renderOnZeroPageCount={1}
+            />
           </div>
         </div>
       </AppContentLayout>

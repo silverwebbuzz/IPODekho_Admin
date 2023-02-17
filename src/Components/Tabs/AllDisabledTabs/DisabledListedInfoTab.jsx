@@ -6,13 +6,16 @@ import { useSelector } from "react-redux";
 const DisabledListedInfoTab = () => {
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
 
-  const DatePickerField = ({ name, value }) => {
+  const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
         disabled
         selected={(value && new Date(value)) || null}
         className="form-control"
-        dateFormat="MMMM Do, yyyy"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
       />
     );
   };
@@ -52,6 +55,7 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="listingDate"
                         value={values?.listingDate}
+                        onChange={setFieldValue}
                       />
                     </div>
 
@@ -135,6 +139,7 @@ const DisabledListedInfoTab = () => {
                       <DatePickerField
                         name="closingDate"
                         value={values?.closingDate}
+                        onChange={setFieldValue}
                       />
                     </div>
 

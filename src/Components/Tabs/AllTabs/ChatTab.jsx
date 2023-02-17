@@ -179,10 +179,11 @@ function ChatTab() {
                   )}
                 </div>
               ))}
+            <div className="chatScroll"></div>
           </div>
           <div ref={messageEnd} />
         </div>
-        {/* {/ <div  /> } */}
+
         <Formik
           initialValues={{ msg: "" }}
           onSubmit={(values, { resetForm }) => {
@@ -221,7 +222,11 @@ function ChatTab() {
                   </div>
 
                   {values.msg.length !== 0 ? (
-                    <button className="btn btn-primary" type="submit">
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      // onClick={handleScroll}
+                    >
                       Send
                     </button>
                   ) : (

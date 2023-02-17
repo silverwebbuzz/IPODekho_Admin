@@ -16,9 +16,7 @@ const News = () => {
   const { newsData, addNews, editNews, editNewsImage } = useSelector(
     (state) => state.newsReducer
   );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(10);
-  const [limit, setLimit] = useState(10);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNews());

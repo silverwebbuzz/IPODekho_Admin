@@ -11,7 +11,7 @@ import {
 } from "../../UrlConfig";
 
 const initialState = {
-  loading: false,
+  isLoading: false,
   getIPODataById: [],
   ID: "",
   getAllMainLineIpoData: [],
@@ -145,58 +145,58 @@ const mainLineIpoSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllMainLineIpo.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getAllMainLineIpo.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.getAllMainLineIpoData = action.payload;
       })
       .addCase(getAllMainLineIpo.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(getIpoById.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getIpoById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.getIPODataById = action.payload;
       })
       .addCase(getIpoById.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(uploadIMG.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(uploadIMG.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
         state.uploadImage = action.payload;
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(uploadIMG.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(createMainLineIpo.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(createMainLineIpo.fulfilled, (state, action) => {
         // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
         state.createIpo = action.payload;
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(createMainLineIpo.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       })
       .addCase(updateIPO.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(updateIPO.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.updatedIpo = action.payload;
       })
       .addCase(updateIPO.rejected, (state) => {
-        state.loading = false;
+        state.isLoading = false;
       });
   },
 });
