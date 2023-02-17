@@ -74,7 +74,7 @@ const UserModal = ({ userID }) => {
       id: userID,
     };
     dispatch(getUserById({ payload }));
-  }, [dispatch, fileDataURL]);
+  }, [dispatch, fileDataURL, userID]);
 
   useEffect(() => {
     setFileDataURL(

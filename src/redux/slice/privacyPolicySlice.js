@@ -10,7 +10,6 @@ import {
 
 const initialState = {
   isLoading: false,
-  privacyPolicyId: "",
   createPrivacyPolicyData: [],
   updatePrivacyPolicyData: [],
   getAllPrivacyPolicyData: [],

@@ -17,8 +17,6 @@ import {
 import { useEffect } from "react";
 
 const PrivacyPolicy = () => {
-  const [companyDescription, setCompanyDescription] =
-    useState("<h1>HEllO</h1>");
   const {
     createPrivacyPolicyData,
     getAllPrivacyPolicyData,
