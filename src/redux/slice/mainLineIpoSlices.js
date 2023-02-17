@@ -135,7 +135,11 @@ export const createMainLineIpo = createAsyncThunk(
 const mainLineIpoSlice = createSlice({
   name: "mainLineIpoSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setClearId: (state, action) => {
+      state.ID = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllMainLineIpo.pending, (state) => {
@@ -195,4 +199,5 @@ const mainLineIpoSlice = createSlice({
   },
 });
 
+export const { setClearId } = mainLineIpoSlice.actions;
 export default mainLineIpoSlice.reducer;
