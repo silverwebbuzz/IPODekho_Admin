@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import blankImage from "../assets/media/offer/blank-image.svg";
-import "../assets/css/FilePreviewer.css";
-
 import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getUserById, updateUsers } from "../redux/slice/usersSlice";
-
+import * as Yup from "yup";
+import "../assets/css/FilePreviewer.css";
+import "yup-phone";
 const UserModal = ({ userID }) => {
   const formData = new FormData();
   const dispatch = useDispatch();
@@ -54,7 +54,6 @@ const UserModal = ({ userID }) => {
     setFile("");
     setFileDataURL("");
   };
-
   const handleSubmit = (values) => {
     formData.append("displayName", values?.displayName);
     formData.append("email", values?.email);
@@ -62,19 +61,25 @@ const UserModal = ({ userID }) => {
     formData.append("photoURL", file);
     let payload = {
       payload: formData,
-      payloadId: { id: getDataByIdData?.id },
+      payloadId: { id: getDataByIdData?.uid },
     };
-
     dispatch(updateUsers({ payload }));
     dispatch(setModalIsOpen(false));
   };
+
+  // const phoneRegExp =
+  //   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+  // const validationSchema = Yup.object().shape({
+  //   phoneNumber: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  // });
+  const validationSchema = Yup.string().phone("IN").required();
 
   useEffect(() => {
     let payload = {
       id: userID,
     };
     dispatch(getUserById({ payload }));
-  }, [dispatch, fileDataURL, userID]);
+  }, [dispatch, fileDataURL]);
 
   useEffect(() => {
     setFileDataURL(
@@ -93,7 +98,7 @@ const UserModal = ({ userID }) => {
       <div className="modal-dialog modal-dialog-centered mw-650px">
         <div className="modal-content">
           <div className="modal-header" id="kt_modal_add_offer_header">
-            <h2 className="fw-bold">Add User</h2>
+            <h2 className="fw-bold">Edit User</h2>
 
             <div
               onClick={() => {
@@ -110,6 +115,7 @@ const UserModal = ({ userID }) => {
           <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
             <Formik
               enableReinitialize
+              validationSchema={validationSchema}
               initialValues={{
                 photoURL: fileDataURL,
                 displayName: getDataByIdData?.displayName,
@@ -118,7 +124,7 @@ const UserModal = ({ userID }) => {
               }}
               onSubmit={(values) => handleSubmit(values)}
             >
-              {({ values }) => (
+              {({ values, touched, errors }) => (
                 <Form>
                   <div id="kt_modal_add_offer_form" className="form">
                     <div
@@ -217,6 +223,10 @@ const UserModal = ({ userID }) => {
                           className="form-control form-control-solid mb-3 mb-lg-0"
                           placeholder="phone"
                         />
+                        {validationSchema.isValid(values.phoneNumber) ===
+                        true ? (
+                          <div>dfjihfdff0.</div>
+                        ) : null}
                       </div>
                     </div>
 

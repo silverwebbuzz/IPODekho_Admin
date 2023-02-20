@@ -1,5 +1,8 @@
+import moment from "moment/moment";
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
@@ -10,15 +13,35 @@ const ContactUs = () => {
   const { getAllData, isLoading } = useSelector(
     (state) => state.contactUsReducer
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [totalPageLimit, setTotalPageLimit] = useState(10);
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
   console.log(getAllData);
   const dispatch = useDispatch();
+  const timeFormat = (secs) => {
+    if (secs) {
+      let output = new Date(secs * 1000);
+      let formatTime = moment(output).format("D MMM LT");
+      return formatTime;
+    }
+  };
   useEffect(() => {
     let payload = {
-      page: 1,
-      limit: 10,
+      page: currentPage,
+      limit: totalPageLimit,
     };
     dispatch(getAllContacts({ payload }));
-  }, []);
+  }, [totalPageLimit, currentPage]);
+  useEffect(() => {
+    if (getAllData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllData?.Total / totalPageLimit);
+      setTotalPage(totalCount);
+      return;
+    }
+  }, [getAllData?.Total, totalPageLimit]);
 
   return (
     <>
@@ -55,7 +78,16 @@ const ContactUs = () => {
                         <td>{contactInfo?.email}</td>
                         <td>{contactInfo?.phone}</td>
                         <td>{contactInfo?.subject}</td>
-                        <td>May 05 2022, 6:43 am</td>
+                        <td>
+                          {" "}
+                          {timeFormat(
+                            contactInfo?.createdAt?._seconds
+                          )?.toString()
+                            ? timeFormat(
+                                contactInfo?.createdAt?._seconds
+                              )?.toString()
+                            : "N/A"}
+                        </td>
                         <td className="mw-350px">{contactInfo?.message}</td>
                       </tr>
                     );
@@ -63,6 +95,43 @@ const ContactUs = () => {
                 </tbody>
               </table>
             )}
+            <div className="d-flex">
+              <div className="dataTables_length d-flex w-auto align-items-center ">
+                <select
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                  className="form-select form-select-sm form-select-solid"
+                  onChange={(e) => setTotalPageLimit(e.target.value)}
+                >
+                  {" "}
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  {" "}
+                  Showing 1 to {getAllData?.AllContact?.length} of{" "}
+                  {getAllData?.Total} records
+                </span>
+              </div>
+              <div className="pagination">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=">"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={0}
+                  pageCount={totalPage}
+                  previousLabel="<"
+                  renderOnZeroPageCount={1}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </AppContentLayout>

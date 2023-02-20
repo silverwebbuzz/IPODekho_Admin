@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   ADMIN_CREATE_NEWS,
   ADMIN_GET_ALL_NEWS,
+  ADMIN_GET_NEWS_BY_ID,
   ADMIN_UPDATE_NEWS,
   ADMIN_UPDATE_NEWS_IMAGE,
   BASE_URL_FOR_ADMIN,
@@ -105,6 +106,27 @@ export const updateNewsImage = createAsyncThunk(
     }
   }
 );
+export const getNewsById = createAsyncThunk(
+  "admin/getNewsById",
+  async ({ payload }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL_FOR_ADMIN + ADMIN_GET_NEWS_BY_ID}${payload?.id}`,
+        payload,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response?.data?.GetSingleNews;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 const newsSlice = createSlice({
   name: "newsSlice",
@@ -116,6 +138,7 @@ const newsSlice = createSlice({
       })
       .addCase(createNews.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.addNews = action.payload;
       })
       .addCase(createNews.rejected, (state) => {
         state.isLoading = false;
@@ -135,6 +158,7 @@ const newsSlice = createSlice({
       })
       .addCase(updateNews.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.editNews = action.payload;
       })
       .addCase(updateNews.rejected, (state) => {
         state.isLoading = false;
@@ -144,8 +168,19 @@ const newsSlice = createSlice({
       })
       .addCase(updateNewsImage.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.editNewsImage = action.payload;
       })
       .addCase(updateNewsImage.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getNewsById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getNewsById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getDataById = action.payload;
+      })
+      .addCase(getNewsById.rejected, (state) => {
         state.isLoading = false;
       });
   },

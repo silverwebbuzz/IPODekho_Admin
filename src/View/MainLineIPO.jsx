@@ -24,12 +24,13 @@ const MainLineIPO = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
+  const [totalPageLimit, setTotalPageLimit] = useState(10);
+  const [filter, setFilter] = useState("");
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
     useSelector((state) => state?.mainLineIpoSlice);
-  const PageSize = 10;
 
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
@@ -55,19 +56,29 @@ const MainLineIPO = () => {
     console.log(e.selected);
     setCurrentPage(e.selected + 1);
   };
-
-  useEffect(() => {
-    let payload = {
+  const handleApiCall = (val) => {
+    const payload = {
       CategoryForIPOS: "MainlineIPO",
       page: currentPage ? currentPage : 1,
-      limit: 10,
+      limit: 2,
     };
+    if (val !== "" || val !== undefined || val !== null) {
+      console.log("val is not clear");
+      payload.Filter = val;
+    } else {
+      console.log("val is clear");
+      payload.Filter = "";
+    }
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, currentPage]);
+  };
   useEffect(() => {
+    handleApiCall();
+  }, [updatedIpo, createIpo, currentPage]);
+  useEffect(() => {
+    console.log(getAllMainLineIpoData?.Total);
     if (getAllMainLineIpoData?.Total !== undefined) {
-      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 2);
       setTotalPage(totalCount);
     }
   }, [getAllMainLineIpoData?.Total]);
@@ -137,6 +148,8 @@ const MainLineIPO = () => {
                           data-allow-clear="true"
                           data-kt-user-table-filter="status"
                           data-hide-search="true"
+                          value={filter}
+                          onChange={(e) => setFilter(e.target.value)}
                         >
                           <option></option>
                           <option value="Live">Live</option>
@@ -155,6 +168,11 @@ const MainLineIPO = () => {
                           className="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
                           data-kt-menu-dismiss="true"
                           data-kt-user-table-filter="reset"
+                          onClick={() => {
+                            setIsOpen(!isOpen);
+                            setFilter("");
+                            handleApiCall("");
+                          }}
                         >
                           Reset
                         </button>
@@ -163,6 +181,10 @@ const MainLineIPO = () => {
                           className="btn btn-primary fw-semibold px-6"
                           data-kt-menu-dismiss="true"
                           data-kt-user-table-filter="filter"
+                          onClick={() => {
+                            handleApiCall(filter);
+                            setIsOpen(!isOpen);
+                          }}
                         >
                           Apply
                         </button>

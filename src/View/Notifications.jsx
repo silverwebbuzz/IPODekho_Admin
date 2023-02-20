@@ -1,6 +1,8 @@
-import React from "react";
+import moment from "moment/moment";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import ReactModal from "react-modal";
+import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import CommonAddIcon from "../assets/media/Icons/CommonAddIcon";
 import AppContentLayout from "../Components/AppContentLayout";
@@ -26,12 +28,36 @@ const Notifications = () => {
   const { createData, getAllData, isLoading } = useSelector(
     (state) => state.notificationReducer
   );
-
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const [totalPageLimit, setTotalPageLimit] = useState(10);
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
+  const timeFormat = (secs) => {
+    if (secs) {
+      let output = new Date(secs * 1000);
+      let formatTime = moment(output).format("MMM D, yyyy LT");
+      console.log(formatTime);
+      return formatTime;
+    }
+  };
   useEffect(() => {
-    dispatch(getAllNotifications());
+    let payload = {
+      page: currentPage,
+      limit: totalPageLimit,
+    };
+    dispatch(getAllNotifications({ payload }));
   }, [createData]);
+  useEffect(() => {
+    if (getAllData?.Total !== undefined) {
+      let totalCount = Math.ceil(getAllData?.Total / totalPageLimit);
+      setTotalPage(totalCount);
+      return;
+    }
+  }, [getAllData?.Total, totalPageLimit]);
   return (
     <>
       <PageHeading title={"Notification Entries"} />
@@ -95,7 +121,7 @@ const Notifications = () => {
                 </thead>
 
                 <tbody className="fw-semibold text-gray-600">
-                  {getAllData.map((data, index) => {
+                  {getAllData?.AllNotification?.map((data, index) => {
                     return (
                       <tr>
                         <td>{index + 1}</td>
@@ -104,13 +130,54 @@ const Notifications = () => {
                           {data?.notificationDescription}
                         </td>
                         <td>{data?.Redirect}</td>
-                        <td>May 05 2022, 6:45 am</td>
+                        <td>
+                          {timeFormat(data?.createdAt?._seconds)?.toString()
+                            ? timeFormat(data?.createdAt?._seconds)?.toString()
+                            : "N/A"}
+                        </td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
             )}
+            <div className="d-flex">
+              <div className="dataTables_length d-flex w-auto align-items-center ">
+                <select
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                  className="form-select form-select-sm form-select-solid"
+                  onChange={(e) => setTotalPageLimit(e.target.value)}
+                >
+                  {" "}
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  {" "}
+                  Showing 1 to {getAllData?.AllNotification?.length} of{" "}
+                  {getAllData?.Total} records
+                </span>
+              </div>
+              <div className="pagination">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=">"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={0}
+                  pageCount={totalPage}
+                  previousLabel="<"
+                  renderOnZeroPageCount={1}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </AppContentLayout>

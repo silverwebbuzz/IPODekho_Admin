@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import ReactPaginate from "react-paginate";
@@ -33,15 +34,13 @@ const Users = () => {
   const [query, setQuery] = useState("");
 
   const [recordsPerPage, setRecordsPerPage] = useState(10);
-
-  const userRecord = getAllData ? getAllData : [];
+  const userRecord = getAllData && getAllData ? getAllData : [];
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = userRecord.slice(
     indexOfFirstRecord,
     indexOfLastRecord
   );
-  console.log("currentRecordscurrentRecords", currentRecords);
   const totalPage = Math.ceil(userRecord.length / recordsPerPage);
 
   const dispatch = useDispatch();
@@ -52,10 +51,6 @@ const Users = () => {
     dispatch(getAllUsers());
   }, [updateData]);
 
-  const newPacientes = currentRecords.filter((value) =>
-    value?.displayName?.toLowerCase()?.includes(query?.toLowerCase())
-  );
-  console.log(newPacientes);
   return (
     <>
       <PageHeading title={"Users"} />
@@ -97,7 +92,7 @@ const Users = () => {
                 </thead>
 
                 <tbody className="text-gray-600 fw-semibold">
-                  {newPacientes.map((userInfo) => {
+                  {currentRecords.map((userInfo) => {
                     return (
                       <tr key={userInfo?.id}>
                         <td className="d-flex align-items-center">
@@ -118,12 +113,20 @@ const Users = () => {
                           </div>
                         </td>
                         <td>{userInfo?.phoneNumber}</td>
-                        <td>05 May 2022, 6:43 am</td>
+                        <td>
+                          {moment(userInfo?.metadata?.creationTime).format(
+                            "MMM d yyyy LT"
+                          )
+                            ? moment(userInfo?.metadata?.creationTime).format(
+                                "MMM d yyyy LT"
+                              )
+                            : "N/A"}
+                        </td>
                         <td className="text-end">
                           <button
                             onClick={() => {
                               dispatch(setModalIsOpen(true));
-                              setUserId(userInfo?.id);
+                              setUserId(userInfo?.uid);
                             }}
                             type="button"
                             className="btn btn-light btn-light-primary btn-sm"
@@ -142,41 +145,41 @@ const Users = () => {
                 </tbody>
               </table>
             )}
-          </div>
-          <div className="d-flex">
-            <div className="dataTables_length d-flex w-auto align-items-center ">
-              <select
-                style={{
-                  minWidth: "fit-content",
-                }}
-                className="form-select form-select-sm form-select-solid"
-                onChange={(e) => setRecordsPerPage(e.target.value)}
-              >
-                {" "}
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <span
-                style={{
-                  minWidth: "fit-content",
-                }}
-              >
-                Showing 1 to {currentRecords.length} of
-                {getAllData?.length} records
-              </span>
-            </div>
-            <div className="pagination">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel=">"
-                onPageChange={(e) => handlePageClick(e)}
-                pageRangeDisplayed={0}
-                pageCount={totalPage ? totalPage : 10}
-                previousLabel="<"
-                renderOnZeroPageCount={1}
-              />
+            <div className="d-flex">
+              <div className="dataTables_length d-flex w-auto align-items-center ">
+                <select
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                  className="form-select form-select-sm form-select-solid"
+                  onChange={(e) => setRecordsPerPage(e.target.value)}
+                >
+                  {" "}
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  Showing 1 to {currentRecords.length} of
+                  {getAllData?.length} records
+                </span>
+              </div>
+              <div className="pagination">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=">"
+                  onPageChange={(e) => handlePageClick(e)}
+                  pageRangeDisplayed={0}
+                  pageCount={totalPage ? totalPage : 10}
+                  previousLabel="<"
+                  renderOnZeroPageCount={1}
+                />
+              </div>
             </div>
           </div>
         </div>

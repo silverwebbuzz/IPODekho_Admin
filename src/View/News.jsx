@@ -20,10 +20,17 @@ const News = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
   const [totalPageLimit, setTotalPageLimit] = useState(10);
-
   const dispatch = useDispatch();
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
+  };
+  const timeFormat = (secs) => {
+    if (secs) {
+      let output = new Date(secs * 1000);
+      let formatTime = moment(output).format("MMM D, yyyy LT");
+      console.log(formatTime);
+      return formatTime;
+    }
   };
   useEffect(() => {
     let payload = {
@@ -36,6 +43,7 @@ const News = () => {
     if (newsData?.Total !== undefined) {
       let totalCount = Math.ceil(newsData?.Total / totalPageLimit);
       setTotalPage(totalCount);
+      return;
     }
   }, [newsData?.Total, totalPageLimit]);
 
@@ -125,11 +133,13 @@ const News = () => {
                         />
                       </td>
                       <td className="mw-350px">{news?.Title}</td>
-                      <td>{moment(news?.Date).format("MMM D yyyy ,h:mm")}</td>
+                      <td>
+                        {timeFormat(news?.createdAt?._seconds)?.toString()}
+                      </td>
                       <td className="text-end">
                         <Link
                           state={{ type: "newsEdit", data: news }}
-                          to="/news/news_add"
+                          to={`/news/news_edit/${news?.id}`}
                           className="btn btn-light btn-active-light-primary btn-sm"
                         >
                           <span className="svg-icon svg-icon-muted svg-icon-1hx">
