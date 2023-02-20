@@ -229,7 +229,7 @@ const MainLineIPO = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
+                  {getAllMainLineIpoData?.map((Itm) => {
                     return (
                       <tr>
                         <td className="d-flex align-items-center mw-230px w-230px">
@@ -273,7 +273,6 @@ const MainLineIPO = () => {
                                   "MMM d, yyyy"
                                 )}{" "}
                             to
-                            {/* <br /> */}
                             {Itm?.IPOCloseDate === undefined
                               ? "N/A"
                               : moment(Itm?.IPOCloseDate).format("MMM d, yyyy")}
