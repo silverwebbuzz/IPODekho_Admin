@@ -17,10 +17,12 @@ import {
 import "../assets/css/customStepperStyle.css";
 import Tabs from "../Components/Tabs/Tabs";
 import blankImage from "../assets/media/offer/blank-image.svg";
+import SpinnerLoader from "../Components/SpinnerLoader";
 
 const EditIpo = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const [imageMsg, setImageMsg] = useState("");
   const ipoPrefillData = location.state;
   const [ipoDates, setIpoDates] = useState("");
   const formData = new FormData();
@@ -28,7 +30,7 @@ const EditIpo = () => {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(ipoPrefillData?.data?.file);
-  const { updatedIpo, getIPODataById, uploadImage } = useSelector(
+  const { updatedIpo, getIPODataById, uploadImage, isLoading } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -87,24 +89,33 @@ const EditIpo = () => {
     };
 
     dispatch(uploadIMG({ payload }));
+    setImageMsg("");
   };
 
   const changeHandler = (e) => {
+    const MAX_FILE_SIZE = 4096; // 2MB
+
     const file = e.target.files[0];
-    if (!file.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
+    const fileSizeKiloBytes = file.size / 1024;
+
+    if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+      setFile("");
+      setImageMsg("File size is greater than maximum limit*");
+    } else if (!file.type.match(imageMimeType)) {
+      setFile("");
+      setImageMsg("Image type is not valid*");
+    } else {
+      formData.append("file", file);
+      formDataImg.append("file", file);
+      let payload = {
+        payload: formDataImg,
+        id: { id: ipoPrefillData?.data?.id },
+      };
+
+      dispatch(uploadIMG({ payload }));
+      setImageMsg("");
+      setFile(file);
     }
-    setFile(file);
-
-    formData.append("file", file);
-    formDataImg.append("file", file);
-    let payload = {
-      payload: formDataImg,
-      id: { id: ipoPrefillData?.data?.id },
-    };
-
-    dispatch(uploadIMG({ payload }));
   };
 
   useEffect(() => {
@@ -174,10 +185,14 @@ const EditIpo = () => {
                     </p>
 
                     <div className="preview w-150px h-150px">
-                      <img
-                        src={fileDataURL ? fileDataURL : blankImage}
-                        alt="preview"
-                      />
+                      {isLoading ? (
+                        <SpinnerLoader />
+                      ) : (
+                        <img
+                          src={fileDataURL ? fileDataURL : blankImage}
+                          alt="preview"
+                        />
+                      )}
                     </div>
 
                     {fileDataURL && (
@@ -189,6 +204,7 @@ const EditIpo = () => {
                       </div>
                     )}
                   </div>
+                  <div className="text-danger fs-5 mt-2">{imageMsg}</div>
                 </div>
                 <div className="text-muted fs-7">
                   Set the product thumbnail image. Only .png, .jpg and *.jpeg
@@ -262,6 +278,7 @@ const EditIpo = () => {
                         <option value="Upcoming">Upcoming</option>
                         <option value="Listed">Listed</option>
                       </Field>
+
                       <div className="text-muted fs-7">
                         Set the ipo status.{" "}
                       </div>

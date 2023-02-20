@@ -11,6 +11,7 @@ import {
 } from "../../UrlConfig";
 
 const initialState = {
+  // isLoading: false,
   isLoading: false,
   getIPODataById: [],
   ID: "",
@@ -66,6 +67,7 @@ export const getIpoById = createAsyncThunk(
     }
   }
 );
+
 export const updateIPO = createAsyncThunk(
   "admin/UpdateMainLineIpo",
   async ({ payload }, { rejectWithValue }) => {
@@ -87,6 +89,7 @@ export const updateIPO = createAsyncThunk(
     }
   }
 );
+
 //ADMIN_IMG_UPLOAD
 export const uploadIMG = createAsyncThunk(
   "admin/uploadIMG",
@@ -154,6 +157,7 @@ const mainLineIpoSlice = createSlice({
       .addCase(getAllMainLineIpo.rejected, (state) => {
         state.isLoading = false;
       })
+      //Fetch By ID
       .addCase(getIpoById.pending, (state) => {
         state.isLoading = true;
       })
@@ -168,7 +172,6 @@ const mainLineIpoSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(uploadIMG.fulfilled, (state, action) => {
-        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
         state.uploadImage = action.payload;
         state.isLoading = false;
@@ -180,7 +183,6 @@ const mainLineIpoSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createMainLineIpo.fulfilled, (state, action) => {
-        // localStorage.setItem("ID", JSON.stringify(action.payload?.id));
         state.ID = action.payload?.id;
         state.createIpo = action.payload;
         state.isLoading = false;

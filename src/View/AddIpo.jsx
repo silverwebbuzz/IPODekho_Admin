@@ -24,12 +24,13 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../FirebaseConfig";
 const AddIpo = () => {
-  const [clearImage, setClearImage] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
+  const [imageMsg, setImageMsg] = useState("");
   const [ipoDates, setIpoDates] = useState("");
   const location = useLocation();
   const IPOTYPE = location.state;
   const dispatch = useDispatch();
-  const { ID, getIPODataById, uploadImage } = useSelector(
+  const { ID, getIPODataById, uploadImage, isLoading } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
 
@@ -90,37 +91,44 @@ const AddIpo = () => {
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
-    setClearImage(false);
     const file = "";
     formDataImg.append("file", file);
 
     if (ID.length !== 0) {
       let payload = { payload: formDataImg, id: { id: ID } };
       dispatch(uploadIMG({ payload }));
+      setImageMsg("");
     } else {
       let payload = { payload: formDataImg, id: { id: null } };
       dispatch(uploadIMG({ payload }));
+      setImageMsg("");
     }
   };
 
   const changeHandler = (e) => {
-    const file = e.target.files[0];
-    if (!file.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
-    }
-    setFile(file);
+    const MAX_FILE_SIZE = 4096; // 2MB
 
-    formData.append("file", file);
-    if (ID) {
-      let payload = { payload: formData, id: { id: ID } };
-      dispatch(uploadIMG({ payload }));
+    const file = e.target.files[0];
+    const fileSizeKiloBytes = file.size / 1024;
+
+    if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+      setFile("");
+      setImageMsg("File size is greater than maximum limit*");
+    } else if (!file.type.match(imageMimeType)) {
+      setFile("");
+      setImageMsg("Image type is not valid*");
     } else {
-      let payload = { payload: formData, id: { id: null } };
-      dispatch(uploadIMG({ payload }));
+      formData.append("file", file);
+      if (ID) {
+        let payload = { payload: formData, id: { id: ID } };
+        dispatch(uploadIMG({ payload }));
+      } else {
+        let payload = { payload: formData, id: { id: null } };
+        dispatch(uploadIMG({ payload }));
+        setImageMsg("");
+        setFile(file);
+      }
     }
-    setClearImage(true);
-    // dispatch(createMainLineIpo({ payload }));
   };
 
   useEffect(() => {
@@ -145,27 +153,6 @@ const AddIpo = () => {
       }
     };
   }, [file]);
-
-  // useEffect(() => {
-  //   if (ID !== "") {
-  //     // jl
-  //     signInWithEmailAndPassword(auth, "sahil@gmail.com", "Silver@123")
-  //       .then((userCredential) => {
-  //         const user = userCredential.user;
-  //         console.log(user);
-  //       })
-  //       .catch((error) => {
-  //         const errorCode = error.code;
-  //         const errorMessage = error.message;
-  //         console.log(errorCode, errorMessage);
-  //       });
-  //     const { uid } = auth.currentUser;
-  //     addDoc(collection(db, "Chat"), {
-  //       ipoId: ID,
-  //       uid,
-  //     });
-  //   }
-  // }, [ID]);
 
   return (
     <>
@@ -203,7 +190,6 @@ const AddIpo = () => {
                         onChange={changeHandler}
                         hidden
                         accept=".png, .jpg, .jpeg"
-                        //   value={values?.file}
                       />
                     </p>
 
@@ -222,6 +208,7 @@ const AddIpo = () => {
                       </div>
                     )}
                   </div>
+                  <div className="text-danger fs-5 mt-2">{imageMsg}</div>
                 </div>
                 <div className="text-muted fs-7">
                   Set the product thumbnail image. Only .png, .jpg and *.jpeg
@@ -230,10 +217,7 @@ const AddIpo = () => {
               </div>
             </div>
 
-            <Formik
-              enableReinitialize
-              initialValues={{ IPOStatus: getIPODataById?.IPOStatus }}
-            >
+            <Formik enableReinitialize initialValues={{ IPOStatus: "" }}>
               {({ values }) => (
                 <Form onChange={handleIpoStatus}>
                   <div className="card card-flush py-4">
@@ -282,10 +266,6 @@ const AddIpo = () => {
                         as="select"
                         className="form-control mb-2"
                         name="IPOStatus"
-                        // data-placeholder="Select an option"
-                        // onChange={(e) => handleIpoStatus(e)}
-                        // defaultValue={getIPODataById?.IPOStatus}
-                        // value={ipoStatus}
                       >
                         <option></option>
                         <option value="Live">Live</option>

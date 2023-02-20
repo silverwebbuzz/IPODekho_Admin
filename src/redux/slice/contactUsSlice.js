@@ -23,7 +23,7 @@ export const getAllContacts = createAsyncThunk(
           },
         }
       );
-      console.log("response?.data", response?.data?.data);
+
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);

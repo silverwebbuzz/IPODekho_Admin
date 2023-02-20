@@ -7,6 +7,7 @@ const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));
 const News = lazy(() => import("./View/News"));
 const NewsAdd = lazy(() => import("./View/NewsAdd"));
+const NewsEdit = lazy(() => import("./View/NewsEdit"));
 const Offers = lazy(() => import("./View/Offers"));
 const Faqs = lazy(() => import("./View/Faqs"));
 const IpoAllotmentTips = lazy(() => import("./View/IpoAllotmentTips"));

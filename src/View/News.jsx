@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllNews } from "../redux/slice/newsSlice";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 import { useState } from "react";
@@ -74,7 +74,6 @@ const News = () => {
                 data-kt-user-table-toolbar="base"
               >
                 <Link
-                  state={{ type: "newsAdd" }}
                   to="/news/news_add"
                   type="button"
                   className="btn btn-primary"
@@ -138,7 +137,6 @@ const News = () => {
                       </td>
                       <td className="text-end">
                         <Link
-                          state={{ type: "newsEdit", data: news }}
                           to={`/news/news_edit/${news?.id}`}
                           className="btn btn-light btn-active-light-primary btn-sm"
                         >

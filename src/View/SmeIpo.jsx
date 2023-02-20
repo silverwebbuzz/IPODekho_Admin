@@ -315,11 +315,13 @@ const SmeIpo = () => {
                               <div className="badge badge-light-primary fw-bold">
                                 Allotment Out
                               </div>
-                            ) : Itm?.IPOStatus === "WaitingAllotment" ? (
-                              <div className="badge badge-light-warning fw-bold">
-                                Waiting Allotment
-                              </div>
-                            ) : null}
+                            ) : (
+                              Itm?.IPOStatus === "WaitingAllotment" && (
+                                <div className="badge badge-light-warning fw-bold">
+                                  Waiting Allotment
+                                </div>
+                              )
+                            )}
                           </td>
                           <td className="text-end w-200px">
                             <div className="menu-item px-3">

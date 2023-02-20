@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   ADMIN_CREATE_NEWS,
+  ADMIN_GETNEWSBYID,
   ADMIN_GET_ALL_NEWS,
   ADMIN_GET_NEWS_BY_ID,
   ADMIN_UPDATE_NEWS,
@@ -15,6 +16,7 @@ const initialState = {
   addNews: [],
   editNews: [],
   editNewsImage: null,
+  getDataById: [],
 };
 
 export const createNews = createAsyncThunk(
@@ -32,7 +34,7 @@ export const createNews = createAsyncThunk(
         }
       );
       console.log(response.data);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
@@ -127,6 +129,28 @@ export const getNewsById = createAsyncThunk(
     }
   }
 );
+
+// export const getNewsById = createAsyncThunk(
+//   "admin/getNewsById",
+//   async ({ payload }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(
+//         `${BASE_URL_FOR_ADMIN + ADMIN_GETNEWSBYID}${payload?.id}`,
+//         payload,
+//         {
+//           headers: {
+//             "Access-Control-Allow-Origin": "*",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+//       console.log(response?.data?.GetSingleNews);
+//       return response?.data?.GetSingleNews;
+//     } catch (error) {
+//       return rejectWithValue(error?.response?.data);
+//     }
+//   }
+// );
 
 const newsSlice = createSlice({
   name: "newsSlice",
