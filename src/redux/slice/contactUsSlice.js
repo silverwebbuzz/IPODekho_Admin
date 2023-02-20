@@ -21,8 +21,8 @@ export const getAllContacts = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.contactList);
-      return response?.data?.contactList;
+      console.log(response?.data);
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }

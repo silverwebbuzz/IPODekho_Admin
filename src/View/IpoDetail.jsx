@@ -208,11 +208,6 @@ const IpoDetail = () => {
                           onChange={setFieldValue}
                         />
                       </div>
-                      <div className="d-flex justify-content-center mt-4">
-                        <button type="submit" className="btn btn-primary" ss>
-                          Save Changes
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </div>

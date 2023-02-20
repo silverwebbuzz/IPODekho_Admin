@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllMainLineIpo,
+  getIpoById,
   setClearId,
   updateIPO,
 } from "../redux/slice/mainLineIpoSlices";
@@ -38,7 +39,6 @@ const MainLineIPO = () => {
       id: ID,
       GMP: e?.target?.value,
     };
-
     dispatch(updateIPO({ payload }));
   };
 
@@ -50,7 +50,10 @@ const MainLineIPO = () => {
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
     dispatch(updateIPO({ payload }));
+
+    // });
   };
+
   const handlePageClick = (e) => {
     console.log(e.selected);
     setCurrentPage(e.selected + 1);
@@ -64,13 +67,21 @@ const MainLineIPO = () => {
     };
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, currentPage]);
+  }, [updatedIpo, createIpo, currentPage]);
+
   useEffect(() => {
     if (getAllMainLineIpoData?.Total !== undefined) {
       let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
       setTotalPage(totalCount);
     }
   }, [getAllMainLineIpoData?.Total]);
+
+  // useEffect(() => {
+  //   const payload = {
+  //     id: Itm?.id,
+  //   };
+  //   dispatch(getIpoById({ payload }));
+  // }, [updatedGmp]);
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />
@@ -198,7 +209,7 @@ const MainLineIPO = () => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllMainLineIpoData?.map((Itm) => {
+                  {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                     return (
                       <tr>
                         <td className="d-flex align-items-center mw-230px w-230px">
@@ -272,6 +283,7 @@ const MainLineIPO = () => {
                           </td>
                         )}
                         <td>{Itm?.lotSize} Shares</td>
+
                         <td className="text-center">
                           <div className="gmp_radio form-check form-switch form-check-custom form-check-danger form-check-solid">
                             <input
@@ -281,14 +293,15 @@ const MainLineIPO = () => {
                               onChange={(e) => handleGmp(e, Itm?.id)}
                             />
                           </div>
+
                           <input
                             type="number"
                             className="form-control w-70px mt-3"
-                            // defaultValue={Itm?.GMP}
                             value={Itm?.GMP}
                             onChange={(e) => handleGMPNumber(e, Itm?.id)}
                           />
                         </td>
+
                         <td>
                           {Itm?.IPOStatus === "Live" ? (
                             <div className="badge badge-light-danger fw-bold">
@@ -306,11 +319,13 @@ const MainLineIPO = () => {
                             <div className="badge badge-light-primary fw-bold">
                               Allotment Out
                             </div>
-                          ) : Itm?.IPOStatus === "WaitingAllotment" ? (
-                            <div className="badge badge-light-warning fw-bold">
-                              Waiting Allotment
-                            </div>
-                          ) : null}
+                          ) : (
+                            Itm?.IPOStatus === "WaitingAllotment" && (
+                              <div className="badge badge-light-warning fw-bold">
+                                Waiting Allotment
+                              </div>
+                            )
+                          )}
                         </td>
                         <td className="text-end w-200px">
                           <div className="menu-item px-3">

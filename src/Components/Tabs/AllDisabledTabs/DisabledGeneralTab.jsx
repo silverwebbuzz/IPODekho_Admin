@@ -11,7 +11,9 @@ import MultiSelect from "../../MultiSelect";
 import { modules } from "../../../Constants/commonConstants";
 
 const DisabledGeneralTab = () => {
-  const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
+  const { getIPODataById, gmpLoading } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
 
   return (
     <>

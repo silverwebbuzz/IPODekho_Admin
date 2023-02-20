@@ -29,8 +29,8 @@ export const getAllUsers = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.users);
-      return response?.data?.users;
+      console.log(response?.data?.data);
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }

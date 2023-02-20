@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   ADMIN_CREATE_NEWS,
+  ADMIN_GETNEWSBYID,
   ADMIN_GET_ALL_NEWS,
   ADMIN_UPDATE_NEWS,
   ADMIN_UPDATE_NEWS_IMAGE,
@@ -14,6 +15,7 @@ const initialState = {
   addNews: [],
   editNews: [],
   editNewsImage: null,
+  getDataById: [],
 };
 
 export const createNews = createAsyncThunk(
@@ -31,7 +33,7 @@ export const createNews = createAsyncThunk(
         }
       );
       console.log(response.data);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
@@ -51,7 +53,7 @@ export const getAllNews = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
+      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -105,6 +107,28 @@ export const updateNewsImage = createAsyncThunk(
   }
 );
 
+export const getNewsById = createAsyncThunk(
+  "admin/getNewsById",
+  async ({ payload }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL_FOR_ADMIN + ADMIN_GETNEWSBYID}${payload?.id}`,
+        payload,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response?.data?.GetSingleNews);
+      return response?.data?.GetSingleNews;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 const newsSlice = createSlice({
   name: "newsSlice",
   initialState,
@@ -115,6 +139,7 @@ const newsSlice = createSlice({
       })
       .addCase(createNews.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.addNews = action.payload;
       })
       .addCase(createNews.rejected, (state) => {
         state.isLoading = false;
@@ -134,6 +159,7 @@ const newsSlice = createSlice({
       })
       .addCase(updateNews.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.editNews = action.payload;
       })
       .addCase(updateNews.rejected, (state) => {
         state.isLoading = false;
@@ -143,8 +169,19 @@ const newsSlice = createSlice({
       })
       .addCase(updateNewsImage.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.editNewsImage = action.payload;
       })
       .addCase(updateNewsImage.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getNewsById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getNewsById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getDataById = action.payload;
+      })
+      .addCase(getNewsById.rejected, (state) => {
         state.isLoading = false;
       });
   },

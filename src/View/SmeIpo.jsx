@@ -202,7 +202,7 @@ const SmeIpo = () => {
                   <h1>Loading...</h1>
                 ) : (
                   <tbody className="text-gray-600 fw-semibold">
-                    {getAllMainLineIpoData?.map((Itm) => {
+                    {getAllMainLineIpoData?.SmeIPO?.map((Itm) => {
                       return (
                         <tr>
                           <td className="d-flex align-items-center mw-230px w-230px">
@@ -315,11 +315,13 @@ const SmeIpo = () => {
                               <div className="badge badge-light-primary fw-bold">
                                 Allotment Out
                               </div>
-                            ) : Itm?.IPOStatus === "WaitingAllotment" ? (
-                              <div className="badge badge-light-warning fw-bold">
-                                Waiting Allotment
-                              </div>
-                            ) : null}
+                            ) : (
+                              Itm?.IPOStatus === "WaitingAllotment" && (
+                                <div className="badge badge-light-warning fw-bold">
+                                  Waiting Allotment
+                                </div>
+                              )
+                            )}
                           </td>
                           <td className="text-end w-200px">
                             <div className="menu-item px-3">

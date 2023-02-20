@@ -13,12 +13,13 @@ import RegistrarInfoTab from "./AllTabs/CompanyRegistrarInfoTab";
 import SubscriptionTab from "./AllTabs/SubscriptionTab";
 import ListedInfoTab from "./AllTabs/ListedInfoTab";
 import { useSelector } from "react-redux";
+import SpinnerLoader from "../SpinnerLoader";
 
 export const TabContext = createContext();
 const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const pointerStyle = { cursor: "pointer" };
   const [activeTab, setActiveTab] = useState("ipo_general");
-  const { ID } = useSelector((state) => state?.mainLineIpoSlice);
+  const { ID, isLoading } = useSelector((state) => state?.mainLineIpoSlice);
   const [tabData, setTabData] = useState({});
   return (
     <>

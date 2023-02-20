@@ -5,19 +5,30 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { modules } from "../Constants/commonConstants";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { createNews, getNewsById } from "../redux/slice/newsSlice";
+import {
+  createNews,
+  getNewsById,
+  updateNews,
+  updateNewsImage,
+} from "../redux/slice/newsSlice";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "react-datepicker/dist/react-datepicker.css";
-const NewsAdd = () => {
+const NewsEdit = () => {
+  const { getDataById } = useSelector((state) => state.newsReducer);
+  const params = useParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const formData = new FormData();
+  //   const formData = new FormData();
+  const formDataImg = new FormData();
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
+
+  console.log("getDataById------", getDataById);
 
   const changeHandler = (e) => {
     const imageFile = e.target.files[0];
@@ -69,29 +80,43 @@ const NewsAdd = () => {
   };
 
   const handleSubmit = (values) => {
-    formData.append("Content", values?.Content);
-    formData.append("Title", values?.Title);
-    formData.append("Date", values?.newsDate);
-    formData.append("file", file);
-
-    let payload = formData;
-    dispatch(createNews({ payload }));
+    let payload = {
+      id: getDataById?.id,
+      Content: values?.Content,
+      Title: values?.Title,
+      Date: values?.newsDate,
+    };
+    formDataImg.append("file", file);
+    let payloadImage = {
+      payload: formDataImg,
+      payloadId: { id: getDataById?.id },
+    };
+    dispatch(updateNewsImage({ payloadImage }));
+    dispatch(updateNews({ payload }));
     navigate("/news");
   };
 
+  useEffect(() => {
+    const payload = {
+      id: params?.newsId,
+    };
+    setFileDataURL(getDataById?.file);
+    dispatch(getNewsById({ payload }));
+  }, [getDataById?.file]);
+
   return (
     <>
-      <PageHeading title={"News Add"} />
+      <PageHeading title={"News Edit"} />
       <AppContentLayout>
         <div className="card">
           <div className="card-body">
             <Formik
               enableReinitialize
               initialValues={{
-                file: "",
-                Content: "",
-                Title: "",
-                newsDate: "",
+                file: getDataById?.file,
+                Content: getDataById?.Content,
+                Title: getDataById?.Title,
+                newsDate: getDataById?.Date,
               }}
               onSubmit={(values) => handleSubmit(values)}
             >
@@ -112,7 +137,6 @@ const NewsAdd = () => {
                     >
                       <img
                         className="image-input-wrapper w-400px h-400px"
-                        // src={fileDataURL ? fileDataURL : blankImage}
                         src={fileDataURL ? fileDataURL : blankImage}
                         alt="preview"
                       />
@@ -207,4 +231,4 @@ const NewsAdd = () => {
   );
 };
 
-export default NewsAdd;
+export default NewsEdit;

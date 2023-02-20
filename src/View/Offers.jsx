@@ -122,7 +122,7 @@ const Offers = () => {
                 </thead>
 
                 <tbody className="text-gray-600 fw-semibold">
-                  {getAllOffersData?.map((offer) => {
+                  {getAllOffersData?.AllOffers?.map((offer) => {
                     return (
                       <tr>
                         <td>

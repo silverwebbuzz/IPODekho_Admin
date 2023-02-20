@@ -7,6 +7,7 @@ const MainLineIPO = lazy(() => import("./View/MainLineIPO"));
 const SmeIpo = lazy(() => import("./View/SmeIpo"));
 const News = lazy(() => import("./View/News"));
 const NewsAdd = lazy(() => import("./View/NewsAdd"));
+const NewsEdit = lazy(() => import("./View/NewsEdit"));
 const Offers = lazy(() => import("./View/Offers"));
 const Faqs = lazy(() => import("./View/Faqs"));
 const IpoAllotmentTips = lazy(() => import("./View/IpoAllotmentTips"));
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="sme_ipo/ipo_edit" element={<IpoEdit />} />
             <Route path="news" element={<News />} />
             <Route path="news/news_add" element={<NewsAdd />} />
+            <Route path="news/news_edit/:newsId" element={<NewsEdit />} />
             <Route path="offers" element={<Offers />} />
             <Route path="faqs" element={<Faqs />} />
             <Route path="ipo_allotment_tips" element={<IpoAllotmentTips />} />

@@ -95,7 +95,7 @@ const Notifications = () => {
                 </thead>
 
                 <tbody className="fw-semibold text-gray-600">
-                  {getAllData.map((data, index) => {
+                  {getAllData?.AllNotification?.map((data, index) => {
                     return (
                       <tr>
                         <td>{index + 1}</td>

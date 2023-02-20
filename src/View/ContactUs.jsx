@@ -40,7 +40,7 @@ const ContactUs = () => {
                 </thead>
 
                 <tbody className="fw-semibold text-gray-600">
-                  {getAllData?.map((contactInfo) => {
+                  {getAllData?.AllContact?.map((contactInfo) => {
                     return (
                       <tr key={contactInfo?.id}>
                         <td>

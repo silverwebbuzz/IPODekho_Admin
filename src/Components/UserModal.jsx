@@ -10,6 +10,7 @@ import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getUserById, updateUsers } from "../redux/slice/usersSlice";
 
 const UserModal = ({ userID }) => {
+  const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
   const dispatch = useDispatch();
   const { getDataByIdData } = useSelector((state) => state.userReducer);
@@ -19,13 +20,21 @@ const UserModal = ({ userID }) => {
   const [fileDataURL, setFileDataURL] = useState(blankImage);
 
   const changeHandler = (e) => {
-    const file = e.target.files[0];
+    const MAX_FILE_SIZE = 4096; // 2MB
 
-    if (!file.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
+    const file = e.target.files[0];
+    const fileSizeKiloBytes = file.size / 1024;
+
+    if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+      setFile("");
+      setImageMsg("File size is greater than maximum limit*");
+    } else if (!file.type.match(imageMimeType)) {
+      setFile("");
+      setImageMsg("Image type is not valid*");
+    } else {
+      setImageMsg("");
+      setFile(file);
     }
-    setFile(file);
   };
 
   useEffect(() => {
@@ -176,7 +185,7 @@ const UserModal = ({ userID }) => {
                             )}
                           </div>
                         </div>
-
+                        <div className="text-danger fs-5 mt-2">{imageMsg}</div>
                         <div
                           className="form-text"
                           style={{ marginTop: "3rem" }}

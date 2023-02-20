@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllNews } from "../redux/slice/newsSlice";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 import { useState } from "react";
@@ -26,6 +26,7 @@ const News = () => {
   //   let formatTime = moment(output).format("MMM D yyyy LT");
   //   return formatTime;
   // };
+
   return (
     <>
       <PageHeading title={"News"} />
@@ -53,7 +54,6 @@ const News = () => {
                 data-kt-user-table-toolbar="base"
               >
                 <Link
-                  state={{ type: "newsAdd" }}
                   to="/news/news_add"
                   type="button"
                   className="btn btn-primary"
@@ -101,7 +101,7 @@ const News = () => {
               </thead>
 
               <tbody className="text-gray-600 fw-semibold">
-                {newsData?.map((news) => {
+                {newsData?.AllNews?.map((news) => {
                   return (
                     <tr>
                       <td>
@@ -115,8 +115,7 @@ const News = () => {
                       <td>{moment(news?.Date).format("MMM D yyyy ,h:mm")}</td>
                       <td className="text-end">
                         <Link
-                          state={{ type: "newsEdit", data: news }}
-                          to="/news/news_add"
+                          to={`/news/news_edit/${news?.id}`}
                           className="btn btn-light btn-active-light-primary btn-sm"
                         >
                           <span className="svg-icon svg-icon-muted svg-icon-1hx">
