@@ -97,7 +97,6 @@ const NewsAdd = () => {
             <Formik
               enableReinitialize
               initialValues={{
-                file: "",
                 Content: "",
                 Title: "",
                 newsDate: "",

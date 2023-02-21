@@ -131,14 +131,13 @@ const Users = () => {
                         <td className="text-end">
                           <button
                             onClick={() => {
-                              // setShow(!show);
                               setShowModal({
                                 ...showModal,
                                 showClass: "show",
                                 displayClass: "block",
                                 modalBackdrop: "modal-backdrop",
                               });
-                              dispatch(setModalIsOpen(true));
+
                               setUserId(userInfo?.uid);
                             }}
                             type="button"
@@ -159,7 +158,7 @@ const Users = () => {
               </table>
             )}
             <div className="d-flex">
-              <div className="dataTables_length d-flex w-auto align-items-center ">
+              <div className="dataTables_length d-flex w-auto align-items-center">
                 <select
                   style={{
                     minWidth: "fit-content",
@@ -210,28 +209,6 @@ const Users = () => {
       >
         <UserModal showModal={showModal} setShowModal={setShowModal} />
       </div>
-
-      {/* <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => {
-          dispatch(setModalIsOpen(false));
-        }}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <UserModal userID={userId} />
-      </ReactModal> */}
-
-      {/* <div
-        // className="fade show"
-        className="fade"
-        // style={{ display: "block", paddingLeft: "0px" }}
-        tabIndex="-1"
-        aria-modal="true"
-        // role="dialog"
-      >
-        <UserModal userID={userId} />
-      </div> */}
     </>
   );
 };

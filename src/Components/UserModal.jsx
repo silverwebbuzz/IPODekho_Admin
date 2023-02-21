@@ -73,7 +73,13 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
       payloadId: { id: getDataByIdData?.uid },
     };
     dispatch(updateUsers({ payload }));
-    dispatch(setModalIsOpen(false));
+    // dispatch(setModalIsOpen(false));
+    setShowModal({
+      ...showModal,
+      showClass: "",
+      displayClass: "",
+      modalBackdrop: "",
+    });
   };
 
   // const phoneRegExp =
@@ -132,7 +138,7 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
           >
             {({ values, touched, errors }) => (
               <Form>
-                <div id="kt_modal_edit_user_form" className="form" action="#">
+                <div id="kt_modal_edit_user_form" className="form">
                   <div
                     class="d-flex flex-column scroll-y me-n7 pe-7"
                     id="kt_modal_edit_user_scroll"

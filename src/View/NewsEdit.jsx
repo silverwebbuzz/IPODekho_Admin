@@ -27,7 +27,20 @@ const NewsEdit = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
+  const [fileDataURL, setFileDataURL] = useState(getDataById?.file);
+
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -44,6 +57,14 @@ const NewsEdit = () => {
     } else {
       setImageMsg("");
       setFile(file);
+      if (file) {
+        let payloadImage = {
+          id: getDataById?.id,
+          payload: formDataImg,
+        };
+        formDataImg.append("file", file);
+        dispatch(updateNewsImage({ payloadImage }));
+      }
     }
   };
 
@@ -69,20 +90,14 @@ const NewsEdit = () => {
     };
   }, [file]);
 
-  const DatePickerField = ({ name, value, onChange }) => {
-    return (
-      <DatePicker
-        selected={(value && new Date(value)) || null}
-        className="form-control"
-        dateFormat="MMM d, yyyy"
-        onChange={(val) => {
-          onChange(name, val);
-        }}
-      />
-    );
-  };
   const handleRemoveImage = () => {
     setFile("");
+    let payloadImage = {
+      id: getDataById?.id,
+      payload: formDataImg,
+    };
+    formDataImg.append("file", file);
+    dispatch(updateNewsImage({ payloadImage }));
     setFileDataURL("");
   };
 
@@ -93,12 +108,7 @@ const NewsEdit = () => {
       Title: values?.Title,
       Date: values?.newsDate,
     };
-    formDataImg.append("file", file);
-    let payloadImage = {
-      payload: formDataImg,
-      payloadId: { id: getDataById?.id },
-    };
-    dispatch(updateNewsImage({ payloadImage }));
+
     dispatch(updateNews({ payload }));
     navigate("/news");
   };
@@ -120,7 +130,6 @@ const NewsEdit = () => {
             <Formik
               enableReinitialize
               initialValues={{
-                file: getDataById?.file,
                 Content: getDataById?.Content,
                 Title: getDataById?.Title,
                 newsDate: getDataById?.Date,

@@ -15,7 +15,7 @@ const initialState = {
   isLoading: false,
   addNews: [],
   editNews: [],
-  editNewsImage: null,
+  editNewsImage: "",
   getDataById: [],
 };
 
@@ -78,7 +78,7 @@ export const updateNews = createAsyncThunk(
         }
       );
       console.log(response?.data);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
@@ -90,9 +90,7 @@ export const updateNewsImage = createAsyncThunk(
   async ({ payloadImage }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_NEWS_IMAGE}${
-          payloadImage?.payloadId?.id
-        }`,
+        `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_NEWS_IMAGE}${payloadImage?.id}`,
         payloadImage?.payload,
         {
           headers: {
@@ -122,7 +120,7 @@ export const getNewsById = createAsyncThunk(
           },
         }
       );
-
+      console.log(response?.data?.GetSingleNews);
       return response?.data?.GetSingleNews;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
