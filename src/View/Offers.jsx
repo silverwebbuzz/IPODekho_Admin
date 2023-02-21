@@ -16,18 +16,6 @@ import ReactPaginate from "react-paginate";
 import { useState } from "react";
 
 const Offers = () => {
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "50%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      zIndex: "200",
-      maxWidth: "650px",
-    },
-  };
   const {
     getAllOffersData,
     addOfferData,
@@ -36,6 +24,11 @@ const Offers = () => {
     isLoading,
   } = useSelector((state) => state.offersReducer);
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
+  const [showModal, setShowModal] = useState({
+    showClass: "",
+    displayClass: "",
+    modalBackdrop: "",
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
   const [totalPageLimit, setTotalPageLimit] = useState(10);
@@ -90,7 +83,12 @@ const Offers = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#kt_modal_add_offer"
                   onClick={() => {
-                    dispatch(setModalIsOpen(true));
+                    setShowModal({
+                      ...showModal,
+                      showClass: "show",
+                      displayClass: "block",
+                      modalBackdrop: "modal-backdrop",
+                    });
                     dispatch(setModalType("addOffer"));
                   }}
                 >
@@ -100,21 +98,6 @@ const Offers = () => {
                   </span>
                 </button>
               </div>
-
-              {/* <OffersModal /> */}
-
-              <ReactModal
-                isOpen={modalIsOpen}
-                // onAfterOpen={() => subtitle.style.color = "#f00"}
-                onRequestClose={() => {
-                  dispatch(setModalIsOpen(false));
-                  dispatch(setModalType(""));
-                }}
-                style={customStyles}
-                contentLabel="Example Modal"
-              >
-                <OffersModal />
-              </ReactModal>
             </div>
           </div>
 
@@ -165,7 +148,12 @@ const Offers = () => {
                         <td className="text-end">
                           <button
                             onClick={() => {
-                              dispatch(setModalIsOpen(true));
+                              setShowModal({
+                                ...showModal,
+                                showClass: "show",
+                                displayClass: "block",
+                                modalBackdrop: "modal-backdrop",
+                              });
                               dispatch(setModalType("editOffer"));
                               dispatch(setOfferData(offer));
                             }}
@@ -225,6 +213,20 @@ const Offers = () => {
           </div>
         </div>
       </AppContentLayout>
+
+      <div
+        className={`${showModal.modalBackdrop} fade ${showModal.showClass}`}
+      ></div>
+      <div
+        className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
+        id="kt_modal_edit_user"
+        tabindex="-1"
+        aria-hidden="true"
+        style={{ display: `${showModal.displayClass}` }}
+        role="dialog"
+      >
+        <OffersModal showModal={showModal} setShowModal={setShowModal} />
+      </div>
     </>
   );
 };

@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
+import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
@@ -21,11 +22,16 @@ const Users = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      zIndex: "200",
       maxWidth: "650px",
+      zIndex: 200,
     },
   };
   const [userId, setUserId] = useState("");
+  const [showModal, setShowModal] = useState({
+    showClass: "",
+    displayClass: "",
+    modalBackdrop: "",
+  });
   const { modalIsOpen } = useSelector((state) => state.modalReducer);
   const { updateData, getAllData, getUserById, isLoading } = useSelector(
     (state) => state.userReducer
@@ -125,7 +131,13 @@ const Users = () => {
                         <td className="text-end">
                           <button
                             onClick={() => {
-                              dispatch(setModalIsOpen(true));
+                              setShowModal({
+                                ...showModal,
+                                showClass: "show",
+                                displayClass: "block",
+                                modalBackdrop: "modal-backdrop",
+                              });
+
                               setUserId(userInfo?.uid);
                             }}
                             type="button"
@@ -146,7 +158,7 @@ const Users = () => {
               </table>
             )}
             <div className="d-flex">
-              <div className="dataTables_length d-flex w-auto align-items-center ">
+              <div className="dataTables_length d-flex w-auto align-items-center">
                 <select
                   style={{
                     minWidth: "fit-content",
@@ -184,16 +196,19 @@ const Users = () => {
           </div>
         </div>
       </AppContentLayout>
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => {
-          dispatch(setModalIsOpen(false));
-        }}
-        style={customStyles}
-        contentLabel="Example Modal"
+      <div
+        className={`${showModal.modalBackdrop} fade ${showModal.showClass}`}
+      ></div>
+      <div
+        className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
+        id="kt_modal_edit_user"
+        tabindex="-1"
+        aria-hidden="true"
+        style={{ display: `${showModal.displayClass}` }}
+        role="dialog"
       >
-        <UserModal userID={userId} />
-      </ReactModal>
+        <UserModal showModal={showModal} setShowModal={setShowModal} />
+      </div>
     </>
   );
 };

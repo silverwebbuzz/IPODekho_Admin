@@ -16,6 +16,7 @@ import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "react-datepicker/dist/react-datepicker.css";
 const NewsEdit = () => {
+  const [imageMsg, setImageMsg] = useState("");
   const { getDataById } = useSelector((state) => state.newsReducer);
   const params = useParams();
 
@@ -26,16 +27,45 @@ const NewsEdit = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
+  const [fileDataURL, setFileDataURL] = useState(getDataById?.file);
+
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
 
   const changeHandler = (e) => {
-    const imageFile = e.target.files[0];
+    const MAX_FILE_SIZE = 4096; // 2MB
 
-    if (!imageFile.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
+    const file = e.target.files[0];
+    const fileSizeKiloBytes = file.size / 1024;
+
+    if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+      setFile("");
+      setImageMsg("File size is greater than maximum limit*");
+    } else if (!file.type.match(imageMimeType)) {
+      setFile("");
+      setImageMsg("Image type is not valid*");
+    } else {
+      setImageMsg("");
+      setFile(file);
+      if (file) {
+        let payloadImage = {
+          id: getDataById?.id,
+          payload: formDataImg,
+        };
+        formDataImg.append("file", file);
+        dispatch(updateNewsImage({ payloadImage }));
+      }
     }
-    setFile(imageFile);
   };
 
   useEffect(() => {
@@ -60,20 +90,14 @@ const NewsEdit = () => {
     };
   }, [file]);
 
-  const DatePickerField = ({ name, value, onChange }) => {
-    return (
-      <DatePicker
-        selected={(value && new Date(value)) || null}
-        className="form-control"
-        dateFormat="MMM d, yyyy"
-        onChange={(val) => {
-          onChange(name, val);
-        }}
-      />
-    );
-  };
   const handleRemoveImage = () => {
-    setFile(null);
+    setFile("");
+    let payloadImage = {
+      id: getDataById?.id,
+      payload: formDataImg,
+    };
+    formDataImg.append("file", file);
+    dispatch(updateNewsImage({ payloadImage }));
     setFileDataURL("");
   };
 
@@ -85,14 +109,6 @@ const NewsEdit = () => {
       url: values?.url,
       Date: values?.newsDate,
     };
-    if (file) {
-      formDataImg.append("file", file);
-      let payloadImage = {
-        payload: formDataImg,
-        payloadId: { id: getDataById?.id },
-      };
-      dispatch(updateNewsImage({ payloadImage }));
-    }
     dispatch(updateNews({ payload }));
     navigate("/news");
   };
@@ -114,7 +130,6 @@ const NewsEdit = () => {
             <Formik
               enableReinitialize
               initialValues={{
-                file: getDataById?.file,
                 Content: getDataById?.Content,
                 url: getDataById?.url,
                 Title: getDataById?.Title,
@@ -175,6 +190,12 @@ const NewsEdit = () => {
                         <i class="bi bi-x fs-2"></i>
                       </div>
                     )}
+                    <div
+                      style={{ textAlign: "center" }}
+                      className="text-danger fs-5 mt-2"
+                    >
+                      {imageMsg}
+                    </div>
                   </div>
 
                   <div className="text-muted fs-7">

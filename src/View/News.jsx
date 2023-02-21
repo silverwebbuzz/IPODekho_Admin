@@ -12,6 +12,7 @@ import blankImage from "../assets/media/offer/blank-image.svg";
 import moment from "moment/moment";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import "../assets/css/customModalStyle.css";
 
 const News = () => {
   const { newsData, addNews, editNews, editNewsImage } = useSelector(
@@ -28,7 +29,6 @@ const News = () => {
     if (secs) {
       let output = new Date(secs * 1000);
       let formatTime = moment(output).format("MMM D, yyyy LT");
-      console.log(formatTime);
       return formatTime;
     }
   };

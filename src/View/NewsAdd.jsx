@@ -11,6 +11,7 @@ import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "react-datepicker/dist/react-datepicker.css";
 const NewsAdd = () => {
+  const [imageMsg, setImageMsg] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formData = new FormData();
@@ -20,13 +21,21 @@ const NewsAdd = () => {
   const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
 
   const changeHandler = (e) => {
-    const imageFile = e.target.files[0];
+    const MAX_FILE_SIZE = 4096; // 2MB
 
-    if (!imageFile.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
-      return;
+    const file = e.target.files[0];
+    const fileSizeKiloBytes = file.size / 1024;
+
+    if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+      setFile("");
+      setImageMsg("File size is greater than maximum limit*");
+    } else if (!file.type.match(imageMimeType)) {
+      setFile("");
+      setImageMsg("Image type is not valid*");
+    } else {
+      setImageMsg("");
+      setFile(file);
     }
-    setFile(imageFile);
   };
 
   useEffect(() => {
@@ -89,7 +98,6 @@ const NewsAdd = () => {
             <Formik
               enableReinitialize
               initialValues={{
-                file: "",
                 Content: "",
                 url: "",
                 Title: "",
@@ -151,6 +159,12 @@ const NewsAdd = () => {
                         <i class="bi bi-x fs-2"></i>
                       </div>
                     )}
+                    <div
+                      style={{ textAlign: "center" }}
+                      className="text-danger fs-5 mt-2"
+                    >
+                      {imageMsg}
+                    </div>
                   </div>
 
                   <div className="text-muted fs-7">

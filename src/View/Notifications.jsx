@@ -25,6 +25,11 @@ const Notifications = () => {
       maxWidth: "650px",
     },
   };
+  const [showModal, setShowModal] = useState({
+    showClass: "",
+    displayClass: "",
+    modalBackdrop: "",
+  });
   const { createData, getAllData, isLoading } = useSelector(
     (state) => state.notificationReducer
   );
@@ -40,7 +45,7 @@ const Notifications = () => {
     if (secs) {
       let output = new Date(secs * 1000);
       let formatTime = moment(output).format("MMM D, yyyy LT");
-      console.log(formatTime);
+
       return formatTime;
     }
   };
@@ -89,7 +94,12 @@ const Notifications = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#kt_modal_add_offer"
                   onClick={() => {
-                    dispatch(setModalIsOpen(true));
+                    setShowModal({
+                      ...showModal,
+                      showClass: "show",
+                      displayClass: "block",
+                      modalBackdrop: "modal-backdrop",
+                    });
                   }}
                 >
                   <span className="svg-icon svg-icon-2">
@@ -181,16 +191,19 @@ const Notifications = () => {
           </div>
         </div>
       </AppContentLayout>
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => {
-          dispatch(setModalIsOpen(false));
-        }}
-        style={customStyles}
-        contentLabel="Example Modal"
+      <div
+        className={`${showModal.modalBackdrop} fade ${showModal.showClass}`}
+      ></div>
+      <div
+        className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
+        id="kt_modal_edit_user"
+        tabindex="-1"
+        aria-hidden="true"
+        style={{ display: `${showModal.displayClass}` }}
+        role="dialog"
       >
-        <NotificationModal />
-      </ReactModal>
+        <NotificationModal showModal={showModal} setShowModal={setShowModal} />
+      </div>
     </>
   );
 };
