@@ -118,7 +118,6 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
         <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
           <Formik
             enableReinitialize
-            validationSchema={validationSchema}
             initialValues={{
               photoURL: fileDataURL,
               displayName: getDataByIdData?.displayName,
