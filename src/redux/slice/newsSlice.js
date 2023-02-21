@@ -102,7 +102,7 @@ export const updateNewsImage = createAsyncThunk(
         }
       );
       console.log(response?.data);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
