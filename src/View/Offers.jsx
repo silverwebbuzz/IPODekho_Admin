@@ -29,6 +29,7 @@ const Offers = () => {
     displayClass: "",
     modalBackdrop: "",
   });
+  const [singleData, setSingleData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
   const [totalPageLimit, setTotalPageLimit] = useState(10);
@@ -89,7 +90,6 @@ const Offers = () => {
                       displayClass: "block",
                       modalBackdrop: "modal-backdrop",
                     });
-                    dispatch(setModalType("addOffer"));
                   }}
                 >
                   <span className="svg-icon svg-icon-2">
@@ -154,8 +154,9 @@ const Offers = () => {
                                 displayClass: "block",
                                 modalBackdrop: "modal-backdrop",
                               });
-                              dispatch(setModalType("editOffer"));
-                              dispatch(setOfferData(offer));
+                              setSingleData(offer);
+
+                              // dispatch(setOfferData(offer));
                             }}
                             type="button"
                             className="btn btn-light btn-active-light-primary btn-sm"
@@ -225,7 +226,12 @@ const Offers = () => {
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"
       >
-        <OffersModal showModal={showModal} setShowModal={setShowModal} />
+        <OffersModal
+          singleData={singleData}
+          setSingleData={setSingleData}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </div>
     </>
   );

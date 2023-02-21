@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   ADMIN_CREATE_OFFERS,
   ADMIN_GET_ALL_OFFERS,
+  ADMIN_GET_OFFER_BY_ID,
   ADMIN_UPDATE_OFFER,
   ADMIN_UPDATE_OFFER_IMAGE,
   BASE_URL_FOR_ADMIN,
@@ -12,10 +13,11 @@ import {
 const initialState = {
   isLoading: false,
   getAllOffersData: [],
-  offerData: null,
+  // offerData: null,
   addOfferData: [],
   editOfferData: [],
   offerImage: null,
+  // getOfferDataById: [],
 };
 
 export const getAllOffers = createAsyncThunk(
@@ -33,6 +35,7 @@ export const getAllOffers = createAsyncThunk(
           },
         }
       );
+      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -109,6 +112,28 @@ export const updateOfferImage = createAsyncThunk(
   }
 );
 
+// export const getOfferById = createAsyncThunk(
+//   "admin/getOfferById",
+//   async ({ payload }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(
+//         `${BASE_URL_FOR_ADMIN + ADMIN_GET_OFFER_BY_ID}${payload?.id}`,
+//         payload,
+//         {
+//           headers: {
+//             "Access-Control-Allow-Origin": "*",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+//       console.log(response?.data);
+//       return response?.data;
+//     } catch (error) {
+//       return rejectWithValue(error?.response?.data);
+//     }
+//   }
+// );
+
 const offersSlice = createSlice({
   name: "offersSlice",
   initialState,
@@ -159,6 +184,16 @@ const offersSlice = createSlice({
       .addCase(updateOfferImage.rejected, (state) => {
         state.isLoading = false;
       });
+    // .addCase(getOfferById.pending, (state) => {
+    //   state.isLoading = true;
+    // })
+    // .addCase(getOfferById.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    //   state.getOfferDataById = action.payload;
+    // })
+    // .addCase(getOfferById.rejected, (state) => {
+    //   state.isLoading = false;
+    // });
   },
 });
 

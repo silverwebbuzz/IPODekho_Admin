@@ -16,6 +16,7 @@ export const ADMIN_GET_ALL_OFFERS = "offer/GetAllOffer";
 export const ADMIN_CREATE_OFFERS = "offer/createOffer";
 export const ADMIN_UPDATE_OFFER = "offer/updateOffer/";
 export const ADMIN_UPDATE_OFFER_IMAGE = "offer/updateOfferImage/";
+export const ADMIN_GET_OFFER_BY_ID = "offer/GetISingleOffer/";
 
 export const ADMIN_GET_ALL_IPO_ALLOTMENT_TIPS =
   "IPOAllotmentTips/GetAllIPOAllotmentTips";
