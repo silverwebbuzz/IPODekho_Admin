@@ -71,6 +71,7 @@ const NewsAdd = () => {
   const handleSubmit = (values) => {
     formData.append("Content", values?.Content);
     formData.append("Title", values?.Title);
+    formData.append("url", values?.url);
     formData.append("Date", values?.newsDate);
     formData.append("file", file);
 
@@ -90,6 +91,7 @@ const NewsAdd = () => {
               initialValues={{
                 file: "",
                 Content: "",
+                url: "",
                 Title: "",
                 newsDate: "",
               }}
@@ -174,7 +176,14 @@ const NewsAdd = () => {
                       className="form-control mb-2"
                     />
                   </div>
-
+                  <div className="w-100 fv-row mt-10">
+                    <label className="form-label">News Url</label>
+                    <Field
+                      name="url"
+                      type="text"
+                      className="form-control mb-2"
+                    />
+                  </div>
                   <div className="mt-10">
                     <label className="form-label">Content</label>
                     <Field name="Content">

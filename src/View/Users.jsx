@@ -100,7 +100,7 @@ const Users = () => {
                             <div className="symbol-label">
                               <img
                                 src={userInfo?.photoURL}
-                                alt="Emma Smith"
+                                alt="user image"
                                 className="w-100"
                               />
                             </div>

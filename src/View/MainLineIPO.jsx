@@ -51,8 +51,6 @@ const MainLineIPO = () => {
       GMPStatus: e.target?.checked === true ? "ON" : "OFF",
     };
     dispatch(updateIPO({ payload }));
-
-    // });
   };
 
   const handlePageClick = (e) => {
@@ -63,7 +61,7 @@ const MainLineIPO = () => {
     const payload = {
       CategoryForIPOS: "MainlineIPO",
       page: currentPage ? currentPage : 1,
-      limit: 2,
+      limit: totalPageLimit,
     };
     if (val !== "" || val !== undefined || val !== null) {
       console.log("val is not clear");
@@ -81,17 +79,11 @@ const MainLineIPO = () => {
   useEffect(() => {
     console.log(getAllMainLineIpoData?.Total);
     if (getAllMainLineIpoData?.Total !== undefined) {
-      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 2);
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / totalPageLimit);
       setTotalPage(totalCount);
     }
   }, [getAllMainLineIpoData?.Total]);
 
-  // useEffect(() => {
-  //   const payload = {
-  //     id: Itm?.id,
-  //   };
-  //   dispatch(getIpoById({ payload }));
-  // }, [updatedGmp]);
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />

@@ -73,7 +73,7 @@ const NewsEdit = () => {
     );
   };
   const handleRemoveImage = () => {
-    setFile("");
+    setFile(null);
     setFileDataURL("");
   };
 
@@ -82,14 +82,17 @@ const NewsEdit = () => {
       id: getDataById?.id,
       Content: values?.Content,
       Title: values?.Title,
+      url: values?.url,
       Date: values?.newsDate,
     };
-    formDataImg.append("file", file);
-    let payloadImage = {
-      payload: formDataImg,
-      payloadId: { id: getDataById?.id },
-    };
-    dispatch(updateNewsImage({ payloadImage }));
+    if (file) {
+      formDataImg.append("file", file);
+      let payloadImage = {
+        payload: formDataImg,
+        payloadId: { id: getDataById?.id },
+      };
+      dispatch(updateNewsImage({ payloadImage }));
+    }
     dispatch(updateNews({ payload }));
     navigate("/news");
   };
@@ -113,6 +116,7 @@ const NewsEdit = () => {
               initialValues={{
                 file: getDataById?.file,
                 Content: getDataById?.Content,
+                url: getDataById?.url,
                 Title: getDataById?.Title,
                 newsDate: getDataById?.Date,
               }}
@@ -196,7 +200,14 @@ const NewsEdit = () => {
                       className="form-control mb-2"
                     />
                   </div>
-
+                  <div className="w-100 fv-row mt-10">
+                    <label className="form-label">News Url</label>
+                    <Field
+                      name="url"
+                      type="text"
+                      className="form-control mb-2"
+                    />
+                  </div>
                   <div className="mt-10">
                     <label className="form-label">Content</label>
                     <Field name="Content">

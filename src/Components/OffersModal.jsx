@@ -77,6 +77,7 @@ const OffersModal = () => {
     formData.append("offerTitle", values.offerTitle);
     formData.append("offerDescription", values.offerDescription);
     formData.append("offerSequence", values.offerSequence);
+    formData.append("url", values.url);
     formData.append("offerStatus", values.offerStatus);
     formData.append("file", file);
 
@@ -85,15 +86,19 @@ const OffersModal = () => {
         id: offerData?.id,
         offerTitle: values?.offerTitle,
         offerDescription: values?.offerDescription,
+        url: values?.url,
         offerSequence: values?.offerSequence,
         offerStatus: values?.offerStatus,
       };
-      formDataImg.append("file", file);
-      let payloadImage = {
-        payload: formDataImg,
-        payloadId: { id: offerData?.id },
-      };
-      dispatch(updateOfferImage({ payloadImage }));
+
+      if (file) {
+        formDataImg.append("file", file);
+        let payloadImage = {
+          payload: formDataImg,
+          payloadId: { id: offerData?.id },
+        };
+        dispatch(updateOfferImage({ payloadImage }));
+      }
       dispatch(updateOffer({ payload }));
     } else {
       let payload = formData;
@@ -136,12 +141,14 @@ const OffersModal = () => {
                       offerTitle: offerData?.offerTitle,
                       offerDescription: offerData?.offerDescription,
                       offerSequence: offerData?.offerSequence,
+                      url: offerData?.url,
                       offerStatus: offerData?.offerStatus,
                       file: offerData?.file,
                     }
                   : {
                       offerTitle: "",
                       offerDescription: "",
+                      url: "",
                       offerSequence: "",
                       offerStatus: "",
                       file: "",
@@ -252,6 +259,16 @@ const OffersModal = () => {
                           type="number"
                           className="form-control form-control-solid mb-3 mb-lg-0"
                           placeholder="Offer Sequence"
+                        />
+                      </div>
+                      <div className="fv-row mb-7">
+                        <label className="fw-semibold fs-6 mb-2">
+                          Offer Url
+                        </label>
+                        <Field
+                          name="url"
+                          type="text"
+                          className="form-control form-control-solid mb-3 mb-lg-0"
                         />
                       </div>
 

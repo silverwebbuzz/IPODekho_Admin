@@ -9,6 +9,8 @@ import { getUserById, updateUsers } from "../redux/slice/usersSlice";
 import * as Yup from "yup";
 import "../assets/css/FilePreviewer.css";
 import "yup-phone";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 const UserModal = ({ userID }) => {
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
@@ -58,7 +60,6 @@ const UserModal = ({ userID }) => {
       }
     };
   }, [file]);
-
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
@@ -66,7 +67,7 @@ const UserModal = ({ userID }) => {
   const handleSubmit = (values) => {
     formData.append("displayName", values?.displayName);
     formData.append("email", values?.email);
-    formData.append("phoneNumber", values?.phoneNumber);
+    formData.append("phoneNumber", "+" + values?.phoneNumber);
     formData.append("photoURL", file);
     let payload = {
       payload: formData,
@@ -75,14 +76,6 @@ const UserModal = ({ userID }) => {
     dispatch(updateUsers({ payload }));
     dispatch(setModalIsOpen(false));
   };
-
-  // const phoneRegExp =
-  //   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-  // const validationSchema = Yup.object().shape({
-  //   phoneNumber: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
-  // });
-  const validationSchema = Yup.string().phone("IN").required();
-
   useEffect(() => {
     let payload = {
       id: userID,
@@ -112,7 +105,6 @@ const UserModal = ({ userID }) => {
             <div
               onClick={() => {
                 dispatch(setModalIsOpen(false));
-                // dispatch(getUserById(""));
               }}
               className="btn btn-icon btn-sm btn-active-icon-primary"
               data-bs-dismiss="modal"
@@ -124,7 +116,6 @@ const UserModal = ({ userID }) => {
           <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
             <Formik
               enableReinitialize
-              validationSchema={validationSchema}
               initialValues={{
                 photoURL: fileDataURL,
                 displayName: getDataByIdData?.displayName,
@@ -133,7 +124,7 @@ const UserModal = ({ userID }) => {
               }}
               onSubmit={(values) => handleSubmit(values)}
             >
-              {({ values, touched, errors }) => (
+              {({ values }) => (
                 <Form>
                   <div id="kt_modal_add_offer_form" className="form">
                     <div
@@ -202,7 +193,7 @@ const UserModal = ({ userID }) => {
 
                       <div className="fv-row mb-7">
                         <label className="fw-semibold fs-6 mb-2">
-                          first Name
+                          First Name
                         </label>
 
                         <Field
@@ -226,16 +217,17 @@ const UserModal = ({ userID }) => {
 
                       <div className="fv-row mb-7">
                         <label className="fw-semibold fs-6 mb-2">Phone</label>
-                        <Field
-                          name="phoneNumber"
-                          type="tel"
-                          className="form-control form-control-solid mb-3 mb-lg-0"
-                          placeholder="phone"
-                        />
-                        {validationSchema.isValid(values.phoneNumber) ===
-                        true ? (
-                          <div>dfjihfdff0.</div>
-                        ) : null}
+                        <Field name="phoneNumber">
+                          {({ field }) => (
+                            <PhoneInput
+                              country={"in"}
+                              value={field.value}
+                              onChange={field.onChange(field.name)}
+                              placeholder="+91 12345-67890"
+                              // className="form-control form-control-solid mb-3 mb-lg-0"
+                            />
+                          )}
+                        </Field>
                       </div>
                     </div>
 
