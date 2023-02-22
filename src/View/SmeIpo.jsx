@@ -21,19 +21,26 @@ import { useState } from "react";
 import moment from "moment/moment";
 import SpinnerLoader from "../Components/SpinnerLoader";
 import ReactPaginate from "react-paginate";
+import {
+  setCurrentPage,
+  setFilter,
+  setTotalPage,
+} from "../redux/slice/paginationSlice";
 const SmeIpo = () => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(10);
-  const [limit, setLimit] = useState(10);
-
+  const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
-  const [GMP, setGMP] = useState("");
-  const { getAllMainLineIpoData, updatedIpo, createIpo, isLoading } =
-    useSelector((state) => state?.mainLineIpoSlice);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const { currentPage, totalPage, filter } = useSelector(
+    (state) => state?.paginationReducer
+  );
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
+
     let payload = {
       CategoryForIPOS: "SmeIPO",
       id: ID,
@@ -41,12 +48,10 @@ const SmeIpo = () => {
     };
     dispatch(updateIPO({ payload }));
   };
-  const handlePageClick = (e) => {
-    console.log(e.selected);
-    setCurrentPage(e.selected + 1);
-  };
+
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
+
     let payload = {
       CategoryForIPOS: "SmeIPO",
       id: ID,
@@ -55,21 +60,49 @@ const SmeIpo = () => {
     dispatch(updateIPO({ payload }));
   };
 
-  useEffect(() => {
-    let payload = {
+  const handleReset = () => {
+    dispatch(setFilter(""));
+    const payload = {
       CategoryForIPOS: "SmeIPO",
-      page: currentPage,
+      page: 1,
+      Filter: "",
       limit: 10,
     };
+
+    dispatch(setCurrentPage(1));
+    dispatch(getAllMainLineIpo({ payload }));
+  };
+  const handleApiCall = () => {
+    setIsLoading(true);
+    const payload = {
+      CategoryForIPOS: "SmeIPO",
+      page: currentPage ? currentPage : 1,
+      Filter: filter,
+      limit: 10,
+    };
+    setIsLoading(false);
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
-  }, [dispatch, updatedIpo, createIpo, currentPage, GMP]);
+  };
+
+  const handleSearch = (val) => {
+    const payload = {
+      CategoryForIPOS: "SmeIPO",
+      keyword: val ? val : "",
+    };
+
+    dispatch(getAllMainLineIpo({ payload }));
+  };
+  useEffect(() => {
+    handleApiCall();
+  }, [updatedIpo, createIpo, currentPage]);
   useEffect(() => {
     if (getAllMainLineIpoData?.Total !== undefined) {
       let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
-      setTotalPage(totalCount);
+      dispatch(setTotalPage(totalCount));
     }
   }, [getAllMainLineIpoData?.Total]);
+  console.log("currentPage", currentPage);
   return (
     <>
       <PageHeading title={"SME IPOs"} />
@@ -87,6 +120,7 @@ const SmeIpo = () => {
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search IPO"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -98,7 +132,8 @@ const SmeIpo = () => {
               >
                 <button
                   type="button"
-                  className="btn btn-light-primary me-3"
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="filterButton btn btn-light-primary me-3"
                   data-kt-menu-trigger="click"
                   data-kt-menu-placement="bottom-end"
                 >
@@ -108,60 +143,79 @@ const SmeIpo = () => {
                   Filter
                 </button>
 
-                <div
-                  className="menu menu-sub menu-sub-dropdown w-300px w-md-325px"
-                  data-kt-menu="true"
-                >
-                  <div className="px-7 py-5">
-                    <div className="fs-5 text-dark fw-bold">Filter Options</div>
-                  </div>
-
-                  <div className="separator border-gray-200"></div>
-
-                  <div className="px-7 py-5" data-kt-user-table-filter="form">
-                    <div className="mb-10">
-                      <label className="form-label fs-6 fw-semibold">
-                        IPO Status:
-                      </label>
-                      <select
-                        className="form-select form-select-solid fw-bold"
-                        data-kt-select2="true"
-                        data-placeholder="Select option"
-                        data-allow-clear="true"
-                        data-kt-user-table-filter="status"
-                        data-hide-search="true"
-                      >
-                        <option></option>
-                        <option value="Live">Live</option>
-                        <option value="WaitingAllotment">
-                          Waiting Allotment
-                        </option>
-                        <option value="AllotmentOut">Allotment Out</option>
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Listed">Listed</option>
-                      </select>
+                {isOpen ? (
+                  <div
+                    className="filterCard menu menu-sub menu-sub-dropdown w-300px w-md-325px"
+                    data-kt-menu="true"
+                  >
+                    <div className="px-7 py-5">
+                      <div className="fs-5 text-dark fw-bold">
+                        Filter Options
+                      </div>
                     </div>
 
-                    <div className="d-flex justify-content-end">
-                      <button
-                        type="reset"
-                        className="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
-                        data-kt-menu-dismiss="true"
-                        data-kt-user-table-filter="reset"
-                      >
-                        Reset
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary fw-semibold px-6"
-                        data-kt-menu-dismiss="true"
-                        data-kt-user-table-filter="filter"
-                      >
-                        Apply
-                      </button>
+                    <div className="separator border-gray-200"></div>
+
+                    <div
+                      className="px-7 py-5 "
+                      data-kt-user-table-filter="form"
+                    >
+                      <div className="mb-10">
+                        <label className="form-label fs-6 fw-semibold">
+                          IPO Status:
+                        </label>
+                        <select
+                          className="form-select form-select-solid fw-bold"
+                          data-kt-select2="true"
+                          data-placeholder="Select option"
+                          data-allow-clear="true"
+                          data-kt-user-table-filter="status"
+                          data-hide-search="true"
+                          value={filter}
+                          onChange={(e) => dispatch(setFilter(e.target.value))}
+                        >
+                          <option></option>
+                          <option value="Live">Live</option>
+                          <option value="WaitingAllotment">
+                            Waiting Allotment
+                          </option>
+                          <option value="AllotmentOut">Allotment Out</option>
+                          <option value="Upcoming">Upcoming</option>
+                          <option value="Listed">Listed</option>
+                        </select>
+                      </div>
+
+                      <div className="d-flex justify-content-end">
+                        <button
+                          type="reset"
+                          className="btn btn-light btn-active-light-primary fw-semibold me-2 px-6"
+                          data-kt-menu-dismiss="true"
+                          data-kt-user-table-filter="reset"
+                          onClick={() => {
+                            setIsOpen(!isOpen);
+                            handleReset();
+                          }}
+                        >
+                          Reset
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary fw-semibold px-6"
+                          data-kt-menu-dismiss="true"
+                          data-kt-user-table-filter="filter"
+                          onClick={() => {
+                            handleApiCall(filter);
+                            setIsOpen(!isOpen);
+                          }}
+                        >
+                          Apply
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  ""
+                )}
 
                 <Link
                   to="/sme_ipo/add_ipo"
@@ -355,11 +409,15 @@ const SmeIpo = () => {
               <ReactPaginate
                 breakLabel="..."
                 nextLabel=">"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
+                onPageChange={(e) => {
+                  dispatch(setCurrentPage(e.selected + 1));
+                }}
+                // pageRangeDisplayed={2}
+                pageRangeDisplayed={0}
                 pageCount={totalPage}
                 previousLabel="<"
-                renderOnZeroPageCount={null}
+                renderOnZeroPageCount={1}
+                forcePage={currentPage - 1}
               />
             </div>
           </div>

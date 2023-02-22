@@ -26,6 +26,7 @@ export const getAllOffers = createAsyncThunk(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_OFFERS}?page=${
           payload?.page
         }&limit=${payload?.limit}`,
+        payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",

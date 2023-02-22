@@ -11,7 +11,6 @@ import {
 } from "../../UrlConfig";
 
 const initialState = {
-  // isLoading: false,
   isLoading: false,
   getIPODataById: [],
   ID: "",
@@ -28,8 +27,8 @@ export const getAllMainLineIpo = createAsyncThunk(
     try {
       const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_MAIN_IPO}?page=${
-          payload?.page
-        }&limit=${payload?.limit}`,
+          payload?.page ? payload?.page : 1
+        }&limit=${payload?.limit ? payload?.limit : 10}`,
         payload,
         {
           headers: {
@@ -38,8 +37,6 @@ export const getAllMainLineIpo = createAsyncThunk(
           },
         }
       );
-      // setId("hello");
-      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -60,7 +57,6 @@ export const getIpoById = createAsyncThunk(
           },
         }
       );
-      // console.log(response?.data);
       return response?.data?.IPODetails;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);

@@ -36,6 +36,14 @@ const Offers = () => {
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
   };
+  const handleSearch = (val) => {
+    let payload = {
+      page: 1,
+      limit: 10,
+      keyword: val ? val : "",
+    };
+    dispatch(getAllOffers({ payload }));
+  };
   useEffect(() => {
     let payload = {
       page: currentPage,
@@ -68,6 +76,7 @@ const Offers = () => {
                   data-kt-news-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search Offers"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
             </div>

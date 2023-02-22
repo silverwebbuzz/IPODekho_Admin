@@ -42,17 +42,17 @@ export const createNews = createAsyncThunk(
 );
 
 export const getAllNews = createAsyncThunk(
-  "admin/getAllNews",
+  "admin/getAllMainLineIpo",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_NEWS}?page=${
-          payload?.page
-        }&limit=${payload?.limit}`,
+          payload?.page ? payload?.page : 1
+        }&limit=${payload?.limit ? payload?.limit : 10}`,
+        payload,
         {
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
+            "Content-type": "application/json; charset=UTF-8",
           },
         }
       );
@@ -62,7 +62,6 @@ export const getAllNews = createAsyncThunk(
     }
   }
 );
-
 export const updateNews = createAsyncThunk(
   "admin/updateNews",
   async ({ payload }, { rejectWithValue }) => {

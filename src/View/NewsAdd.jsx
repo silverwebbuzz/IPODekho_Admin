@@ -20,8 +20,21 @@ const NewsAdd = () => {
   const formData = new FormData();
   const [value12, onChange] = useState([new Date(), new Date()]);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
-  const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
+  const [file, setFile] = useState("");
+  const [fileDataURL, setFileDataURL] = useState("");
+
+  const DatePickerField = ({ name, value, onChange }) => {
+    return (
+      <DatePicker
+        selected={(value && new Date(value)) || null}
+        className="form-control"
+        dateFormat="MMM d, yyyy"
+        onChange={(val) => {
+          onChange(name, val);
+        }}
+      />
+    );
+  };
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -39,6 +52,11 @@ const NewsAdd = () => {
       setImageMsg("");
       setFile(file);
     }
+  };
+
+  const handleRemoveImage = () => {
+    setFile("");
+    setFileDataURL("");
   };
 
   useEffect(() => {
@@ -62,23 +80,6 @@ const NewsAdd = () => {
       }
     };
   }, [file]);
-
-  const DatePickerField = ({ name, value, onChange }) => {
-    return (
-      <DatePicker
-        selected={(value && new Date(value)) || null}
-        className="form-control"
-        dateFormat="MMM d, yyyy"
-        onChange={(val) => {
-          onChange(name, val);
-        }}
-      />
-    );
-  };
-  const handleRemoveImage = () => {
-    setFile("");
-    setFileDataURL("");
-  };
   // console.log("value12", moment(value12).format("MMM d, yyyy h:mm:ss a"));
   const handleSubmit = (values) => {
     formData.append("Content", values?.Content);
@@ -201,7 +202,6 @@ const NewsAdd = () => {
                       className="form-control mb-2"
                     />
                   </div>
-                  <DateTimePicker onChange={onChange} value={value12} />
                   <div className="mt-10">
                     <label className="form-label">Content</label>
                     <Field name="Content">

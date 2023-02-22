@@ -53,6 +53,7 @@ export const updateUsers = createAsyncThunk(
       console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
+      window.alert(error?.response?.data.msg);
       return rejectWithValue(error?.response?.data);
     }
   }

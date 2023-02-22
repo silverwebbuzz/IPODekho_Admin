@@ -80,7 +80,7 @@ function ChatTab() {
 
   return (
     <>
-      <div className="card" id="kt_chat_messenger">
+      <div className="card h-700px" id="kt_chat_messenger">
         <div className="card-header" id="kt_chat_messenger_header">
           <div className="card-title">
             <div className="d-flex justify-content-center flex-column me-3">
@@ -95,12 +95,12 @@ function ChatTab() {
         </div>
 
         <div
-          className="card-body chatScroll"
+          className="card-body "
           id="kt_chat_messenger_body"
-          style={{ height: "600px", overflow: "scroll" }}
+          style={{ height: "299px", overflow: "scroll" }}
         >
           <div
-            className="scroll-y me-n5 pe-5 h-300px h-lg-auto"
+            className="scroll-y me-n5 pe-5 h-500px h-lg-auto"
             data-kt-element="messages"
             data-kt-scroll="true"
             data-kt-scroll-activate="{default: false, lg: true}"
@@ -121,7 +121,9 @@ function ChatTab() {
                           </div>
 
                           <div className="ms-3">
-                            <a className="fs-5 fw-bold text-gray-900 text-hover-primary me-1"></a>
+                            <a className="fs-5 fw-bold text-gray-900 text-hover-primary me-1">
+                              {messege?.name}
+                            </a>
                             <span className="text-muted fs-7 mb-1">
                               {" "}
                               {timeFormat(
@@ -179,9 +181,7 @@ function ChatTab() {
                   )}
                 </div>
               ))}
-            <div className="chatScroll"></div>
           </div>
-          <div ref={messageEnd} />
         </div>
 
         <Formik

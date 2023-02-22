@@ -32,12 +32,30 @@ const News = () => {
       return formatTime;
     }
   };
-  useEffect(() => {
+
+  const handleSearch = (val) => {
     let payload = {
-      page: currentPage,
-      limit: totalPageLimit,
+      page: 1,
+      limit: 10,
+      keyword: val ? val : "",
     };
     dispatch(getAllNews({ payload }));
+  };
+  useEffect(() => {
+    if (newsData?.Total <= totalPageLimit) {
+      setCurrentPage(1);
+      let payload = {
+        page: 1,
+        limit: totalPageLimit,
+      };
+      dispatch(getAllNews({ payload }));
+    } else {
+      let payload = {
+        page: currentPage,
+        limit: totalPageLimit,
+      };
+      dispatch(getAllNews({ payload }));
+    }
   }, [addNews, editNews, editNewsImage, currentPage, totalPageLimit]);
   useEffect(() => {
     if (newsData?.Total !== undefined) {
@@ -64,6 +82,7 @@ const News = () => {
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search News"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -185,6 +204,7 @@ const News = () => {
                   pageCount={totalPage}
                   previousLabel="<"
                   renderOnZeroPageCount={1}
+                  forcePage={currentPage - 1}
                 />
               </div>
             </div>

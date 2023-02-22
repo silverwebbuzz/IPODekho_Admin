@@ -13,6 +13,7 @@ import contactUsSlice from "../slice/contactUsSlice";
 import usersSlice from "../slice/usersSlice";
 import modalSlice from "../slice/modalSlice";
 import notificationsSlice from "../slice/notificationsSlice";
+import paginationSlice from "../slice/paginationSlice";
 const reducer = combineReducers({
   //slice
   mainLineIpoSlice: mainLineIpoSlices,
@@ -29,5 +30,6 @@ const reducer = combineReducers({
   userReducer: usersSlice,
   modalReducer: modalSlice,
   notificationReducer: notificationsSlice,
+  paginationReducer: paginationSlice,
 });
 export default reducer;

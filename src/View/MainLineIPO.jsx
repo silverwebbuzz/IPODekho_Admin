@@ -20,21 +20,27 @@ import moment from "moment/moment";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import SpinnerLoader from "../Components/SpinnerLoader";
 import ReactPaginate from "react-paginate";
+import {
+  setCurrentPage,
+  setFilter,
+  setTotalPage,
+} from "../redux/slice/paginationSlice";
 
 const MainLineIPO = () => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(10);
-  const [totalPageLimit, setTotalPageLimit] = useState(10);
-  const [filter, setFilter] = useState("");
   const [GMPV, setGMP] = useState("");
   const [GMPStatus, setGMPStatus] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { getAllMainLineIpoData, updatedIpo, createIpo, ID, isLoading } =
-    useSelector((state) => state?.mainLineIpoSlice);
-
+  const { getAllMainLineIpoData, updatedIpo, createIpo, ID } = useSelector(
+    (state) => state?.mainLineIpoSlice
+  );
+  const { currentPage, totalPage, filter } = useSelector(
+    (state) => state?.paginationReducer
+  );
   const handleGMPNumber = (e, ID) => {
     setGMP(e?.target?.value);
+
     let payload = {
       CategoryForIPOS: "MainlineIPO",
       id: ID,
@@ -45,6 +51,7 @@ const MainLineIPO = () => {
 
   const handleGmp = (e, ID) => {
     setGMPStatus(e.target?.checked);
+
     let payload = {
       CategoryForIPOS: "MainlineIPO",
       id: ID,
@@ -53,37 +60,50 @@ const MainLineIPO = () => {
     dispatch(updateIPO({ payload }));
   };
 
-  const handlePageClick = (e) => {
-    console.log(e.selected);
-    setCurrentPage(e.selected + 1);
+  const handleReset = () => {
+    dispatch(setFilter(""));
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      page: 1,
+      Filter: "",
+      limit: 10,
+    };
+
+    dispatch(setCurrentPage(1));
+    dispatch(getAllMainLineIpo({ payload }));
   };
-  const handleApiCall = (val) => {
+  const handleApiCall = () => {
+    setIsLoading(true);
     const payload = {
       CategoryForIPOS: "MainlineIPO",
       page: currentPage ? currentPage : 1,
-      limit: totalPageLimit,
+      Filter: filter,
+      limit: 10,
     };
-    if (val !== "" || val !== undefined || val !== null) {
-      console.log("val is not clear");
-      payload.Filter = val;
-    } else {
-      console.log("val is clear");
-      payload.Filter = "";
-    }
+    setIsLoading(false);
     dispatch(getAllMainLineIpo({ payload }));
     dispatch(setClearId(""));
+  };
+
+  const handleSearch = (val) => {
+    const payload = {
+      CategoryForIPOS: "MainlineIPO",
+      keyword: val ? val : "",
+    };
+
+    dispatch(getAllMainLineIpo({ payload }));
   };
   useEffect(() => {
     handleApiCall();
   }, [updatedIpo, createIpo, currentPage]);
   useEffect(() => {
-    console.log(getAllMainLineIpoData?.Total);
     if (getAllMainLineIpoData?.Total !== undefined) {
-      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / totalPageLimit);
-      setTotalPage(totalCount);
+      let totalCount = Math.ceil(getAllMainLineIpoData?.Total / 10);
+      dispatch(setTotalPage(totalCount));
     }
   }, [getAllMainLineIpoData?.Total]);
-  console.log(getAllMainLineIpoData);
+  console.log("currentPage", currentPage);
+
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />
@@ -101,6 +121,7 @@ const MainLineIPO = () => {
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search IPO"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -151,7 +172,7 @@ const MainLineIPO = () => {
                           data-kt-user-table-filter="status"
                           data-hide-search="true"
                           value={filter}
-                          onChange={(e) => setFilter(e.target.value)}
+                          onChange={(e) => dispatch(setFilter(e.target.value))}
                         >
                           <option></option>
                           <option value="Live">Live</option>
@@ -172,8 +193,7 @@ const MainLineIPO = () => {
                           data-kt-user-table-filter="reset"
                           onClick={() => {
                             setIsOpen(!isOpen);
-                            setFilter("");
-                            handleApiCall("");
+                            handleReset();
                           }}
                         >
                           Reset
@@ -375,18 +395,21 @@ const MainLineIPO = () => {
                 </tbody>
               </table>
             )}
-          </div>
-          <div className="pagination">
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel=">"
-              onPageChange={handlePageClick}
-              // pageRangeDisplayed={2}
-              pageRangeDisplayed={0}
-              pageCount={totalPage}
-              previousLabel="<"
-              renderOnZeroPageCount={1}
-            />
+            <div className="pagination">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={(e) => {
+                  dispatch(setCurrentPage(e.selected + 1));
+                }}
+                // pageRangeDisplayed={2}
+                pageRangeDisplayed={0}
+                pageCount={totalPage}
+                previousLabel="<"
+                renderOnZeroPageCount={1}
+                forcePage={currentPage - 1}
+              />
+            </div>
           </div>
         </div>
       </AppContentLayout>
