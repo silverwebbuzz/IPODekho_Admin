@@ -95,6 +95,7 @@ const OffersModal = ({
     formData.append("offerTitle", values.offerTitle);
     formData.append("offerDescription", values.offerDescription);
     formData.append("offerSequence", values.offerSequence);
+    formData.append("url", values.url);
     formData.append("offerStatus", values.offerStatus);
     formData.append("file", file);
 
@@ -103,6 +104,7 @@ const OffersModal = ({
         id: singleData?.id,
         offerTitle: values?.offerTitle,
         offerDescription: values?.offerDescription,
+        url: values?.url,
         offerSequence: values?.offerSequence,
         offerStatus: values?.offerStatus,
       };

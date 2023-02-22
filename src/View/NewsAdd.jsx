@@ -3,19 +3,22 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { modules } from "../Constants/commonConstants";
-import DatePicker from "react-datepicker";
+import DatePicker, { ReactDatePicker } from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { createNews, getNewsById } from "../redux/slice/newsSlice";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "react-datepicker/dist/react-datepicker.css";
+import DateTimePicker from "react-datetime-picker";
+import moment from "moment/moment";
+
 const NewsAdd = () => {
   const [imageMsg, setImageMsg] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formData = new FormData();
-
+  const [value12, onChange] = useState([new Date(), new Date()]);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(getNewsById?.file);
@@ -76,10 +79,11 @@ const NewsAdd = () => {
     setFile("");
     setFileDataURL("");
   };
-
+  // console.log("value12", moment(value12).format("MMM d, yyyy h:mm:ss a"));
   const handleSubmit = (values) => {
     formData.append("Content", values?.Content);
     formData.append("Title", values?.Title);
+    formData.append("url", values?.url);
     formData.append("Date", values?.newsDate);
     formData.append("file", file);
 
@@ -98,6 +102,7 @@ const NewsAdd = () => {
               enableReinitialize
               initialValues={{
                 Content: "",
+                url: "",
                 Title: "",
                 newsDate: "",
               }}
@@ -188,7 +193,15 @@ const NewsAdd = () => {
                       className="form-control mb-2"
                     />
                   </div>
-
+                  <div className="w-100 fv-row mt-10">
+                    <label className="form-label">News Url</label>
+                    <Field
+                      name="url"
+                      type="text"
+                      className="form-control mb-2"
+                    />
+                  </div>
+                  <DateTimePicker onChange={onChange} value={value12} />
                   <div className="mt-10">
                     <label className="form-label">Content</label>
                     <Field name="Content">

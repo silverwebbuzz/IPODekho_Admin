@@ -50,6 +50,17 @@ const Users = () => {
   const totalPage = Math.ceil(userRecord.length / recordsPerPage);
 
   const dispatch = useDispatch();
+  const handleModalOpen = (ID) => {
+    setUserId(ID);
+    if (ID) {
+      setShowModal({
+        ...showModal,
+        showClass: "show",
+        displayClass: "block",
+        modalBackdrop: "modal-backdrop",
+      });
+    }
+  };
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
   };
@@ -106,7 +117,7 @@ const Users = () => {
                             <div className="symbol-label">
                               <img
                                 src={userInfo?.photoURL}
-                                alt="Emma Smith"
+                                alt="user image"
                                 className="w-100"
                               />
                             </div>
@@ -131,14 +142,7 @@ const Users = () => {
                         <td className="text-end">
                           <button
                             onClick={() => {
-                              setShowModal({
-                                ...showModal,
-                                showClass: "show",
-                                displayClass: "block",
-                                modalBackdrop: "modal-backdrop",
-                              });
-
-                              setUserId(userInfo?.uid);
+                              handleModalOpen(userInfo?.uid);
                             }}
                             type="button"
                             className="btn btn-light btn-light-primary btn-sm"
@@ -207,7 +211,11 @@ const Users = () => {
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"
       >
-        <UserModal showModal={showModal} setShowModal={setShowModal} />
+        <UserModal
+          userID={userId}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </div>
     </>
   );

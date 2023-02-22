@@ -16,7 +16,6 @@ import MultiSelect from "../../MultiSelect";
 import { useContext } from "react";
 import { TabContext } from "../Tabs";
 import { useEffect } from "react";
-import FileAttachmentIcon from "../../../assets/media/Icons/FileAttachmentIcon";
 
 const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
   const { tabData, setTabData } = useContext(TabContext);

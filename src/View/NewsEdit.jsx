@@ -106,9 +106,9 @@ const NewsEdit = () => {
       id: getDataById?.id,
       Content: values?.Content,
       Title: values?.Title,
+      url: values?.url,
       Date: values?.newsDate,
     };
-
     dispatch(updateNews({ payload }));
     navigate("/news");
   };
@@ -131,6 +131,7 @@ const NewsEdit = () => {
               enableReinitialize
               initialValues={{
                 Content: getDataById?.Content,
+                url: getDataById?.url,
                 Title: getDataById?.Title,
                 newsDate: getDataById?.Date,
               }}
@@ -220,7 +221,14 @@ const NewsEdit = () => {
                       className="form-control mb-2"
                     />
                   </div>
-
+                  <div className="w-100 fv-row mt-10">
+                    <label className="form-label">News Url</label>
+                    <Field
+                      name="url"
+                      type="text"
+                      className="form-control mb-2"
+                    />
+                  </div>
                   <div className="mt-10">
                     <label className="form-label">Content</label>
                     <Field name="Content">
