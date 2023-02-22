@@ -29,6 +29,7 @@ export const getAllUsers = createAsyncThunk(
           },
         }
       );
+      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -42,32 +43,11 @@ export const updateUsers = createAsyncThunk(
     try {
       const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_USER}${payload?.payloadId?.id}`,
-        payload.payload,
+        payload?.payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response?.data);
-      return response?.data?.data;
-    } catch (error) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-export const getUserById = createAsyncThunk(
-  "admin/getUserById",
-  async ({ payload }, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL_FOR_ADMIN + ADMIN_GET_SINGLE_USER}${payload?.id}`,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
           },
         }
       );
@@ -79,8 +59,29 @@ export const getUserById = createAsyncThunk(
   }
 );
 
+// export const getUserById = createAsyncThunk(
+//   "admin/getUserById",
+//   async ({ payload }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(
+//         `${BASE_URL_FOR_ADMIN + ADMIN_GET_SINGLE_USER}${payload?.id}`,
+//         {
+//           headers: {
+//             "Access-Control-Allow-Origin": "*",
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+//       console.log(response?.data?.data);
+//       return response?.data?.data;
+//     } catch (error) {
+//       return rejectWithValue(error?.response?.data);
+//     }
+//   }
+// );
+
 const usersSlice = createSlice({
-  name: "termsAndConditionsSlice",
+  name: "usersSlice",
   initialState,
   extraReducers: (builder) => {
     builder
@@ -105,17 +106,17 @@ const usersSlice = createSlice({
       })
       .addCase(updateUsers.rejected, (state) => {
         state.isLoading = false;
-      })
-      .addCase(getUserById.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getUserById.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.getDataByIdData = action.payload;
-      })
-      .addCase(getUserById.rejected, (state) => {
-        state.isLoading = false;
       });
+    // .addCase(getUserById.pending, (state) => {
+    //   state.isLoading = true;
+    // })
+    // .addCase(getUserById.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    //   state.getDataByIdData = action.payload;
+    // })
+    // .addCase(getUserById.rejected, (state) => {
+    //   state.isLoading = false;
+    // });
   },
 });
 

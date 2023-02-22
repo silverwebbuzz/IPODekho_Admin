@@ -11,15 +11,19 @@ import "react-phone-input-2/lib/style.css";
 import "../assets/css/FilePreviewer.css";
 import "yup-phone";
 import PhoneInput from "react-phone-input-2";
-const UserModal = ({ userID, setShowModal, showModal }) => {
+const UserModal = ({
+  singleUserData,
+  setSingleUserData,
+  setShowModal,
+  showModal,
+}) => {
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
+  const formDataId = new FormData();
   const dispatch = useDispatch();
-  const { getDataByIdData } = useSelector((state) => state.userReducer);
-  console.log("userID", userID);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(blankImage);
+  const [fileDataURL, setFileDataURL] = useState(null);
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -60,21 +64,25 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
       }
     };
   }, [file]);
+
   const handleRemoveImage = () => {
     setFile("");
     setFileDataURL("");
   };
+
   const handleSubmit = (values) => {
     formData.append("displayName", values?.displayName);
     formData.append("email", values?.email);
     formData.append("phoneNumber", "+" + values?.phoneNumber);
     formData.append("photoURL", file);
+    formData.append("id", singleUserData?.uid);
     let payload = {
       payload: formData,
-      payloadId: { id: getDataByIdData?.uid },
+      payloadId: { id: singleUserData?.uid },
     };
+    console.log(payload);
     dispatch(updateUsers({ payload }));
-    // dispatch(setModalIsOpen(false));
+    setFileDataURL("");
     setShowModal({
       ...showModal,
       showClass: "",
@@ -82,21 +90,10 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
       modalBackdrop: "",
     });
   };
-  useEffect(() => {
-    console.log("userIDuserIDuserIDuserIDuserID", userID);
-    if (userID) {
-      let payload = {
-        id: userID,
-      };
-      dispatch(getUserById({ payload }));
-    }
-  }, [dispatch, fileDataURL]);
 
   useEffect(() => {
-    setFileDataURL(
-      getDataByIdData?.photoURL ? getDataByIdData?.photoURL : blankImage
-    );
-  }, [getDataByIdData?.photoURL]);
+    setFileDataURL(singleUserData?.photoURL);
+  }, [singleUserData?.photoURL]);
 
   return (
     <div className="modal-dialog modal-dialog-centered mw-650px">
@@ -107,14 +104,15 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
           <div
             className="btn btn-icon btn-sm btn-active-icon-primary"
             data-bs-dismiss="modal"
-            onClick={() =>
+            onClick={() => {
+              setFileDataURL("");
               setShowModal({
                 ...showModal,
                 showClass: "",
                 displayClass: "",
                 modalBackdrop: "",
-              })
-            }
+              });
+            }}
           >
             <CommonMultiplyIcon />
           </div>
@@ -125,11 +123,15 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
             enableReinitialize
             initialValues={{
               photoURL: fileDataURL,
-              displayName: getDataByIdData?.displayName,
-              email: getDataByIdData?.email,
-              phoneNumber: getDataByIdData?.phoneNumber,
+              displayName: singleUserData?.displayName,
+              email: singleUserData?.email,
+              phoneNumber: singleUserData?.phoneNumber,
             }}
-            onSubmit={(values) => handleSubmit(values)}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+
+              resetForm({ values: {} });
+            }}
           >
             {({ values, touched, errors }) => (
               <Form>
@@ -235,14 +237,15 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
 
                   <div className="text-center pt-15">
                     <button
-                      onClick={() =>
+                      onClick={() => {
+                        setFileDataURL("");
                         setShowModal({
                           ...showModal,
                           showClass: "",
                           displayClass: "",
                           modalBackdrop: "",
-                        })
-                      }
+                        });
+                      }}
                       type="reset"
                       className="btn btn-light me-3"
                       data-bs-dismiss="modal"

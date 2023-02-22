@@ -14,26 +14,13 @@ import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getAllUsers, getUserById } from "../redux/slice/usersSlice";
 
 const Users = () => {
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "50%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      maxWidth: "650px",
-      zIndex: 200,
-    },
-  };
-  const [userId, setUserId] = useState("");
+  const [singleUserData, setSingleUserData] = useState("");
   const [showModal, setShowModal] = useState({
     showClass: "",
     displayClass: "",
     modalBackdrop: "",
   });
-  const { modalIsOpen } = useSelector((state) => state.modalReducer);
-  const { updateData, getAllData, getUserById, isLoading } = useSelector(
+  const { updateData, getAllData, isLoading } = useSelector(
     (state) => state.userReducer
   );
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,17 +37,7 @@ const Users = () => {
   const totalPage = Math.ceil(userRecord.length / recordsPerPage);
 
   const dispatch = useDispatch();
-  const handleModalOpen = (ID) => {
-    setUserId(ID);
-    if (ID) {
-      setShowModal({
-        ...showModal,
-        showClass: "show",
-        displayClass: "block",
-        modalBackdrop: "modal-backdrop",
-      });
-    }
-  };
+
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
   };
@@ -142,7 +119,13 @@ const Users = () => {
                         <td className="text-end">
                           <button
                             onClick={() => {
-                              handleModalOpen(userInfo?.uid);
+                              setSingleUserData(userInfo);
+                              setShowModal({
+                                ...showModal,
+                                showClass: "show",
+                                displayClass: "block",
+                                modalBackdrop: "modal-backdrop",
+                              });
                             }}
                             type="button"
                             className="btn btn-light btn-light-primary btn-sm"
@@ -212,7 +195,8 @@ const Users = () => {
         role="dialog"
       >
         <UserModal
-          userID={userId}
+          singleUserData={singleUserData}
+          setSingleUserData={setSingleUserData}
           showModal={showModal}
           setShowModal={setShowModal}
         />

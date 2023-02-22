@@ -17,7 +17,6 @@ const initialState = {
   addOfferData: [],
   editOfferData: [],
   offerImage: null,
-  // getOfferDataById: [],
 };
 
 export const getAllOffers = createAsyncThunk(
@@ -35,7 +34,7 @@ export const getAllOffers = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.data);
+      console.log(response?.data?.data?.AllOffers);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -112,36 +111,9 @@ export const updateOfferImage = createAsyncThunk(
   }
 );
 
-// export const getOfferById = createAsyncThunk(
-//   "admin/getOfferById",
-//   async ({ payload }, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(
-//         `${BASE_URL_FOR_ADMIN + ADMIN_GET_OFFER_BY_ID}${payload?.id}`,
-//         payload,
-//         {
-//           headers: {
-//             "Access-Control-Allow-Origin": "*",
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-//       console.log(response?.data);
-//       return response?.data;
-//     } catch (error) {
-//       return rejectWithValue(error?.response?.data);
-//     }
-//   }
-// );
-
 const offersSlice = createSlice({
   name: "offersSlice",
   initialState,
-  reducers: {
-    setOfferData: (state, action) => {
-      state.offerData = action.payload;
-    },
-  },
   extraReducers: (builder) => {
     builder
       .addCase(createOffer.pending, (state) => {
@@ -184,18 +156,7 @@ const offersSlice = createSlice({
       .addCase(updateOfferImage.rejected, (state) => {
         state.isLoading = false;
       });
-    // .addCase(getOfferById.pending, (state) => {
-    //   state.isLoading = true;
-    // })
-    // .addCase(getOfferById.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.getOfferDataById = action.payload;
-    // })
-    // .addCase(getOfferById.rejected, (state) => {
-    //   state.isLoading = false;
-    // });
   },
 });
 
-export const { setOfferData } = offersSlice.actions;
 export default offersSlice.reducer;

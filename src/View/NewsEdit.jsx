@@ -27,7 +27,7 @@ const NewsEdit = () => {
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(getDataById?.file);
+  const [fileDataURL, setFileDataURL] = useState(null);
 
   const DatePickerField = ({ name, value, onChange }) => {
     return (
@@ -135,7 +135,10 @@ const NewsEdit = () => {
                 Title: getDataById?.Title,
                 newsDate: getDataById?.Date,
               }}
-              onSubmit={(values) => handleSubmit(values)}
+              onSubmit={(values, { resetForm }) => {
+                handleSubmit(values);
+                resetForm({ values: "" });
+              }}
             >
               {({ values, setFieldValue }) => (
                 <Form>
@@ -173,7 +176,7 @@ const NewsEdit = () => {
                         onChange={changeHandler}
                         hidden
                         accept=".png, .jpg, .jpeg"
-                        //   value={values?.file}
+                        value={values?.file}
                       />
                     </label>
 

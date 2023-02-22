@@ -20,16 +20,15 @@ const OffersModal = ({
   singleData,
   setSingleData,
 }) => {
+  const { offerImage, isLoading } = useSelector((state) => state.offersReducer);
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
 
-  console.log(singleData);
-
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(singleData?.file);
+  const [fileDataURL, setFileDataURL] = useState();
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -80,7 +79,7 @@ const OffersModal = ({
 
   const handleRemoveImage = () => {
     // setFile("");
-    let file = null;
+    let file = "";
     formDataImg.append("file", file);
     let payloadImage = {
       payload: formDataImg,
@@ -88,7 +87,6 @@ const OffersModal = ({
     };
     dispatch(updateOfferImage({ payloadImage }));
     // setFileDataURL("");
-    setSingleData("");
   };
 
   const handleSubmit = (values) => {
@@ -110,6 +108,7 @@ const OffersModal = ({
       };
 
       dispatch(updateOffer({ payload }));
+      setSingleData("");
     } else {
       let payload = formData;
       dispatch(createOffer({ payload }));
@@ -125,6 +124,17 @@ const OffersModal = ({
       modalBackdrop: "",
     });
   };
+
+  useEffect(() => {
+    setFileDataURL(singleData?.file ? singleData?.file : blankImage);
+  }, [singleData?.file]);
+
+  // useEffect(() => {
+  //   if (singleData?.id) {
+  //     setFile("");
+  //     setFileDataURL("");
+  //   }
+  // }, [singleData?.id]);
   return (
     <div className="modal-dialog modal-dialog-centered mw-650px">
       <div className="modal-content">
@@ -169,6 +179,7 @@ const OffersModal = ({
             onSubmit={(values, { resetForm }) => {
               handleSubmit(values);
               resetForm({ values: "" });
+              setFileDataURL("");
             }}
           >
             {({ values }) => (
@@ -219,7 +230,7 @@ const OffersModal = ({
                               alt="preview"
                             />
                           </div>
-                          {fileDataURL && (
+                          {fileDataURL !== blankImage && (
                             <div
                               onClick={handleRemoveImage}
                               className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
@@ -316,7 +327,6 @@ const OffersModal = ({
                           displayClass: "",
                           modalBackdrop: "",
                         });
-                        dispatch(setModalType(""));
                       }}
                       type="reset"
                       className="btn btn-light me-3"
