@@ -83,7 +83,7 @@ const MainLineIPO = () => {
       setTotalPage(totalCount);
     }
   }, [getAllMainLineIpoData?.Total]);
-
+  console.log(getAllMainLineIpoData);
   return (
     <>
       <PageHeading title={"Mainline IPOs"} />

@@ -6,15 +6,17 @@ import CommonMultiplyIcon from "../assets/media/Icons/CommonMultiplyIcon";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { setModalIsOpen } from "../redux/slice/modalSlice";
 import { getUserById, updateUsers } from "../redux/slice/usersSlice";
-import * as Yup from "yup";
+import "react-phone-input-2/lib/style.css";
+
 import "../assets/css/FilePreviewer.css";
 import "yup-phone";
+import PhoneInput from "react-phone-input-2";
 const UserModal = ({ userID, setShowModal, showModal }) => {
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
   const dispatch = useDispatch();
   const { getDataByIdData } = useSelector((state) => state.userReducer);
-
+  console.log("userID", userID);
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
   const [fileDataURL, setFileDataURL] = useState(blankImage);
@@ -81,10 +83,13 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
     });
   };
   useEffect(() => {
-    let payload = {
-      id: userID,
-    };
-    dispatch(getUserById({ payload }));
+    console.log("userIDuserIDuserIDuserIDuserID", userID);
+    if (userID) {
+      let payload = {
+        id: userID,
+      };
+      dispatch(getUserById({ payload }));
+    }
   }, [dispatch, fileDataURL]);
 
   useEffect(() => {
@@ -216,15 +221,15 @@ const UserModal = ({ userID, setShowModal, showModal }) => {
 
                     <div className="fv-row mb-7">
                       <label className="fw-semibold fs-6 mb-2">Phone</label>
-                      <Field
-                        name="phoneNumber"
-                        type="tel"
-                        className="form-control form-control-solid mb-3 mb-lg-0"
-                        placeholder="phone"
-                      />
-                      {validationSchema.isValid(values.phoneNumber) === true ? (
-                        <div>dfjihfdff0.</div>
-                      ) : null}
+                      <Field name="phoneNumber">
+                        {({ field }) => (
+                          <PhoneInput
+                            country={"in"}
+                            value={field.value}
+                            onChange={field.onChange(field.name)}
+                          />
+                        )}
+                      </Field>
                     </div>
                   </div>
 
