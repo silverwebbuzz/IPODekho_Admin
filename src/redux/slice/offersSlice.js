@@ -22,7 +22,7 @@ export const getAllOffers = createAsyncThunk(
   "admin/getAllOffers",
   async ({ payload }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_OFFERS}?page=${
           payload?.page
         }&limit=${payload?.limit}`,

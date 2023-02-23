@@ -6,9 +6,7 @@ import PageHeading from "../Components/PageHeading";
 import CommonEditIcon from "../assets/media/Icons/CommonEditIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
 import OffersModal from "../Components/OffersModal";
-import ReactModal from "react-modal";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import { getAllOffers, setOfferData } from "../redux/slice/offersSlice";
 import SpinnerLoader from "../Components/SpinnerLoader";
@@ -23,26 +21,19 @@ const Offers = () => {
     offerImage,
     isLoading,
   } = useSelector((state) => state.offersReducer);
-  const { modalIsOpen } = useSelector((state) => state.modalReducer);
+
   const [showModal, setShowModal] = useState({
     showClass: "",
     displayClass: "",
     modalBackdrop: "",
   });
+  const [singleData, setSingleData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
   const [totalPageLimit, setTotalPageLimit] = useState(10);
   const dispatch = useDispatch();
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
-  };
-  const handleSearch = (val) => {
-    let payload = {
-      page: 1,
-      limit: 10,
-      keyword: val ? val : "",
-    };
-    dispatch(getAllOffers({ payload }));
   };
   useEffect(() => {
     let payload = {
@@ -76,7 +67,6 @@ const Offers = () => {
                   data-kt-news-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search Offers"
-                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -98,7 +88,6 @@ const Offers = () => {
                       displayClass: "block",
                       modalBackdrop: "modal-backdrop",
                     });
-                    dispatch(setModalType("addOffer"));
                   }}
                 >
                   <span className="svg-icon svg-icon-2">
@@ -132,7 +121,7 @@ const Offers = () => {
                 <tbody className="text-gray-600 fw-semibold">
                   {getAllOffersData?.AllOffers?.map((offer) => {
                     return (
-                      <tr>
+                      <tr key={offer?.id}>
                         <td>
                           <img
                             src={offer?.file ? offer?.file : blankImage}
@@ -163,8 +152,7 @@ const Offers = () => {
                                 displayClass: "block",
                                 modalBackdrop: "modal-backdrop",
                               });
-                              dispatch(setModalType("editOffer"));
-                              dispatch(setOfferData(offer));
+                              setSingleData(offer);
                             }}
                             type="button"
                             className="btn btn-light btn-active-light-primary btn-sm"
@@ -229,12 +217,17 @@ const Offers = () => {
       <div
         className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
         id="kt_modal_edit_user"
-        tabindex="-1"
+        tabIndex="-1"
         aria-hidden="true"
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"
       >
-        <OffersModal showModal={showModal} setShowModal={setShowModal} />
+        <OffersModal
+          singleData={singleData}
+          setSingleData={setSingleData}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </div>
     </>
   );

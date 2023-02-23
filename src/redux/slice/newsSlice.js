@@ -41,24 +41,47 @@ export const createNews = createAsyncThunk(
   }
 );
 
+// export const getAllNews = createAsyncThunk(
+//   "admin/getAllNews",
+//   async ({ payload }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(
+//         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_NEWS}?page=${
+//           payload?.page ? payload?.page : 1
+//         }&limit=${payload?.limit ? payload?.limit : 10}`,
+//         payload,
+//         {
+//           headers: {
+//             "Content-type": "application/json; charset=UTF-8",
+//           },
+//         }
+//       );
+//       return response?.data?.data;
+//     } catch (error) {
+//       return rejectWithValue(error?.response?.data?.message);
+//     }
+//   }
+// );
+
 export const getAllNews = createAsyncThunk(
-  "admin/getAllMainLineIpo",
+  "admin/getAllNews",
   async ({ payload }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_ALL_NEWS}?page=${
-          payload?.page ? payload?.page : 1
-        }&limit=${payload?.limit ? payload?.limit : 10}`,
+          payload?.page
+        }&limit=${payload?.limit}`,
         payload,
         {
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
           },
         }
       );
       return response?.data?.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message);
+      return rejectWithValue(error?.response?.data);
     }
   }
 );

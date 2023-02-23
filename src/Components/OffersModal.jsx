@@ -11,21 +11,20 @@ import {
   updateOfferImage,
 } from "../redux/slice/offersSlice";
 
-import { setModalIsOpen, setModalType } from "../redux/slice/modalSlice";
-
-const OffersModal = ({ setShowModal, showModal }) => {
+const OffersModal = ({
+  setShowModal,
+  showModal,
+  singleData,
+  setSingleData,
+}) => {
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
   const formDataImg = new FormData();
   const dispatch = useDispatch();
-  const { offerData } = useSelector((state) => state.offersReducer);
-  const { modalType } = useSelector((state) => state.modalReducer);
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(
-    offerData?.file && modalType === "editOffer" ? offerData?.file : null
-  );
+  const [fileDataURL, setFileDataURL] = useState(null);
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -42,11 +41,11 @@ const OffersModal = ({ setShowModal, showModal }) => {
     } else {
       setImageMsg("");
       setFile(file);
-      if (modalType === "editOffer" && file) {
+      if (singleData?.id && file) {
         formDataImg.append("file", file);
         let payloadImage = {
           payload: formDataImg,
-          payloadId: { id: offerData?.id },
+          payloadId: { id: singleData?.id },
         };
         dispatch(updateOfferImage({ payloadImage }));
       }
@@ -75,12 +74,12 @@ const OffersModal = ({ setShowModal, showModal }) => {
   }, [file]);
 
   const handleRemoveImage = () => {
-    setFile("");
-    let file = null;
+    // setFile("");
+    let file = "";
     formDataImg.append("file", file);
     let payloadImage = {
       payload: formDataImg,
-      payloadId: { id: offerData?.id },
+      payloadId: { id: singleData?.id },
     };
     dispatch(updateOfferImage({ payloadImage }));
     setFileDataURL("");
@@ -94,9 +93,9 @@ const OffersModal = ({ setShowModal, showModal }) => {
     formData.append("offerStatus", values.offerStatus);
     formData.append("file", file);
 
-    if (modalType === "editOffer") {
+    if (singleData?.id) {
       const payload = {
-        id: offerData?.id,
+        id: singleData?.id,
         offerTitle: values?.offerTitle,
         offerDescription: values?.offerDescription,
         url: values?.url,
@@ -105,11 +104,15 @@ const OffersModal = ({ setShowModal, showModal }) => {
       };
 
       dispatch(updateOffer({ payload }));
+      setSingleData("");
     } else {
       let payload = formData;
       dispatch(createOffer({ payload }));
+      setFile("");
+      setFileDataURL("");
     }
-    dispatch(setModalType(""));
+    // dispatch(setModalType(""));
+    setSingleData("");
     setShowModal({
       ...showModal,
       showClass: "",
@@ -117,6 +120,11 @@ const OffersModal = ({ setShowModal, showModal }) => {
       modalBackdrop: "",
     });
   };
+
+  useEffect(() => {
+    setFileDataURL(singleData?.file);
+  }, [singleData?.file]);
+
   return (
     <div className="modal-dialog modal-dialog-centered mw-650px">
       <div className="modal-content">
@@ -126,14 +134,15 @@ const OffersModal = ({ setShowModal, showModal }) => {
           <div
             className="btn btn-icon btn-sm btn-active-icon-primary"
             data-bs-dismiss="modal"
-            onClick={() =>
+            onClick={() => {
+              setSingleData("");
               setShowModal({
                 ...showModal,
                 showClass: "",
                 displayClass: "",
                 modalBackdrop: "",
-              })
-            }
+              });
+            }}
           >
             <CommonMultiplyIcon />
           </div>
@@ -143,12 +152,12 @@ const OffersModal = ({ setShowModal, showModal }) => {
           <Formik
             enableReinitialize
             initialValues={
-              modalType === "editOffer"
+              singleData?.id
                 ? {
-                    offerTitle: offerData?.offerTitle,
-                    offerDescription: offerData?.offerDescription,
-                    offerSequence: offerData?.offerSequence,
-                    offerStatus: offerData?.offerStatus,
+                    offerTitle: singleData?.offerTitle,
+                    offerDescription: singleData?.offerDescription,
+                    offerSequence: singleData?.offerSequence,
+                    offerStatus: singleData?.offerStatus,
                   }
                 : {
                     offerTitle: "",
@@ -160,6 +169,7 @@ const OffersModal = ({ setShowModal, showModal }) => {
             onSubmit={(values, { resetForm }) => {
               handleSubmit(values);
               resetForm({ values: "" });
+              setFileDataURL("");
             }}
           >
             {({ values }) => (
@@ -300,13 +310,13 @@ const OffersModal = ({ setShowModal, showModal }) => {
                   <div className="text-center pt-15">
                     <button
                       onClick={() => {
+                        setSingleData("");
                         setShowModal({
                           ...showModal,
                           showClass: "",
                           displayClass: "",
                           modalBackdrop: "",
                         });
-                        dispatch(setModalType(""));
                       }}
                       type="reset"
                       className="btn btn-light me-3"

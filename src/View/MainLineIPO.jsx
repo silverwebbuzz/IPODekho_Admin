@@ -90,7 +90,6 @@ const MainLineIPO = () => {
       CategoryForIPOS: "MainlineIPO",
       keyword: val ? val : "",
     };
-
     dispatch(getAllMainLineIpo({ payload }));
   };
   useEffect(() => {

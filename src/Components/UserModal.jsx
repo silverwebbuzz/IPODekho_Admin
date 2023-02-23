@@ -80,7 +80,6 @@ const UserModal = ({
       payload: formData,
       payloadId: { id: singleUserData?.uid },
     };
-    console.log(payload);
     dispatch(updateUsers({ payload }));
     setFileDataURL("");
     setShowModal({
@@ -105,7 +104,7 @@ const UserModal = ({
             className="btn btn-icon btn-sm btn-active-icon-primary"
             data-bs-dismiss="modal"
             onClick={() => {
-              setFileDataURL("");
+              // setFileDataURL("");
               setShowModal({
                 ...showModal,
                 showClass: "",
@@ -238,7 +237,7 @@ const UserModal = ({
                   <div className="text-center pt-15">
                     <button
                       onClick={() => {
-                        setFileDataURL("");
+                        // setFileDataURL("");
                         setShowModal({
                           ...showModal,
                           showClass: "",

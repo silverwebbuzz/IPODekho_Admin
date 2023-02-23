@@ -50,12 +50,20 @@ const Notifications = () => {
     }
   };
   useEffect(() => {
-    let payload = {
-      page: currentPage,
-      limit: totalPageLimit,
-    };
-    dispatch(getAllNotifications({ payload }));
-  }, [createData]);
+    if (getAllData?.Total <= totalPageLimit) {
+      let payload = {
+        page: 1,
+        limit: totalPageLimit,
+      };
+      dispatch(getAllNotifications({ payload }));
+    } else {
+      let payload = {
+        page: currentPage,
+        limit: totalPageLimit,
+      };
+      dispatch(getAllNotifications({ payload }));
+    }
+  }, [createData, totalPageLimit]);
   useEffect(() => {
     if (getAllData?.Total !== undefined) {
       let totalCount = Math.ceil(getAllData?.Total / totalPageLimit);

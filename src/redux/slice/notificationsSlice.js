@@ -41,10 +41,11 @@ export const getAllNotifications = createAsyncThunk(
   "admin/getAllNotifications",
   async ({ payload }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GETALL_NOTIFICATIONS}?page=${
           payload?.page
         }&limit=${payload?.limit}`,
+        payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",

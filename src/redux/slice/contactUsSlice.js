@@ -12,10 +12,11 @@ export const getAllContacts = createAsyncThunk(
   "admin/getAllContacts",
   async ({ payload }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${BASE_URL_FOR_ADMIN + ADMIN_GETALL_CONTACTS}?page=${
           payload?.page
         }&limit=${payload?.limit}`,
+        payload,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",

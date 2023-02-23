@@ -20,8 +20,8 @@ export const getAllUsers = createAsyncThunk(
   "admin/getAllUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        BASE_URL_FOR_ADMIN + ADMIN_GETALL_USERS,
+      const response = await axios.post(
+        `${BASE_URL_FOR_ADMIN + ADMIN_GETALL_USERS}`,
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -81,7 +81,7 @@ export const getUserById = createAsyncThunk(
 );
 
 const usersSlice = createSlice({
-  name: "termsAndConditionsSlice",
+  name: "usersSlice",
   initialState,
   extraReducers: (builder) => {
     builder

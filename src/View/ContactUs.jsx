@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
+import CommonSearchIcon from "../assets/media/Icons/CommonSearchIcon";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import SpinnerLoader from "../Components/SpinnerLoader";
@@ -19,7 +20,6 @@ const ContactUs = () => {
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1);
   };
-  console.log(getAllData);
   const dispatch = useDispatch();
   const timeFormat = (secs) => {
     if (secs) {
@@ -27,6 +27,14 @@ const ContactUs = () => {
       let formatTime = moment(output).format("D MMM LT");
       return formatTime;
     }
+  };
+  const handleSearch = (val) => {
+    const payload = {
+      page: 1,
+      limit: 10,
+      keyword: val ? val : "",
+    };
+    dispatch(getAllContacts({ payload }));
   };
   useEffect(() => {
     let payload = {
@@ -48,6 +56,20 @@ const ContactUs = () => {
       <PageHeading title={"Contact Us Entries"} />
       <AppContentLayout>
         <div className="card">
+          <div className="card-header border-0 pt-6">
+            <div className="d-flex align-items-center position-relative my-1">
+              <span className="svg-icon svg-icon-1 position-absolute ms-6">
+                <CommonSearchIcon />
+              </span>
+              <input
+                type="text"
+                data-kt-user-table-filter="search"
+                className="form-control form-control-solid w-250px ps-14"
+                placeholder="Search offer"
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            </div>
+          </div>
           <div className="card-body">
             {isLoading ? (
               <SpinnerLoader />
@@ -72,8 +94,7 @@ const ContactUs = () => {
                     return (
                       <tr key={contactInfo?.id}>
                         <td>
-                          {contactInfo?.firstName}
-                          {contactInfo?.lastName}
+                          {contactInfo?.firstName} {contactInfo?.lastName}
                         </td>
                         <td>{contactInfo?.email}</td>
                         <td>{contactInfo?.phone}</td>
