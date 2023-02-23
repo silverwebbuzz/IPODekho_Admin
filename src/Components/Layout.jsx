@@ -5,10 +5,13 @@ import Footer from "../Components/Footer";
 
 const Layout = ({ children }) => {
   return (
-    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
-      <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+    <div className="d-flex flex-column flex-root app-root" id="kt_app_root">
+      <div className="app-page flex-column flex-column-fluid" id="kt_app_page">
         <NavBar />
-        <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+        <div
+          className="app-wrapper flex-column flex-row-fluid"
+          id="kt_app_wrapper"
+        >
           <Sidebar />
           <div className="app-main flex-column flex-row-fluid" id="kt_app_main">
             <div className="d-flex flex-column flex-column-fluid">

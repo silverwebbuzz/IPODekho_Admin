@@ -123,7 +123,7 @@ const News = () => {
               <tbody className="text-gray-600 fw-semibold">
                 {newsData?.AllNews?.map((news) => {
                   return (
-                    <tr>
+                    <tr key={news?.id}>
                       <td>
                         <img
                           src={news?.file ? news?.file : blankImage}

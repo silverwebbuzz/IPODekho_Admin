@@ -75,7 +75,7 @@ const UserModal = ({
     formData.append("email", values?.email);
     formData.append("phoneNumber", "+" + values?.phoneNumber);
     formData.append("photoURL", file);
-    formData.append("id", singleUserData?.uid);
+    formData.append("uid", singleUserData?.uid);
     let payload = {
       payload: formData,
       payloadId: { id: singleUserData?.uid },
@@ -105,7 +105,7 @@ const UserModal = ({
             className="btn btn-icon btn-sm btn-active-icon-primary"
             data-bs-dismiss="modal"
             onClick={() => {
-              setFileDataURL("");
+              // setFileDataURL("");
               setShowModal({
                 ...showModal,
                 showClass: "",
@@ -122,7 +122,6 @@ const UserModal = ({
           <Formik
             enableReinitialize
             initialValues={{
-              photoURL: fileDataURL,
               displayName: singleUserData?.displayName,
               email: singleUserData?.email,
               phoneNumber: singleUserData?.phoneNumber,
@@ -137,7 +136,7 @@ const UserModal = ({
               <Form>
                 <div id="kt_modal_edit_user_form" className="form">
                   <div
-                    class="d-flex flex-column scroll-y me-n7 pe-7"
+                    className="d-flex flex-column scroll-y me-n7 pe-7"
                     id="kt_modal_edit_user_scroll"
                     data-kt-scroll="true"
                     data-kt-scroll-activate="{default: false, lg: true}"
@@ -238,7 +237,6 @@ const UserModal = ({
                   <div className="text-center pt-15">
                     <button
                       onClick={() => {
-                        setFileDataURL("");
                         setShowModal({
                           ...showModal,
                           showClass: "",

@@ -61,7 +61,7 @@ const NotificationModal = ({ setShowModal, showModal }) => {
             <Form>
               <div id="kt_modal_add_offer_form" className="form">
                 <div
-                  class="d-flex flex-column scroll-y me-n7 pe-7"
+                  className="d-flex flex-column scroll-y me-n7 pe-7"
                   id="kt_modal_edit_user_scroll"
                   data-kt-scroll="true"
                   data-kt-scroll-activate="{default: false, lg: true}"

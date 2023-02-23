@@ -8,6 +8,7 @@ import SidebarMobileToggleIcon from "../assets/media/Icons/SidebarMobileToggleIc
 import SystemDefaultModeIcon from "../assets/media/Icons/SystemDefaultModeIcon";
 import ThemeDarkShowIcon from "../assets/media/Icons/ThemeDarkShowIcon";
 import ThemeLightShowIcon from "../assets/media/Icons/ThemeLightShowIcon";
+import DefaultSmallLogo from "../assets/media/logos/default-small.svg";
 // src\assets\media\user\300-1.jpg
 const NavBar = () => {
   return (
@@ -33,11 +34,7 @@ const NavBar = () => {
 
           <div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="/mainlineipo.html" className="d-lg-none">
-              <img
-                alt="Logo"
-                src="assets/media/logos/default-small.svg"
-                className="h-30px"
-              />
+              <img alt="Logo" src={DefaultSmallLogo} className="h-30px" />
             </a>
           </div>
           <div

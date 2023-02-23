@@ -133,7 +133,7 @@ const Notifications = () => {
                 <tbody className="fw-semibold text-gray-600">
                   {getAllData?.AllNotification?.map((data, index) => {
                     return (
-                      <tr>
+                      <tr key={data?.id}>
                         <td>{index + 1}</td>
                         <td>{data?.notificationTitle}</td>
                         <td className="mw-350px">
@@ -197,7 +197,7 @@ const Notifications = () => {
       <div
         className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
         id="kt_modal_edit_user"
-        tabindex="-1"
+        tabIndex="-1"
         aria-hidden="true"
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"

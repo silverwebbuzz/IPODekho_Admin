@@ -204,7 +204,7 @@ const SmeIpo = () => {
                   <tbody className="text-gray-600 fw-semibold">
                     {getAllMainLineIpoData?.MainLineIpo?.map((Itm) => {
                       return (
-                        <tr>
+                        <tr key={Itm?.id}>
                           <td className="d-flex align-items-center mw-230px w-230px">
                             <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
                               <Link

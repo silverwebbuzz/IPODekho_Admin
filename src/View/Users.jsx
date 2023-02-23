@@ -88,7 +88,7 @@ const Users = () => {
                 <tbody className="text-gray-600 fw-semibold">
                   {currentRecords.map((userInfo) => {
                     return (
-                      <tr key={userInfo?.id}>
+                      <tr key={userInfo?.uid}>
                         <td className="d-flex align-items-center">
                           <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
                             <div className="symbol-label">
@@ -189,7 +189,7 @@ const Users = () => {
       <div
         className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
         id="kt_modal_edit_user"
-        tabindex="-1"
+        tabIndex={-1}
         aria-hidden="true"
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"

@@ -109,7 +109,7 @@ const Sidebar = () => {
                 <NavLink
                   to="/mainline_ipo"
                   className="menu-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   <MainLineIpoIcon />
                   <span className="menu-title">Mainline IPO</span>

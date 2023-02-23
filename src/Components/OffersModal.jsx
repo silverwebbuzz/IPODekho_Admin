@@ -20,7 +20,6 @@ const OffersModal = ({
   singleData,
   setSingleData,
 }) => {
-  const { offerImage, isLoading } = useSelector((state) => state.offersReducer);
   const [imageMsg, setImageMsg] = useState("");
   const formData = new FormData();
   const formDataImg = new FormData();
@@ -28,7 +27,7 @@ const OffersModal = ({
 
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState();
+  const [fileDataURL, setFileDataURL] = useState(null);
 
   const changeHandler = (e) => {
     const MAX_FILE_SIZE = 4096; // 2MB
@@ -86,7 +85,7 @@ const OffersModal = ({
       payloadId: { id: singleData?.id },
     };
     dispatch(updateOfferImage({ payloadImage }));
-    // setFileDataURL("");
+    setFileDataURL("");
   };
 
   const handleSubmit = (values) => {
@@ -126,7 +125,7 @@ const OffersModal = ({
   };
 
   useEffect(() => {
-    setFileDataURL(singleData?.file ? singleData?.file : blankImage);
+    setFileDataURL(singleData?.file);
   }, [singleData?.file]);
 
   // useEffect(() => {
@@ -230,7 +229,7 @@ const OffersModal = ({
                               alt="preview"
                             />
                           </div>
-                          {fileDataURL !== blankImage && (
+                          {fileDataURL && (
                             <div
                               onClick={handleRemoveImage}
                               className="btn btn_delete btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"

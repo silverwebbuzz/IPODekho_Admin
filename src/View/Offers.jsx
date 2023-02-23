@@ -123,7 +123,7 @@ const Offers = () => {
                 <tbody className="text-gray-600 fw-semibold">
                   {getAllOffersData?.AllOffers?.map((offer) => {
                     return (
-                      <tr>
+                      <tr key={offer?.id}>
                         <td>
                           <img
                             src={offer?.file ? offer?.file : blankImage}
@@ -221,7 +221,7 @@ const Offers = () => {
       <div
         className={`modal fade kt_modal_edit_user ${showModal.showClass}`}
         id="kt_modal_edit_user"
-        tabindex="-1"
+        tabIndex="-1"
         aria-hidden="true"
         style={{ display: `${showModal.displayClass}` }}
         role="dialog"
