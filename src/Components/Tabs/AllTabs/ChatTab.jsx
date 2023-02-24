@@ -71,6 +71,7 @@ function ChatTab() {
         createdAt: new Date(),
         userId: "RSgguExRRwSbkqY2KWKFc41Idbs1",
         companyid: getIPODataById.id,
+        role: "admin",
         name: "admin", // need to add dynamic name
         Avatar:
           "https://thumbs.dreamstime.com/b/male-avatar-icon-flat-style-male-user-icon-cartoon-man-avatar-hipster-vector-stock-91462914.jpg",
