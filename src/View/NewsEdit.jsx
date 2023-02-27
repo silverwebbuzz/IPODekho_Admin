@@ -234,16 +234,11 @@ const NewsEdit = () => {
                   </div>
                   <div className="mt-10">
                     <label className="form-label">Content</label>
-                    <Field name="Content">
-                      {({ field }) => (
-                        <ReactQuill
-                          className="min-h-500px h-500px mb-2"
-                          modules={modules}
-                          value={field.value}
-                          onChange={field.onChange(field.name)}
-                        />
-                      )}
-                    </Field>
+                    <Field
+                      name="Content"
+                      as="textarea"
+                      className="form-control"
+                    />
                   </div>
 
                   <div className="d-flex justify-content-end mt-15">

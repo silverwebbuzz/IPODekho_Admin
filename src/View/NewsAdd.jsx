@@ -1,17 +1,13 @@
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { modules } from "../Constants/commonConstants";
-import DatePicker, { ReactDatePicker } from "react-datepicker";
-import { useDispatch, useSelector } from "react-redux";
-import { createNews, getNewsById } from "../redux/slice/newsSlice";
+import { Link, useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { useDispatch } from "react-redux";
+import { createNews } from "../redux/slice/newsSlice";
 import AppContentLayout from "../Components/AppContentLayout";
 import PageHeading from "../Components/PageHeading";
 import blankImage from "../assets/media/offer/blank-image.svg";
 import "react-datepicker/dist/react-datepicker.css";
-import DateTimePicker from "react-datetime-picker";
-import moment from "moment/moment";
 
 const NewsAdd = () => {
   const [imageMsg, setImageMsg] = useState("");
@@ -180,7 +176,6 @@ const NewsAdd = () => {
                     <label className="form-label">Date</label>
                     <DatePickerField
                       name="newsDate"
-                      // className="form-control mb-2"
                       value={values?.newsDate}
                       onChange={setFieldValue}
                     />
@@ -204,16 +199,11 @@ const NewsAdd = () => {
                   </div>
                   <div className="mt-10">
                     <label className="form-label">Content</label>
-                    <Field name="Content">
-                      {({ field }) => (
-                        <ReactQuill
-                          className="min-h-500px h-500px mb-2"
-                          modules={modules}
-                          value={field.value}
-                          onChange={field.onChange(field.name)}
-                        />
-                      )}
-                    </Field>
+                    <Field
+                      name="Content"
+                      as="textarea"
+                      className="form-control"
+                    />
                   </div>
 
                   <div className="d-flex justify-content-end mt-15">

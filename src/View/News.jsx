@@ -191,8 +191,8 @@ const News = () => {
                   }}
                 >
                   {" "}
-                  Showing 1 to {newsData?.AllNews?.length} of {newsData?.Total}{" "}
-                  records
+                  Showing {newsData?.AllNews?.length} to{" "}
+                  {newsData?.AllNews?.length} of {newsData?.Total} records
                 </span>
               </div>
               <div className="pagination">
@@ -203,7 +203,7 @@ const News = () => {
                   pageRangeDisplayed={0}
                   pageCount={totalPage}
                   previousLabel="<"
-                  renderOnZeroPageCount={1}
+                  // renderOnZeroPageCount={1}
                   forcePage={currentPage - 1}
                 />
               </div>

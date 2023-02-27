@@ -58,6 +58,7 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
       shortText: values?.shortText,
       DRHPDraft: values?.DRHPDraft,
       RHPDraft: values?.RHPDraft,
+      disclaimer: values?.disclaimer,
       preIssueShareHolding: values?.preIssueShareHolding,
       postIssueShareHolding: values?.postIssueShareHolding,
       promotersName: values?.promotersName,
