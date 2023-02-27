@@ -17,11 +17,13 @@ const Faqs = () => {
   }, [createFaqData, updateFaqData]);
 
   const handleSubmit = (values) => {
+    console.log(values.faqs);
     const payload = {
       faq: values.faqs,
     };
     if (getAllFaqData[0]?.id) {
       payload.id = getAllFaqData[0]?.id;
+      console.log(payload, "payloadpayloadpayloadpayload");
       dispatch(updateFaq({ payload }));
     } else {
       dispatch(createFaq({ payload }));

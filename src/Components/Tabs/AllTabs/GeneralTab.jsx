@@ -105,6 +105,7 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                   preIssueShareHolding: getIPODataById?.preIssueShareHolding,
                   postIssueShareHolding: getIPODataById?.postIssueShareHolding,
                   promotersName: getIPODataById?.promotersName,
+                  disclaimer: getIPODataById?.disclaimer,
                 }
               : {
                   companyName: tabData?.companyName,
@@ -128,6 +129,7 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                   preIssueShareHolding: tabData?.preIssueShareHolding,
                   postIssueShareHolding: tabData?.postIssueShareHolding,
                   promotersName: tabData?.promotersName,
+                  disclaimer: tabData?.disclaimer,
                 }
           }
           onSubmit={(values) => {
@@ -357,36 +359,29 @@ const GeneralTab = ({ ipoEdit, ipoPrefillData, IPOTYPE }) => {
                     </div>
                   </div>
                   <div className="d-flex flex-wrap gap-5">
-                    <div
-                      className="w-100 fv-row flex-md-root"
-                      // style={draftBtnStyle}
-                    >
+                    <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">DRHP Draft</label>
                       <Field
                         type="text"
                         name="DRHPDraft"
                         className="form-control"
                       />
-                      {/* <button className="btn btn-primary" type="button">
-                        DRHP
-                      </button> */}
                     </div>
-                    {/* DRHP <FileAttachmentIcon /> */}
-
-                    <div
-                      className="w-100 fv-row flex-md-root"
-                      // style={draftBtnStyle}
-                    >
+                    <div className="w-100 fv-row flex-md-root">
                       <label className="form-label">RHP Draft</label>
                       <Field
                         type="text"
                         name="RHPDraft"
                         className="form-control"
                       />
-                      {/* <button className="btn btn-primary" type="button">
-                        RHP
-                      </button> */}
-                      {/* RHP <FileAttachmentIcon /> */}
+                    </div>
+                    <div className="w-100 fv-row flex-md-root">
+                      <label className="form-label">Disclaimer</label>
+                      <Field
+                        type="text"
+                        name="disclaimer"
+                        className="form-control"
+                      />
                     </div>
                   </div>
                 </div>
