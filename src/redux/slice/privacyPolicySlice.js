@@ -29,7 +29,6 @@ export const createPrivacyPolicy = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -50,7 +49,6 @@ export const getAllPrivacyPolicy = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);

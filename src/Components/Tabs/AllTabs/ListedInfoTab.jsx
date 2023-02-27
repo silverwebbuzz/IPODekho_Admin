@@ -20,7 +20,6 @@ const ListedInfoTab = ({ ipoEdit, IPOTYPE }) => {
   const { getIPODataById, getAllMainLineIpoData } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-  console.log(IPOTYPE, "IPOTYPEIPOTYPEIPOTYPEIPOTYPE");
   const handleSubmit = (values) => {
     const payload = {
       CategoryForIPOS: IPOTYPE,

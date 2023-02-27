@@ -29,7 +29,6 @@ export const createNotification = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -53,35 +52,12 @@ export const getAllNotifications = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
   }
 );
-
-// export const updateUsers = createAsyncThunk(
-//   "admin/updateUsers",
-//   async ({ payload }, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(
-//         `${BASE_URL_FOR_ADMIN + ADMIN_UPDATE_USER}${payload?.id}`,
-//         payload,
-//         {
-//           headers: {
-//             "Access-Control-Allow-Origin": "*",
-//             "Content-Type": "multipart/form-data",
-//           },
-//         }
-//       );
-//       console.log(response?.data);
-//       return response?.data;
-//     } catch (error) {
-//       return rejectWithValue(error?.response?.data);
-//     }
-//   }
-// );
 
 const notificationsSlice = createSlice({
   name: "notificationsSlice",

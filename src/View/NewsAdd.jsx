@@ -76,7 +76,6 @@ const NewsAdd = () => {
       }
     };
   }, [file]);
-  // console.log("value12", moment(value12).format("MMM d, yyyy h:mm:ss a"));
   const handleSubmit = (values) => {
     formData.append("Content", values?.Content);
     formData.append("Title", values?.Title);

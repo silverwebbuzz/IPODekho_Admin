@@ -55,7 +55,7 @@ export const createOffer = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
+
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -77,10 +77,8 @@ export const updateOffer = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.message);
       return response?.data?.data;
     } catch (error) {
-      console.log(error?.response?.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -102,7 +100,6 @@ export const updateOfferImage = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);

@@ -47,7 +47,6 @@ const AddIpo = () => {
       />
     );
   };
-  // console.log(IPOTYPE);
 
   const handleIpoStatus = (e) => {
     let payload = {

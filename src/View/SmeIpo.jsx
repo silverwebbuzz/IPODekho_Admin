@@ -102,7 +102,6 @@ const SmeIpo = () => {
       dispatch(setTotalPage(totalCount));
     }
   }, [getAllMainLineIpoData?.Total]);
-  console.log("currentPage", currentPage);
   return (
     <>
       <PageHeading title={"SME IPOs"} />

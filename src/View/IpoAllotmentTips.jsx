@@ -10,19 +10,16 @@ import {
   getAllAllotment,
   updateAllotment,
 } from "../redux/slice/ipoAllotSlice";
-// import { getAllAllotmentTips } from "../redux/slice/allotmentSlice";
 
 const IpoAllotmentTips = () => {
   const dispatch = useDispatch();
   const { updateIpoAllotData, createIpoAllotData, getAllIpoAllotData } =
     useSelector((state) => state.ipoAllotReducer);
 
-  // console.log(allotmentTipsSliceReducer);
   useEffect(() => {
     dispatch(getAllAllotment());
   }, [createIpoAllotData, updateIpoAllotData]);
 
-  console.log(getAllIpoAllotData[0]);
   const handleSubmit = (values) => {
     const payload = {
       AllotmentTips: values?.AllotmentTips,

@@ -78,7 +78,6 @@ export const updateIPO = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -102,7 +101,6 @@ export const uploadIMG = createAsyncThunk(
         }
       );
 
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);
@@ -125,7 +123,6 @@ export const createMainLineIpo = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message);

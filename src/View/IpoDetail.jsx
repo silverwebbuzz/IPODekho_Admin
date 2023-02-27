@@ -17,7 +17,6 @@ const IpoDetail = () => {
   const location = useLocation();
   const IPOdata = location?.state?.data;
   const dispatch = useDispatch();
-  console.log(IPOdata);
   useEffect(() => {
     const payload = {
       id: IPOdata?.id,
@@ -25,7 +24,6 @@ const IpoDetail = () => {
     };
     dispatch(getIpoById({ payload }));
   }, [dispatch]);
-  console.log(getIPODataById);
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker

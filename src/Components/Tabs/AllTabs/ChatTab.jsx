@@ -40,7 +40,6 @@ function ChatTab() {
   const timeFormat = (secs) => {
     let output = new Date(secs * 1000);
     let formatTime = moment(output).format("D MMM LT");
-    console.log(formatTime);
     return formatTime;
   };
 

@@ -50,7 +50,6 @@ export const updateUsers = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       window.alert(error?.response?.data.msg);
@@ -72,7 +71,6 @@ export const getUserById = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);

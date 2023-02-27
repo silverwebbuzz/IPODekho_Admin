@@ -101,7 +101,6 @@ const MainLineIPO = () => {
       dispatch(setTotalPage(totalCount));
     }
   }, [getAllMainLineIpoData?.Total]);
-  console.log("currentPage", currentPage);
 
   return (
     <>

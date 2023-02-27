@@ -37,19 +37,15 @@ const FilePreviewer = ({
     if (editImage) {
       formData.append("file", e?.target?.files[0]);
       let payload = { payload: formData, id: { id: ID } };
-
-      console.log(payload);
       dispatch(uploadIMG({ payload }));
     } else {
       if (ID) {
         formData.append("file", e?.target?.files[0]);
         let payload = { payload: formData, id: { id: ID } };
-        console.log(payload);
         dispatch(uploadIMG({ payload }));
       } else {
         formData.append("file", e?.target?.files[0]);
         let payload = { payload: formData, id: { id: null } };
-        console.log(payload);
         dispatch(uploadIMG({ payload }));
       }
     }

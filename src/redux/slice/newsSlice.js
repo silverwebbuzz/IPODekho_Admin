@@ -33,7 +33,6 @@ export const createNews = createAsyncThunk(
           },
         }
       );
-      console.log(response.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -99,7 +98,6 @@ export const updateNews = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -121,7 +119,6 @@ export const updateNewsImage = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -142,35 +139,12 @@ export const getNewsById = createAsyncThunk(
           },
         }
       );
-      console.log(response?.data?.GetSingleNews);
       return response?.data?.GetSingleNews;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
   }
 );
-
-// export const getNewsById = createAsyncThunk(
-//   "admin/getNewsById",
-//   async ({ payload }, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(
-//         `${BASE_URL_FOR_ADMIN + ADMIN_GETNEWSBYID}${payload?.id}`,
-//         payload,
-//         {
-//           headers: {
-//             "Access-Control-Allow-Origin": "*",
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-//       console.log(response?.data?.GetSingleNews);
-//       return response?.data?.GetSingleNews;
-//     } catch (error) {
-//       return rejectWithValue(error?.response?.data);
-//     }
-//   }
-// );
 
 const newsSlice = createSlice({
   name: "newsSlice",
