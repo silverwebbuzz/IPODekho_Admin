@@ -14,6 +14,7 @@ import SubscriptionTab from "./AllTabs/SubscriptionTab";
 import ListedInfoTab from "./AllTabs/ListedInfoTab";
 import { useSelector } from "react-redux";
 import SpinnerLoader from "../SpinnerLoader";
+import DisableChatTab from "./AllDisabledTabs/DisabledChatTab";
 
 export const TabContext = createContext();
 const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
@@ -172,7 +173,7 @@ const Tabs = ({ ipoDetail, ipoEdit, ipoPrefillData, IPOTYPE }) => {
             </TabPaneLayout>
           ) : (
             <TabPaneLayout>
-              <ChatTab />
+              {ipoDetail ? <DisableChatTab /> : <ChatTab />}{" "}
             </TabPaneLayout>
           )}
         </div>

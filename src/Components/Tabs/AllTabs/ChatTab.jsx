@@ -34,8 +34,6 @@ const auth = getAuth(app);
 function ChatTab() {
   const [messages, setMessages] = useState([]);
   const { getIPODataById } = useSelector((state) => state?.mainLineIpoSlice);
-
-  const messageEnd = useRef();
   const adminId = "RSgguExRRwSbkqY2KWKFc41Idbs1";
   const timeFormat = (secs) => {
     let output = new Date(secs * 1000);
@@ -188,7 +186,7 @@ function ChatTab() {
           initialValues={{ msg: "" }}
           onSubmit={(values, { resetForm }) => {
             handleSendMessage(values);
-            resetForm();
+            if (values !== undefined || values !== "") return resetForm();
           }}
         >
           {({ values }) => (

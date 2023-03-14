@@ -87,7 +87,32 @@ const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
               : {
                   companyFinancials: tabData?.companyFinancials,
                   earningPerShare: tabData?.earningPerShare,
-                  financialLotsize: tabData?.financialLotsize,
+                  financialLotsize: [
+                    {
+                      application: "Retail(Min)",
+                      lots: "",
+                      shares: "",
+                      amount: "",
+                    },
+                    {
+                      application: "Retail(Max)",
+                      lots: "",
+                      shares: "",
+                      amount: "",
+                    },
+                    {
+                      application: "S-HNI(Min)",
+                      lots: "",
+                      shares: "",
+                      amount: "",
+                    },
+                    {
+                      application: "B-HNI(Min)",
+                      lots: "",
+                      shares: "",
+                      amount: "",
+                    },
+                  ],
                   peersComparison: tabData?.peersComparison,
                   earningPERatio: tabData?.earningPERatio,
                   returnonNetWorth: tabData?.returnonNetWorth,
@@ -347,7 +372,7 @@ const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="col-md-2">
+                                      {/* <div className="col-md-2">
                                         <button
                                           className="btn btn-sm btn-light-danger"
                                           onClick={(e) => {
@@ -358,13 +383,13 @@ const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
                                           <i className="la la-trash-o"></i>
                                           Delete
                                         </button>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 )
                               )}
 
-                              <div className="form-group mt-5">
+                              {/* <div className="form-group mt-5">
                                 <button
                                   className="btn btn-light-primary"
                                   onClick={(e) => {
@@ -379,7 +404,7 @@ const FinancialsTab = ({ ipoEdit, IPOTYPE, ipoPrefillData }) => {
                                 >
                                   <i className="la la-plus"></i>Add
                                 </button>
-                              </div>
+                              </div> */}
                             </div>
                           )}
                         />

@@ -53,31 +53,6 @@ const Faqs = () => {
             <div className="card">
               <div className="card-body">
                 <div id="kt_faq_repeater">
-                  {/* <div className="form-group">
-                    <div data-repeater-list="kt_faq_repeater">
-                      <div data-repeater-item>
-                        <div className="form-group row mb-5">
-                          <div className="col-md-4">
-                            <label className="form-label">FAQ Question</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">FAQ Answer</label>
-                            <textarea className="form-control"></textarea>
-                          </div>
-                          <div className="col-md-2">
-                            <a
-                              href="javascript:;"
-                              data-repeater-delete
-                              className="btn btn-sm btn-light-danger"
-                            >
-                              <i className="la la-trash-o"></i>Delete
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
                   <Formik
                     enableReinitialize
                     initialValues={
@@ -115,18 +90,12 @@ const Faqs = () => {
                                             <label className="form-label mt-4">
                                               FAQ Question
                                             </label>
-                                            <Field name={`faqs[${index}].Que`}>
-                                              {({ field }) => (
-                                                <ReactQuill
-                                                  className="min-h-100px h-100px "
-                                                  modules={modules}
-                                                  value={field.value}
-                                                  onChange={field.onChange(
-                                                    field.name
-                                                  )}
-                                                />
-                                              )}
-                                            </Field>
+                                            <br />
+                                            <Field
+                                              name={`faqs[${index}].Que`}
+                                              className="min-h-100px h-100px  w-100"
+                                              as="textarea"
+                                            />
                                           </div>
                                           <div className="col-md-6">
                                             <label className="form-label">

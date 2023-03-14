@@ -61,6 +61,7 @@ export const updateUsers = createAsyncThunk(
 export const getUserById = createAsyncThunk(
   "admin/getUserById",
   async ({ payload }, { rejectWithValue }) => {
+    console.log("api calll", payload);
     try {
       const response = await axios.get(
         `${BASE_URL_FOR_ADMIN + ADMIN_GET_SINGLE_USER}${payload?.id}`,

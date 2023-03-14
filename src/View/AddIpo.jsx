@@ -33,7 +33,7 @@ const AddIpo = () => {
   const { ID, getIPODataById, uploadImage, isLoading } = useSelector(
     (state) => state?.mainLineIpoSlice
   );
-
+  console.log("ID", ID);
   const DatePickerField = ({ name, value, onChange }) => {
     return (
       <DatePicker
@@ -377,7 +377,7 @@ const AddIpo = () => {
 
           <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
             <div className="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-              <Tabs IPOTYPE={IPOTYPE?.data} />
+              <Tabs IPOTYPE={IPOTYPE?.data} IpoAdd={"IpoAdd"} />
             </div>
           </div>
         </div>

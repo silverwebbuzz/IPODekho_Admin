@@ -44,6 +44,7 @@ const Users = () => {
   useEffect(() => {
     dispatch(getAllUsers());
   }, [updateData]);
+  console.log("updateData", updateData);
 
   return (
     <>
